@@ -1,0 +1,30 @@
+Individual ID (band#)
+Ask data ingest questions on Slack
+
+We need density information on the datasets
+GDD = Growing Degree Days -- Do some simple analyses on this
+Get a list of preliminary analyses
+Get bird arrival dates?
+We need green-up dates possibly brown-down too
+Where do the datasets overlap?
+Bins based on climate gradients?
+Bin size seems to be a major issue
+Ecoregion maps
+Plant hardiness zones
+Project nest watch
+
+Intersect ecoregions (Level 2) vs plant hardiness zones
+* Link data density with ecoregions?
+
+* Pricing on cloud servers Amazon vs Google
+
+Include a 4th trophic level? (Raptors)
+What species set to include? (Check species list in email)
+What dates are we targeting? (All dates)
+
+After culling (first pass)
+Records: 89,689,286 ÷ 468,300,000
+Records: 81,772,278
+
+******** Cloud DB ASAP! ********
+Distribute Spatialite DB ASAP!

@@ -1,0 +1,49 @@
+# Environment
+.env
+venv/
+
+# Python
+*.pyc
+*.swp
+__pycache__
+.ipynb_checkpoints/
+
+# Data
+data/raw/bbs/*
+data/raw/maps/*
+data/raw/ebird/*
+data/raw/pollard/*
+data/interim/*
+data/processed/*
+data/external/maps/*
+!data/raw/.gitkeep
+!data/raw/bbs/.gitkeep
+!data/raw/maps/.gitkeep
+!data/raw/maps/maps_codes.py
+!data/raw/ebird/.gitkeep
+!data/raw/ebird/ebird_codes.csv
+!data/raw/ebird/target_birds.csv
+!data/raw/pollard/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/external/maps/.gitkeep
+
+# Docs
+
+# Temp files
+temp/
+backup/
+julia/
+junk*
+
+# Test
+.coverage
+.cache
+.hypothesis
+
+# Other repos
+phenomismatch/
+
+# Editors
+.ropeproject/
+*~

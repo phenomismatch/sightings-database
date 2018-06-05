@@ -1,0 +1,71 @@
+field,code,value
+BREEDING BIRD ATLAS CATEGORY,C1,Observed
+BREEDING BIRD ATLAS CATEGORY,C2,Possible
+BREEDING BIRD ATLAS CATEGORY,C3,Probable
+BREEDING BIRD ATLAS CATEGORY,C4,Confirmed
+LOCALITY TYPE,P,Personal
+LOCALITY TYPE,H,Hotspot
+LOCALITY TYPE,T,Town
+LOCALITY TYPE,PC,Postal/Zip Code
+LOCALITY TYPE,C,County
+LOCALITY TYPE,S,State
+BREEDING BIRD ATLAS CODE,NY,Nest with Young
+BREEDING BIRD ATLAS CODE,NE,Nest with Eggs
+BREEDING BIRD ATLAS CODE,ON,Occupied Nest
+BREEDING BIRD ATLAS CODE,FL,Recently Fledged young
+BREEDING BIRD ATLAS CODE,FY,Feeding Young
+BREEDING BIRD ATLAS CODE,CS,Carrying Fecal Sac
+BREEDING BIRD ATLAS CODE,CF,Carrying Food
+BREEDING BIRD ATLAS CODE,DD,Distraction Display
+BREEDING BIRD ATLAS CODE,PE,Brood Patch and Physiological Evidence
+BREEDING BIRD ATLAS CODE,NB,Nest Building
+BREEDING BIRD ATLAS CODE,CN,Carrying Nesting Material
+BREEDING BIRD ATLAS CODE,T,Territory held for 7+ days
+BREEDING BIRD ATLAS CODE,C,"Courtship, Display or Copulation"
+BREEDING BIRD ATLAS CODE,N,Probable – Visiting probable Nest site
+BREEDING BIRD ATLAS CODE,A,Agitated behavior
+BREEDING BIRD ATLAS CODE,P,Pair in suitable habitat
+BREEDING BIRD ATLAS CODE,S,Singing male
+BREEDING BIRD ATLAS CODE,H,In appropriate habitat
+BREEDING BIRD ATLAS CODE,F,Flyover
+PROTOCOL TYPE,P22,Traveling
+PROTOCOL TYPE,P21,Stationary
+PROTOCOL TYPE,P62,Historical
+PROTOCOL TYPE,P20,Incidental
+PROTOCOL TYPE,P23,Area
+PROTOCOL TYPE,P33,Banding
+PROTOCOL TYPE,P60,eBird Pelagic Protocol
+PROTOCOL TYPE,P54,Nocturnal Flight Call Count
+PROTOCOL TYPE,P52,Oiled Birds
+PROTOCOL TYPE,P48,Random
+PROTOCOL TYPE,P59,TNC California Waterbird Count
+PROTOCOL TYPE,P46,CWC Point Count
+PROTOCOL TYPE,P47,CWC Area Search
+PROTOCOL TYPE,P41,Rusty Blackbird Spring Migration Blitz
+PROTOCOL TYPE,P69,California Brown Pelican Survey
+PROTOCOL TYPE,P73,PROALAS
+PROTOCOL TYPE,P58,Audubon Coastal Bird Survey
+PROTOCOL TYPE,P74,International Shorebird Survey (ISS)
+PROTOCOL TYPE,P75,Tricolored Blackbird Winter Survey
+PROTOCOL TYPE,P70,BirdLife Australia 20min-2ha survey
+PROTOCOL TYPE,P72,BirdLife Australia 5 km radius search
+PROTOCOL TYPE,P71,BirdLife Australia 500m radius search
+PROTOCOL TYPE,P66,Birds 'n' Bogs Survey
+PROTOCOL TYPE,P65,Breeding Bird Atlas
+PROTOCOL TYPE,P67,CAC--Common Bird Survey
+PROTOCOL TYPE,P50,Caribbean Martin Survey
+PROTOCOL TYPE,P49,Coastal Shorebird Survey
+PROTOCOL TYPE,P57,Great Texas Birding Classic
+PROTOCOL TYPE,P51,Greater Gulf Refuge Waterbird Count
+PROTOCOL TYPE,P56,Heron Area Count
+PROTOCOL TYPE,P55,Heron Stationary Count
+PROTOCOL TYPE,P61,IBA Canada (protocol)
+PROTOCOL TYPE,P39,LoonWatch
+PROTOCOL TYPE,P35,My Yard Counts
+PROTOCOL TYPE,P68,RAM--Iberian Seawatch Network
+PROTOCOL TYPE,P40,Standardized Yard Count
+PROTOCOL TYPE,P30,Trail Tracker
+PROTOCOL TYPE,P64,Traveling - Property Specific
+PROTOCOL TYPE,P34,Waterbird Count
+PROTOCOL TYPE,P44,Yellow-billed Magpie Survey - General Observations
+PROTOCOL TYPE,P45,Yellow-billed Magpie Survey - Traveling Count

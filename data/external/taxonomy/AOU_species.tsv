@@ -1,0 +1,1178 @@
+Species Number	Alpha Code	Common Name	Band Size	French Name	Scientific Name	T & E*	Comments	Taxonomic Order
+10	WEGR 	Western Grebe 	7B, 7, 7A 	Grèbe élégant 	Aechmophorus occidentalis 			96
+11	CLGR 	Clark's Grebe 	7A, 7, 7B 	Grèbe à face blanche 	Aechmophorus clarkii 			98
+12	WCGR 	Western/Clark's Grebe 	7A, 7B 	Grèbe à face blanche/Grèbe élégant non identifiée 			Unspecified Aechmophorus occidentalis or A. clarkii. 	97
+20	RNGR 	Red-necked Grebe 	7A, 7, 7B 	Grèbe jougris 	Podiceps grisegena 			94
+30	HOGR 	Horned Grebe 	6, 5, 5A 	Grèbe esclavon 	Podiceps auritus 			93
+40	EAGR 	Eared Grebe 	5, 5A 	Grèbe à cou noir 	Podiceps nigricollis 			95
+50	LEGR 	Least Grebe 	4	Grèbe minime 	Tachybaptus dominicus 			91
+60	PBGR 	Pied-billed Grebe 	5, 6, 5A 	Grèbe à bec bigarré 	Podilymbus podiceps 			92
+70	COLO 	Common Loon 	8, 8A, 9 	Plongeon huard 	Gavia immer 			89
+80	YBLO 	Yellow-billed Loon 	9, 8A 	Plongeon à bec blanc 	Gavia adamsii 			90
+90	ARLO 	Arctic Loon 	7B 	Plongeon arctique 	Gavia arctica 			87
+100	PALO 	Pacific Loon 	7B 	Plongeon du Pacifique 	Gavia pacifica 			88
+110	RTLO 	Red-throated Loon 	7B 	Plongeon catmarin 	Gavia stellata 			86
+120	TUPU 	Tufted Puffin 	6, 5, 5A 	Macareux huppé 	Fratercula cirrhata 			389
+130	ATPU 	Atlantic Puffin 	5	Macareux moine 	Fratercula arctica 			387
+140	HOPU 	Horned Puffin 	5, 5A 	Macareux cornu 	Fratercula corniculata 			388
+150	RHAU 	Rhinoceros Auklet 	5, 6, 5A 	Macareux rhinocéros 	Cerorhinca monocerata 			386
+160	CAAU 	Cassin's Auklet 	3, 3B, 3A 	Starique de Cassin 	Ptychoramphus aleuticus 			381
+170	PAAU 	Parakeet Auklet 	4	Starique perroquet 	Aethia psittacula 			382
+180	CRAU 	Crested Auklet 	4	Starique cristatelle 	Aethia cristatella 			385
+190	WHAU 	Whiskered Auklet 	3	Starique pygmée 	Aethia pygmaea 			384
+200	LEAU 	Least Auklet 	2, 3, 2A 	Starique minuscule 	Aethia pusilla 			383
+210	ANMU 	Ancient Murrelet 	3, 3B 	Guillemot à cou blanc 	Synthliboramphus antiquus 			380
+230	MAMU 	Marbled Murrelet 	3, 3B 	Guillemot marbré 	Brachyramphus marmoratus 	Y 		374
+231	LBMU 	Long-billed Murrelet 	3B, 3 	Guillemot à long bec 	Brachyramphus perdix 			372
+232	AMMU 	Alaska Marbled Murrelet 	3, 3B 		Brachyramphus marmoratus 		Alaskan populations of Marbled Murrelet (not endangered). 	373
+240	KIMU 	Kittlitz's Murrelet 	3	Guillemot de Kittlitz 	Brachyramphus brevirostris 			375
+250	XAMU 	Xantus's Murrelet 	2, 2A 	Guillemot de Xantus 			Unspecified Synthliboramphus scrippsi / S. hypoleucus. 	376
+251	SCMU 	Scripps's Murrelet 	2, 2A 	Guillemot de Scripps 	Synthliboramphus scrippsi 		Split from XAMU (0250) in August 2012. 	377
+252	GUMU 	Guadalupe Murrelet 	2, 2A 	Guillemot de Xantus 	Synthliboramphus hypoleucus 		Split from XAMU (0250) in August 2012. 	378
+260	CRMU 	Craveri's Murrelet 	2	Guillemot de Craveri 	Synthliboramphus craveri 			379
+270	BLGU 	Black Guillemot 	4, 4A 	Guillemot à miroir 	Cepphus grylle 			370
+290	PIGU 	Pigeon Guillemot 	4, 4A 	Guillemot colombin 	Cepphus columba 			371
+300	COMU 	Common Murre 	6M, 6 	Guillemot marmette 	Uria aalge 			367
+310	TBMU 	Thick-billed Murre 	6M, 5R, 6, 5 	Guillemot de Brünnich 	Uria lomvia 			368
+320	RAZO 	Razorbill 	5R, 6M 	Petit Pingouin 	Alca torda 			369
+340	DOVE 	Dovekie 	3, 2A 	Mergule nain 	Alle alle 			366
+350	GRSK 	Great Skua 	7A, 7B 	Grand Labbe 	Stercorarius skua 			359
+352	SPSK 	South Polar Skua 	7A, 7B 	Labbe de McCormick 	Stercorarius maccormicki 			360
+360	POJA 	Pomarine Jaeger 	5	Labbe pomarin 	Stercorarius pomarinus 			363
+370	PAJA 	Parasitic Jaeger 	3A, 4, 4A 	Labbe parasite 	Stercorarius parasiticus 			364
+380	LTJA 	Long-tailed Jaeger 	4, 4A 	Labbe à longue queue 	Stercorarius longicaudus 			365
+390	IVGU 	Ivory Gull 	4	Mouette blanche 	Pagophila eburnea 	Newfoundland and Labrador Northwest Territories Nunavut 		392
+391	MAGU 	Magellan Gull 	5	Goéland de Scoresby 	Leucophaeus scoresbii 			398
+400	BLKI 	Black-legged Kittiwake 	4A, 5, 4 	Mouette tridactyle 	Rissa tridactyla 			390
+410	RLKI 	Red-legged Kittiwake 	4A, 4, 3A 	Mouette des brumes 	Rissa brevirostris 			391
+420	GLGU 	Glaucous Gull 	7A 	Goéland bourgmestre 	Larus hyperboreus 		Size 6 for northern subspecies, barrovanius. 	414
+430	ICGU 	Iceland Gull 	6	Goéland arctique 	Larus glaucoides 			410
+431	THGU 	Thayer's Gull 	6	Goéland de Thayer 	Larus thayeri 			409
+440	GWGU 	Glaucous-winged Gull 	7A, 7, 7B 	Goéland à ailes grises 	Larus glaucescens 			413
+446	HYGU 	Hybrid Gull 	6, 7A, 7 	Hybride de goélands 				417
+470	GBBG 	Great Black-backed Gull 	7B, 7, 7A 	Goéland marin 	Larus marinus 			415
+480	SBGU 	Slaty-backed Gull 	7A 	Goéland à manteau ardoisé 	Larus schistisagus 			412
+490	WEGU 	Western Gull 	6, 7A 	Goéland d'Audubon 	Larus occidentalis 			405
+491	YFGU 	Yellow-footed Gull 	6	Goéland de Cortez 	Larus livens 			406
+500	LBBG 	Lesser Black-backed Gull 	6	Goéland brun 	Larus fuscus 			411
+510	HERG 	Herring Gull 	6, 7A 	Goéland argenté 	Larus argentatus 			408
+530	CAGU 	California Gull 	5, 5A 	Goéland de Californie 	Larus californicus 			407
+534	UNGU 	Unidentified Gull 	5, 5A 	Goéland non identifié 			Explain in Remarks why the unidentified code was chosen 	418
+540	RBGU 	Ring-billed Gull 	5, 4A, 5A 	Goéland à bec cerclé 	Larus delawarensis 			404
+542	BTGU 	Band-tailed Gull 	5	Goéland siméon 	Larus belcheri 			401
+550	MEGU 	Mew Gull 	4A, 4, 5 	Goéland cendré 	Larus canus 			403
+551	BHGU 	Black-headed Gull 	5	Mouette rieuse 	Chroicocephalus ridibundus 			395
+570	HEEG 	Heermann's Gull 	4A 	Goéland de Heermann 	Larus heermanni 			402
+580	LAGU 	Laughing Gull 	5, 4A, 4 	Mouette atricille 	Leucophaeus atricilla 			399
+590	FRGU 	Franklin's Gull 	4	Mouette de Franklin 	Leucophaeus pipixcan 			400
+600	BOGU 	Bonaparte's Gull 	3, 3B 	Mouette de Bonaparte 	Chroicocephalus philadelphia 			394
+601	LIGU 	Little Gull 	3	Mouette pygmée 	Hydrocoloeus minutus 			396
+610	ROGU 	Ross's Gull 	3	Mouette rosée 	Rhodostethia rosea 	Manitoba Nunavut 		397
+620	SAGU 	Sabine's Gull 	3, 3B 	Mouette de Sabine 	Xema sabini 			393
+630	GBTE 	Gull-billed Tern 	3B, 3A 	Sterne hansel 	Gelochelidon nilotica 			431
+640	CATE 	Caspian Tern 	5, 4A 	Sterne caspienne 	Hydroprogne caspia 			432
+650	ROYT 	Royal Tern 	4, 4A 	Sterne royale 	Thalasseus maximus 			444
+652	CRTE 	Crested Tern 	3, 3B 	Sterne huppée 	Thalasseus bergii 			445
+660	ELTE 	Elegant Tern 	3	Sterne élégante 	Thalasseus elegans 			448
+670	SATE 	Sandwich Tern 	3B 	Sterne caugek 	Thalasseus sandvicensis 			446
+671	CAYT 	Cayenne Tern 	3B 	Sterne de Cayenne 	Thalasseus sandvicensis eurygnatha 			447
+690	FOTE 	Forster's Tern 	3	Sterne de Forster 	Sterna forsteri 			443
+700	COTE 	Common Tern 	2A, 2 	Sterne pierregarin 	Sterna hirundo 		Hard metal bands recommended. 	439
+706	HYTE 	Hybrid Tern 	2, 2A 	Hybride de sternes 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	449
+710	ARTE 	Arctic Tern 	2, 2A 	Sterne arctique 	Sterna paradisaea 			440
+720	ROST 	Roseate Tern 	2, 2A 	Sterne de Dougall 	Sterna dougallii 	Y 	Hard metal bands recommended. 	436
+725	HCRT 	Common Tern X Roseate Tern Hybrid 	2	Hybride COTE X ROST 			Sterna hirundo X S. dougallii 	438
+730	ALTE 	Aleutian Tern 	2, 2A, 1D 	Sterne des Aléoutiennes 	Onychoprion aleuticus 			426
+731	BNTE 	Black-naped Tern 	2	Sterne diamant 	Sterna sumatrana 			437
+740	LETE 	Least Tern 	1A, 1B 	Petite Sterne 	Sternula antillarum 			428
+741	LITE 	Little Tern 	1A 	Sterne naine 	Sternula albifrons 			427
+742	ILTE 	Interior Least Tern 	1A, 1B 	Petite Sterne (intérieure) 	Sternula antillarum athalassos 	Y 		429
+743	CLTE 	California Least Tern 	1A, 1B 	Petite Sterne (Californie) 	Sternula antillarum browni 	Y 		430
+750	SOTE 	Sooty Tern 	3	Sterne fuligineuse 	Onychoprion fuscatus 			423
+760	BRTE 	Bridled Tern 	2A, 3, 2 	Sterne bridée 	Onychoprion anaethetus 			425
+761	GRAT 	Gray-backed Tern 	2, 2A 	Sterne à dos gris 	Onychoprion lunatus 			424
+770	BLTE 	Black Tern 	1D, 1A, 2 	Guifette noire 	Chlidonias niger 			433
+780	WWTE 	White-winged Tern 	2	Guifette leucoptère 	Chlidonias leucopterus 			434
+781	WHIT 	Whiskered Tern 	2	Guifette moustac 	Chlidonias hybrida 			435
+790	BRNO 	Brown Noddy 	3	Noddi brun 	Anous stolidus 			419
+791	BLNO 	Black Noddy 	2, 3, 2A 	Noddi noir 	Anous minutus 			420
+792	BGNO 	Blue-gray Noddy 	2, 1D, 2A 	Noddi bleu 	Procelsterna cerulea 			421
+793	WHTE 	White Tern 	2, 2A 	Gygis blanche 	Gygis alba 			422
+800	BLSK 	Black Skimmer 	4, 4A, 3A, 4V 	Bec-en-ciseaux noir 	Rynchops niger 			450
+810	BFAL 	Black-footed Albatross 	7B 	Albatros à pieds noirs 	Phoebastria nigripes 			125
+811	WAAL 	Wandering Albatross 	8	Albatros hurleur 	Diomedea exulans 			123
+816	HYAL 	Hybrid Albatross 	7B, 8, 7D 	Hybride albatros 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	120
+820	STAL 	Short-tailed Albatross 	8	Albatros à queue courte 	Phoebastria albatrus 	Y 		127
+821	LAAL 	Laysan Albatross 	7B 	Albatros de Laysan 	Phoebastria immutabilis 			124
+822	BBAL 	Black-browed Albatross 	8	Albatros à sourcils noirs 	Thalassarche melanophris 			116
+823	SHAL 	Shy Albatross 	8	Albatros à cape blanche 	Thalassarche cauta 			115
+824	WAVA 	Waved Albatross 	8	Albatros des Galapagos 	Phoebastria irrorata 			126
+830	YNAL 	Yellow-nosed Albatross 	8	Albatros à nez jaune 	Thalassarche chlororhynchos 			114
+860	NOFU 	Northern Fulmar 	6, 5A 	Fulmar boréal 	Fulmarus glacialis 			130
+880	COSH 	Cory's Shearwater 	4	Puffin cendré 	Calonectris diomedea 			155
+881	STRS 	Streaked Shearwater 	3B 	Puffin leucomèle 	Calonectris leucomelas 			154
+890	GRSH 	Great Shearwater 	6, 5, 5R 	Puffin majeur 	Puffinus gravis 			158
+900	MASH 	Manx Shearwater 	4A, 4 	Puffin des Anglais 	Puffinus puffinus 			164
+910	PFSH 	Pink-footed Shearwater 	5, 4A 	Puffin à pieds roses 	Puffinus creatopus 	British Columbia 		156
+920	AUSH 	Audubon's Shearwater 	3B, 3A 	Puffin d'Audubon 	Puffinus lherminieri 			168
+921	LISH 	Little Shearwater 	4	Petit Puffin 	Puffinus assimilis 			170
+922	TRSH 	Tropical Shearwater 	3, 3B, 3A 		Puffinus bailloni 			169
+930	BVSH 	Black-vented Shearwater 	4	Puffin cul-noir 	Puffinus opisthomelas 			167
+931	TOSH 	Townsend's Shearwater 	4	Puffin de Townsend 	Puffinus auricularis 			166
+932	NESH 	Newell's Shearwater 	4	Puffin de Newell 	Puffinus newelli 	Y 		165
+950	SOSH 	Sooty Shearwater 	5, 5A, 4A 	Puffin fuligineux 	Puffinus griseus 			161
+951	FFSH 	Flesh-footed Shearwater 	4	Puffin à pieds pâles 	Puffinus carneipes 			157
+960	SHOS 	Short-tailed Shearwater 	5, 4A 	Puffin à bec grêle 	Puffinus tenuirostris 			162
+961	WTSH 	Wedge-tailed Shearwater 	5, 4A 	Puffin fouquet 	Puffinus pacificus 			159
+962	BULS 	Buller's Shearwater 	4	Puffin de Buller 	Puffinus bulleri 			160
+963	CHSH 	Christmas Shearwater 	4, 4A 	Puffin de la Nativité 	Puffinus nativitatis 			163
+980	BCPE 	Black-capped Petrel 	3A 	Pétrel diablotin 	Pterodroma hasitata 			143
+983	COPE 	Cook's Petrel 	3	Pétrel de Cook 	Pterodroma cookii 			149
+985	HAPE 	Hawaiian Petrel 	4, 3A 	Pétrel des Hawaï 	Pterodroma sandwichensis 	Y 		146
+987	JFPE 	Juan Fernandez Petrel 	3	Pétrel de Juan Fernandez 	Pterodroma externa 			144
+988	PHPE 	Phoenix Petrel 	4, 3A, 3B 	Pétrel à poitrine blanche 	Pterodroma alba 			145
+990	MOPE 	Mottled Petrel 	3	Pétrel maculé 	Pterodroma inexpectata 			142
+991	BOPE 	Bonin Petrel 	3, 3B, 2A 	Pétrel des Bonin 	Pterodroma hypoleuca 			147
+992	BWPE 	Black-winged Petrel 	2	Pétrel à ailes noires 	Pterodroma nigripennis 			148
+1001	MUPE 	Murphy's Petrel 	3, 3B, 3A 	Pétrel de Murphy 	Pterodroma ultima 			141
+1003	STPE 	Stejneger's Petrel 	3	Pétrel de Stejneger 	Pterodroma longirostris 			150
+1004	TAPE 	Tahiti Petrel 	4	Pétrel de Tahiti 	Pterodroma rostrata 			151
+1010	BUPE 	Bulwer's Petrel 	2, 2A, 3 	Pétrel de Bulwer 	Bulweria bulwerii 			152
+1020	CAPE 	Cape Petrel 	4, 4A 	Damier du Cap 	Daption capense 			133
+1030	LTSP 	Least Storm-Petrel 	1B 	Océanite minute 	Oceanodroma microsoma 			182
+1050	FTSP 	Fork-tailed Storm-Petrel 	1B, 1A 	Océanite à queue fourchue 	Oceanodroma furcata 			175
+1060	LHSP 	Leach's Storm-Petrel 	1B, 1A 	Océanite cul-blanc 	Oceanodroma leucorhoa 			176
+1062	BANP 	Band-rumped Storm-Petrel 	1A, 1D 	Océanite de Castro 	Oceanodroma castro 			178
+1063	WRSP 	Wedge-rumped Storm-Petrel 	1B 	Océanite téthys 	Oceanodroma tethys 			179
+1070	BLSP 	Black Storm-Petrel 	1A, 1B 	Océanite noir 	Oceanodroma melania 			180
+1071	TRSP 	Tristram's Storm-Petrel 	2	Océanite de Tristram 	Oceanodroma tristrami 			181
+1080	ASSP 	Ashy Storm-Petrel 	1B 	Océanite cendré 	Oceanodroma homochroa 			177
+1090	WISP 	Wilson's Storm-Petrel 	1B, 1A 	Océanite de Wilson 	Oceanites oceanicus 			171
+1101	WHSP 	White-throated Storm-Petrel 	3, 2A, 2 	Océanite à gorge blanche 	Nesofregetta fuliginosa 			174
+1110	WFSP 	White-faced Storm-Petrel 	3	Océanite frégate 	Pelagodroma marina 			173
+1120	WTTR 	White-tailed Tropicbird 	4, 4A, 3A 	Phaéton à bec jaune 	Phaethon lepturus 			183
+1130	RBTR 	Red-billed Tropicbird 	4A 	Phaéton à bec rouge 	Phaethon aethereus 			184
+1131	RTTR 	Red-tailed Tropicbird 	5, 4A, 5A 	Phaéton à brins rouges 	Phaethon rubricauda 			185
+1140	MABO 	Masked Booby 	7B, 8 	Fou masqué 	Sula dactylatra 			190
+1141	BFBO 	Blue-footed Booby 	7B, 7, 7A 	Fou à pieds bleus 	Sula nebouxii 			192
+1142	NABO 	Nazca Booby 	7B, 8 	Fou de Grant 	Sula granti 		Band size unknown; may be same as Masked Booby. 	191
+1150	BRBO 	Brown Booby 	7B, 7 	Fou brun 	Sula leucogaster 			193
+1160	RFBO 	Red-footed Booby 	7A, 7, 7B 	Fou à pieds rouges 	Sula sula 			194
+1170	NOGA 	Northern Gannet 	8	Fou de Bassan 	Morus bassanus 			195
+1180	ANHI 	Anhinga 	7B, 8 	Anhinga d'Amérique 	Anhinga anhinga 			204
+1190	GRCO 	Great Cormorant 	8	Grand Cormoran 	Phalacrocorax carbo 			199
+1200	DCCO 	Double-crested Cormorant 	8, 7B, 7D 	Cormoran à aigrettes 	Phalacrocorax auritus 			198
+1201	GUCO 	Guanay Cormorant 	8	Cormoran de Bougainville 	Leucocarbo bougainvillii 			202
+1210	NECO 	Neotropic Cormorant 	7B, 7, 7A 	Cormoran vigua 	Phalacrocorax brasilianus 			197
+1220	BRAC 	Brandt's Cormorant 	8	Cormoran de Brandt 	Phalacrocorax penicillatus 			196
+1230	PECO 	Pelagic Cormorant 	7B, 7, 7D 	Cormoran pélagique 	Phalacrocorax pelagicus 			201
+1240	RFCO 	Red-faced Cormorant 	8, 7B, 7D 	Cormoran à face rouge 	Phalacrocorax urile 			200
+1250	AWPE 	American White Pelican 	9, 9C, 8A 	Pélican d'Amérique 	Pelecanus erythrorhynchos 			205
+1260	BRPE 	Brown Pelican 	8A, 9, 8 	Pélican brun 	Pelecanus occidentalis 			206
+1280	MAFR 	Magnificent Frigatebird 	7B, 7, 7A 	Frégate superbe 	Fregata magnificens 		Require 7B or 7A short. 	187
+1281	GRFR 	Great Frigatebird 	7B, 7, 7A 	Frégate du Pacifique 	Fregata minor 		Require 7B or 7A short. 	188
+1282	LEFR 	Lesser Frigatebird 	7A, 7 	Frégate ariel 	Fregata ariel 		Require 7A short. 	189
+1290	COME 	Common Merganser 	7A, 7 	Grand Harle 	Mergus merganser 			80
+1300	RBME 	Red-breasted Merganser 	6, 7A 	Harle huppé 	Mergus serrator 			81
+1310	HOME 	Hooded Merganser 	5, 5A, 6 	Harle couronné 	Lophodytes cucullatus 			79
+1320	MALL 	Mallard 	7A, 7 	Canard colvert 	Anas platyrhynchos 			44
+1321	HAWD 	Hawaiian Duck 	6, 7A 	Canard des Hawaï 	Anas wyvilliana 	Y 		47
+1322	LADU 	Laysan Duck 	5, 5A, 6 	Canard de Laysan 	Anas laysanensis 	Y 		48
+1323	MHDH 	Mallard X Hawaiian Duck Hybrid 	7A, 6 	Canard 			Anas platyrhynchos X A. wyvilliana 	49
+1325	MBDX 	Mallard X American Black Duck Intermediate 	7A 				Anas platyrhynchos X A. rubripes 	41
+1326	MBDH 	Mallard X American Black Duck Hybrid 	7A 	Hybride de canard colvert X canard noir 			Anas platyrhynchos X A. rubripes 	42
+1327	MALX 	Mallard Dominant X American Black Duck Hybrid 	7A 				Anas platyrhynchos X A. rubripes 	43
+1330	ABDU 	American Black Duck 	7A 	Canard noir 	Anas rubripes 			39
+1331	MEDU 	Mexican Duck 	7A 	Canard du Mexique 	Anas diazi 			46
+1337	ABDX 	American Black Duck Dominant X Mallard Hybrid 	7A 				Anas rubripes X A. platyrhynchos 	40
+1340	MODU 	Mottled Duck 	7A 	Canard brun 	Anas fulvigula 			45
+1350	GADW 	Gadwall 	6	Canard chipeau 	Anas strepera 			35
+1360	EUWI 	Eurasian Wigeon 	6	Canard siffleur 	Anas penelope 			37
+1370	AMWI 	American Wigeon 	6	Canard d'Amérique 	Anas americana 			38
+1371	FATE 	Falcated Teal 	4A 	Canard à faucilles 	Anas falcata 			36
+1380	EGWT 	European Green-winged Teal 	4, 4A 	Sarcelle d'hiver (nominal) 	Anas crecca crecca 			57
+1390	AGWT 	Green-winged Teal 	4, 4A 	Sarcelle d'hiver 	Anas crecca 			58
+1391	BATE 	Baikal Teal 	4A 	Sarcelle élégante 	Anas formosa 			56
+1392	GARG 	Garganey 	4A, 4 	Sarcelle d'été 	Anas querquedula 			55
+1400	BWTE 	Blue-winged Teal 	5, 4A 	Sarcelle à ailes bleues 	Anas discors 			50
+1401	UNTE 	Unidentified Teal 	5, 4A 	Sarcelle non identifiée 			Explain in Remarks why the unidentified code was chosen 	59
+1410	CITE 	Cinnamon Teal 	5, 4A 	Sarcelle cannelle 	Anas cyanoptera 			51
+1420	NSHO 	Northern Shoveler 	5, 6, 5A 	Canard souchet 	Anas clypeata 			52
+1430	NOPI 	Northern Pintail 	6	Canard pilet 	Anas acuta 			54
+1431	WHIP 	White-cheeked Pintail 	5, 5A 	Canard des Bahamas 	Anas bahamensis 			53
+1436	OHDU 	Other Hybrid Duck 	7A, 6, 5A 	Autre canard hybride 			Bander must determine appropriate size for each bird. Report suspected parentage as a remark (e.g. Species1 x Species2). 	84
+1440	WODU 	Wood Duck 	M: 5A, 6, 5 F: 5A, 5, 6 	Canard branchu 	Aix sponsa 			34
+1441	MUDU 	Muscovy Duck 	7B, 7A 	Canard musqué 	Cairina moschata 			33
+1460	REDH 	Redhead 	6, 7A 	Fuligule à tête rouge 	Aythya americana 			61
+1461	CPOC 	Common Pochard 	6, 7A 	Fuligule milouin 	Aythya ferina 			62
+1470	CANV 	Canvasback 	7A 	Fuligule à dos blanc 	Aythya valisineria 			60
+1480	GRSC 	Greater Scaup 	6, 5A, 5 	Fuligule milouinan 	Aythya marila 			65
+1490	LESC 	Lesser Scaup 	6, 5A, 5 	Petit Fuligule 	Aythya affinis 			66
+1491	TUDU 	Tufted Duck 	5	Fuligule morillon 	Aythya fuligula 			64
+1500	RNDU 	Ring-necked Duck 	6, 5A 	Fuligule à collier 	Aythya collaris 			63
+1510	COGO 	Common Goldeneye 	6, 7A 	Garrot à oeil d'or 	Bucephala clangula 			77
+1520	BAGO 	Barrow's Goldeneye 	7A, 6 	Garrot d'Islande 	Bucephala islandica 			78
+1530	BUFF 	Bufflehead 	5, 5A 	Petit Garrot 	Bucephala albeola 			76
+1540	LTDU 	Long-tailed Duck 	6, 5A, 5 	Harelde kakawi 	Clangula hyemalis 			75
+1550	HARD 	Harlequin Duck 	5, 5A 	Arlequin plongeur 	Histrionicus histrionicus 			71
+1570	STEI 	Steller's Eider 	7A, 6 	Eider de Steller 	Polysticta stelleri 	Y 		67
+1580	SPEI 	Spectacled Eider 	7A, 6 	Eider à lunettes 	Somateria fischeri 	Y 		68
+1590	COEI 	Common Eider 	M: 7B, 7, 7A F: 7A, 7, 7B 	Eider à duvet 	Somateria mollissima 			70
+1620	KIEI 	King Eider 	7A, 6, 7, 7B 	Eider à tête grise 	Somateria spectabilis 			69
+1630	BLSC 	Black Scoter 	7A 	Macreuse à bec jaune 	Melanitta americana 			74
+1650	WWSC 	White-winged Scoter 	7A, 7 	Macreuse brune 	Melanitta fusca 			73
+1660	SUSC 	Surf Scoter 	7A 	Macreuse à front blanc 	Melanitta perspicillata 			72
+1670	RUDU 	Ruddy Duck 	M: 7A, 6 F: 6, 7A 	Érismature rousse 	Oxyura jamaicensis 			83
+1680	MADU 	Masked Duck 	5	Érismature routoutou 	Nomonyx dominicus 			82
+1690	LSGO 	Lesser Snow Goose 	7B 	Oie des neiges (Petite) 	Chen caerulescens caerulescens 			10
+1691	BLGO 	Blue Goose 	7B 	Oie des neiges (Phase bleue) 	Chen caerulescens 			11
+1695	SBGI 	Snow X Blue Goose Intergrade 	7B 	Oie des neiges (Intermédiaire) 				12
+1698	BGSG 	Blue Greater Snow Goose 	7B 					13
+1699	GSGO 	Greater Snow Goose 	7B 	Oie des neiges (Grande) 	Chen caerulescens atlantica 			14
+1700	ROGO 	Ross's Goose 	7B 	Oie de Ross 	Chen rossii 			16
+1703	SRGH 	Snow X Ross's Goose Hybrid 	7B 	Hybride d'oie des neiges et de Ross 				15
+1710	GWFG 	Greater White-fronted Goose 	7B, 8 	Oie rieuse 	Anser albifrons 			6
+1711	TABG 	Taiga Bean-Goose 	7B, 8 	Oie des moissons 	Anser fabalis 			4
+1712	PFGO 	Pink-footed Goose 	7B 	Oie à bec court 	Anser brachyrhynchus 			5
+1713	LWFG 	Lesser White-fronted Goose 	7A 	Oie naine 	Anser erythropus 			7
+1716	OHGO 	Other Hybrid Goose 	8, 7B 	Autre oie hybride 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	27
+1719	TWFG 	Tule White-fronted Goose 	8	Oie rieuse 	Anser albifrons elgasi 			8
+1720	CAGO 	Canada Goose 	8	Bernache du Canada 	Branta canadensis 			25
+1721	ACGO 	Aleutian Canada Goose 	7B, 7 	Bernache de Hutchins (race des Aléoutiennes) 	Branta hutchinsii leucopareia 			21
+1722	CACG 	Cackling Goose 	7A, 7, 7B 	Bernache de Hutchins 	Branta hutchinsii 			22
+1723	LCGO 	Large Canada Goose 	8	Grande bernache du Canada 	Branta canadensis maxima 			23
+1729	SCGO 	Small Canada Goose 	7B, 7 	Petite bernache du Canada (Hutchins) 	Branta canadensis parvipes 			24
+1730	ATBR 	Atlantic Brant 	7B, 7 	Bernache cravant de l'Atlantique 	Branta bernicla hrota 			17
+1731	BABI 	Black X Atlantic Brant Intergrade 	7A, 7, 7B 	Inter bernache noire X bernache cravant 				18
+1740	BLBR 	Black Brant 	7A, 7, 7B 	Bernache noire 	Branta bernicla nigricans 			19
+1750	BRNG 	Barnacle Goose 	7B 	Bernache nonnette 	Branta leucopsis 			20
+1751	HAGO 	Hawaiian Goose 	8, 7B 	Bernache néné 	Branta sandvicensis 	Y 		26
+1760	EMGO 	Emperor Goose 	7B 	Oie empereur 	Chen canagica 			9
+1770	BBWD 	Black-bellied Whistling-Duck 	7A, 7 	Dendrocygne à ventre noir 	Dendrocygna autumnalis 			1
+1771	WIWD 	West Indian Whistling-Duck 	7B 	Dendrocygne des Antilles 	Dendrocygna arborea 			2
+1780	FUWD 	Fulvous Whistling-Duck 	7A, 7 	Dendrocygne fauve 	Dendrocygna bicolor 			3
+1782	MUSW 	Mute Swan 	9C 	Cygne tuberculé 	Cygnus olor 			28
+1790	WHOS 	Whooper Swan 	9	Cygne chanteur 	Cygnus cygnus 			32
+1800	WHSW 	Whistling Swan 	9	Cygne siffleur 	Cygnus columbianus columbianus 			30
+1801	BESW 	Bewick's Swan 	9	Cygne de Bewick 	Cygnus columbianus bewickii 			31
+1810	TRUS 	Trumpeter Swan 	9C, 9 	Cygne trompette 	Cygnus buccinator 			29
+1820	AMFL 	American Flamingo 	8, 8A 	Flamant des Caraïbes 	Phoenicopterus ruber 			99
+1830	ROSP 	Roseate Spoonbill 	7B 	Spatule rosée 	Platalea ajaja 			226
+1840	WHIB 	White Ibis 	6, 7A 	Ibis blanc 	Eudocimus albus 			222
+1850	SCIB 	Scarlet Ibis 	6	Ibis rouge 	Eudocimus ruber 			223
+1860	GLIB 	Glossy Ibis 	6	Ibis falcinelle 	Plegadis falcinellus 			224
+1870	WFIB 	White-faced Ibis 	6	Ibis à face blanche 	Plegadis chihi 			225
+1880	WOST 	Wood Stork 	8	Tantale d'Amérique 	Mycteria americana 	Y 		186
+1900	AMBI 	American Bittern 	M: 7A F: 6 	Butor d'Amérique 	Botaurus lentiginosus 			207
+1910	LEBI 	Least Bittern 	4	Petit Blongios 	Ixobrychus exilis 	Manitoba New Brunswick Nova Scotia Ontario Québec 		209
+1911	YEBI 	Yellow Bittern 	4	Blongios de Chine 	Ixobrychus sinensis 			208
+1920	GWHE 	Great White Heron 	8	Grand Héron blanc 	Ardea herodias occidentalis 			210
+1940	GBHE 	Great Blue Heron 	7B, 8 	Grand Héron 	Ardea herodias 			211
+1960	GREG 	Great Egret 	7B, 7A, 7 	Grande Aigrette 	Ardea alba 			212
+1969	PRHE 	Pacific Reef Heron 	7A 	Aigrette à gorge blanche 	Egretta sacra 			213
+1970	SNEG 	Snowy Egret 	6	Aigrette neigeuse 	Egretta thula 			214
+1980	REEG 	Reddish Egret 	7A 	Aigrette roussâtre 	Egretta rufescens 			217
+1990	TRHE 	Tricolored Heron 	6	Aigrette tricolore 	Egretta tricolor 			216
+2000	LBHE 	Little Blue Heron 	6	Aigrette bleue 	Egretta caerulea 			215
+2001	CAEG 	Cattle Egret 	6	Héron garde-boeufs 	Bubulcus ibis 			218
+2010	GRHE 	Green Heron 	5, 5A, 6 	Héron vert 	Butorides virescens 			219
+2020	BCNH 	Black-crowned Night-Heron 	7A, 7 	Bihoreau gris 	Nycticorax nycticorax 			220
+2030	YCNH 	Yellow-crowned Night-Heron 	7A, 7 	Bihoreau violacé 	Nyctanassa violacea 			221
+2040	WHCR 	Whooping Crane 	9, 9V 	Grue blanche 	Grus americana 	Y 		281
+2060	SACR 	Sandhill Crane 	8, 8A, 9 	Grue du Canada 	Antigone canadensis 			279
+2061	MSCR 	Mississippi Sandhill Crane 	8, 8A 	Grue du Canada (Mississippi) 	Grus canadensis pulla 	Y 		280
+2070	LIMP 	Limpkin 	7A, 6 	Courlan brun 	Aramus guarauna 			278
+2080	KIRA 	King Rail 	5	Râle élégant 	Rallus elegans 	Ontario 		266
+2110	CLRA 	Clapper Rail 	5	Râle gris 	Rallus longirostris 			265
+2111	CRRA 	California Ridgway's Rail 	5	Râle de Californie 	Rallus obsoletus obsoletus 	Y 		262
+2112	LFRR 	Light-footed Ridgway's Rail 	5		Rallus obsoletus levipes 	Y 		263
+2113	YRRA 	Yuma Ridgway's Rail 	5		Rallus obsoletus yumanensis 	Y 		264
+2120	VIRA 	Virginia Rail 	2, 3, 2A 	Râle de Virginie 	Rallus limicola 		Band above the intertarsal joint only. 	267
+2131	YBCR 	Yellow-breasted Crake 	3, 2 	Marouette à sourcils blancs 	Porzana flaviventer 			269
+2140	SORA 	Sora 	2, 2A, 3 	Marouette de Caroline 	Porzana carolina 		Band above the intertarsal joint only (size 2). 	268
+2150	YERA 	Yellow Rail 	2, 1D 	Râle jaune 	Coturnicops noveboracensis 			259
+2160	BLRA 	Black Rail 	1D, 1A, 2 	Râle noir 	Laterallus jamaicensis 			260
+2161	BBRA 	Buff-banded Rail 	4	Râle tiklin 	Gallirallus philippensis 			261
+2180	PUGA 	Purple Gallinule 	4, 4A, 5 	Talève violacée 	Porphyrio martinicus 			271
+2181	PUSW 	Purple Swamphen 	6	Talève sultan 	Porphyrio porphyrio 			270
+2190	COGA 	Common Gallinule 	5A, 6, 5 	Gallinule d’Amérique 	Gallinula galeata 			272
+2191	HAGA 	Hawaiian Gallinule 	5, 6 	Gallinule d’Amérique forme d'Hawaï 	Gallinula galeata sandvicensis 	Y 		273
+2192	MCMO 	Mariana Common Moorhen 	5, 6 	Gallinule poule-d'eau 	Gallinula chloropus guami 	Y 		274
+2201	HACO 	Hawaiian Coot 	6, 5A, 5 	Foulque des Hawaï 	Fulica alai 	Y 		275
+2210	AMCO 	American Coot 	6, 5A, 5 	Foulque d'Amérique 	Fulica americana 			276
+2211	CARC 	Caribbean Coot 	6	Foulque à cachet blanc 	Fulica caribaea 			277
+2220	REPH 	Red Phalarope 	1A 	Phalarope à bec large 	Phalaropus fulicarius 			358
+2230	RNPH 	Red-necked Phalarope 	1B 	Phalarope à bec étroit 	Phalaropus lobatus 			357
+2240	WIPH 	Wilson's Phalarope 	1D, 1A, 2 	Phalarope de Wilson 	Phalaropus tricolor 			356
+2250	AMAV 	American Avocet 	4, 4A 	Avocette d'Amérique 	Recurvirostra americana 		Band above the intertarsal joint only. 	284
+2260	BNST 	Black-necked Stilt 	3A, 4, 4A 	Échasse d'Amérique 	Himantopus mexicanus 		Band above the intertarsal joint only. 	282
+2261	HAST 	Hawaiian Stilt 	4, 3A 	Échasse des Hawaï 	Himantopus mexicanus knudseni 	Y 	Band above the intertarsal joint only. 	283
+2270	EUWO 	Eurasian Woodcock 	3	Bécasse des bois 	Scolopax rusticola 			354
+2280	AMWO 	American Woodcock 	3	Bécasse d'Amérique 	Scolopax minor 			355
+2290	COSN 	Common Snipe 	3, 3B 	Bécassine des marais 	Gallinago gallinago 		This is the Eurasian species, not Wilson's Snipe 	350
+2300	WISN 	Wilson's Snipe 	3, 3B, 3A, 2 	Bécassine de Wilson 	Gallinago delicata 			351
+2301	PTSN 	Pin-tailed Snipe 	3	Bécassine à queue pointue 	Gallinago stenura 			352
+2302	SWSN 	Swinhoe's Snipe 	3	Bécassine de Swinhoe 	Gallinago megala 			353
+2310	SBDO 	Short-billed Dowitcher 	2, 2A 	Bécassin roux 	Limnodromus griseus 			348
+2320	LBDO 	Long-billed Dowitcher 	2, 2A 	Bécassin à long bec 	Limnodromus scolopaceus 			349
+2330	STSA 	Stilt Sandpiper 	1A, 1D 	Bécasseau à échasses 	Calidris himantopus 			332
+2340	REKN 	Red Knot 	2, 2A 	Bécasseau maubèche 	Calidris canutus 	British Columbia Yukon Territory Northwest Territories 		327
+2341	RRKN 	Rufa Red Knot 	2, 2A 	Bécasseau maubèche 	Calidris canutus rufa 	Y 		328
+2350	PUSA 	Purple Sandpiper 	1A, 1D, 2 	Bécasseau violet 	Calidris maritima 			340
+2360	ROSA 	Rock Sandpiper 	2, 1D 	Bécasseau des Aléoutiennes 	Calidris ptilocnemis 			339
+2380	SHAS 	Sharp-tailed Sandpiper 	1A, 1D 	Bécasseau à queue pointue 	Calidris acuminata 			331
+2390	PESA 	Pectoral Sandpiper 	1A, 1D, 2 	Bécasseau à poitrine cendrée 	Calidris melanotos 			345
+2400	WRSA 	White-rumped Sandpiper 	1A, 1B 	Bécasseau à croupion blanc 	Calidris fuscicollis 			343
+2410	BASA 	Baird's Sandpiper 	1B, 1A 	Bécasseau de Baird 	Calidris bairdii 			341
+2420	LESA 	Least Sandpiper 	1, 1B, 1C 	Bécasseau minuscule 	Calidris minutilla 			342
+2422	RNST 	Red-necked Stint 	1, 1B, 1C 	Bécasseau à col roux 	Calidris ruficollis 			336
+2423	LTST 	Long-toed Stint 	1, 1B 	Bécasseau à longs doigts 	Calidris subminuta 			334
+2430	DUNL 	Dunlin 	1A, 1B, 1D 	Bécasseau variable 	Calidris alpina 			338
+2440	CUSA 	Curlew Sandpiper 	1A 	Bécasseau cocorli 	Calidris ferruginea 			333
+2450	SPOS 	Spoon-billed Sandpiper 	1A 	Bécasseau spatule 	Calidris pygmea 			335
+2460	SESA 	Semipalmated Sandpiper 	1B, 1 	Bécasseau semipalmé 	Calidris pusilla 			346
+2470	WESA 	Western Sandpiper 	1B, 1 	Bécasseau d'Alaska 	Calidris mauri 			347
+2480	SAND 	Sanderling 	1A, 1D 	Bécasseau sanderling 	Calidris alba 			337
+2490	MAGO 	Marbled Godwit 	4	Barge marbrée 	Limosa fedoa 			324
+2500	BARG 	Bar-tailed Godwit 	M: 4 F: 4A 	Barge rousse 	Limosa lapponica 			323
+2510	HUGO 	Hudsonian Godwit 	3A 	Barge hudsonienne 	Limosa haemastica 			322
+2520	BLAG 	Black-tailed Godwit 	4	Barge à queue noire 	Limosa limosa 			321
+2532	CGRE 	Common Greenshank 	3, 3B, 3A 	Chevalier aboyeur 	Tringa nebularia 			311
+2540	GRYE 	Greater Yellowlegs 	3, 3B 	Grand Chevalier 	Tringa melanoleuca 			312
+2550	LEYE 	Lesser Yellowlegs 	2, 2A 	Petit Chevalier 	Tringa flavipes 			314
+2560	SOSA 	Solitary Sandpiper 	1A, 1D, 2 	Chevalier solitaire 	Tringa solitaria 			308
+2561	WOSA 	Wood Sandpiper 	3, 2, 1D, 1A 	Chevalier sylvain 	Tringa glareola 			316
+2562	MASA 	Marsh Sandpiper 	3, 2, 1D 	Chevalier stagnatile 	Tringa stagnatilis 			315
+2580	WILL 	Willet 	4, 4A, 3A 	Chevalier semipalmé 	Tringa semipalmata 			313
+2590	WATA 	Wandering Tattler 	3, 2, 2A 	Chevalier errant 	Tringa incana 			310
+2591	GTTA 	Gray-tailed Tattler 	3, 2, 2A 	Chevalier de Sibérie 	Tringa brevipes 			309
+2600	RUFF 	Ruff 	3, 2A 	Combattant varié 	Calidris pugnax 			330
+2610	UPSA 	Upland Sandpiper 	3, 2A 	Maubèche des champs 	Bartramia longicauda 			317
+2620	BBSA 	Buff-breasted Sandpiper 	1A 	Bécasseau roussâtre 	Calidris subruficollis 			344
+2630	SPSA 	Spotted Sandpiper 	1B, 1A 	Chevalier grivelé 	Actitis macularius 			307
+2631	COSA 	Common Sandpiper 	1B, 1A 	Chevalier guignette 	Actitis hypoleucos 			306
+2640	LBCU 	Long-billed Curlew 	5, 4A, 5A 	Courlis à long bec 	Numenius americanus 		Use size 6 if banding on tibiotarsus 	320
+2650	WHIM 	Whimbrel 	4, 4A 	Courlis corlieu 	Numenius phaeopus 			318
+2680	BTCU 	Bristle-thighed Curlew 	4A, 5 	Courlis d'Alaska 	Numenius tahitiensis 			319
+2690	NOLA 	Northern Lapwing 	5	Vanneau huppé 	Vanellus vanellus 			287
+2691	EUDO 	Eurasian Dotterel 	1B, 1A 	Pluvier guignard 	Charadrius morinellus 			302
+2700	BBPL 	Black-bellied Plover 	3, 3B, 3A 	Pluvier argenté 	Pluvialis squatarola 			288
+2710	EUGP 	European Golden-Plover 	2, 3 	Pluvier doré 	Pluvialis apricaria 			289
+2720	AMGP 	American Golden-Plover 	3, 2A, 2 	Pluvier bronzé 	Pluvialis dominica 		AOU split from 2729-LEGP in 1993. 	290
+2721	PAGP 	Pacific Golden-Plover 	3, 2A, 2 	Pluvier fauve 	Pluvialis fulva 		AOU split from 2729-LEGP in 1993. 	291
+2729	LEGP 	Lesser Golden-Plover 	3, 2A, 2 	Pluvier bronzé 			Includes Pluvialis dominica and P. fulva, prior to split in 1993. 	292
+2730	KILL 	Killdeer 	2, 2A, 1D 	Pluvier kildir 	Charadrius vociferus 			300
+2740	SEPL 	Semipalmated Plover 	1A, 1B, 1D 	Pluvier semipalmé 	Charadrius semipalmatus 			298
+2750	CRPL 	Common Ringed Plover 	1A, 1B 	Pluvier grand-gravelot 	Charadrius hiaticula 			297
+2770	PIPL 	Piping Plover 	1A, 1B 	Pluvier siffleur 	Charadrius melodus 	Y 		299
+2780	SNPL 	Snowy Plover 	1P 	Pluvier neigeux 	Charadrius nivosus 			294
+2781	WSPL 	Western Snowy Plover 	1P 		Charadrius nivosus nivosus 	Y 	Endangered western populations (coastal CA, OR, WA). 	295
+2790	LRSP 	Lesser Sand-Plover 	3	Pluvier de Mongolie 	Charadrius mongolus 			293
+2800	WIPL 	Wilson's Plover 	1D, 1A, 2 	Pluvier de Wilson 	Charadrius wilsonia 			296
+2810	MOPL 	Mountain Plover 	2, 3 	Pluvier montagnard 	Charadrius montanus 	Alberta Saskatchewan 		301
+2820	SURF 	Surfbird 	2A, 3, 2 	Bécasseau du ressac 	Calidris virgata 			329
+2830	RUTU 	Ruddy Turnstone 	2A, 2, 3 	Tournepierre à collier 	Arenaria interpres 			325
+2840	BLTU 	Black Turnstone 	2A, 2 	Tournepierre noir 	Arenaria melanocephala 			326
+2860	AMOY 	American Oystercatcher 	5A, 5, 6 	Huîtrier d'Amérique 	Haematopus palliatus 			285
+2870	BLOY 	Black Oystercatcher 	5, 5A 	Huîtrier de Bachman 	Haematopus bachmani 			286
+2880	NOJA 	Northern Jacana 	3A 	Jacana du Mexique 	Jacana spinosa 			305
+3120	BTPI 	Band-tailed Pigeon 	5, 5A 	Pigeon à queue barrée 	Patagioenas fasciata 			456
+3121	PLPI 	Plain Pigeon 	5	Pigeon simple 	Patagioenas inornata 	Y 		454
+3122	PRPP 	Puerto Rican Plain Pigeon 	5		Patagioenas inornata wetmorei 	Y 	Endangered subspecies in Puerto Rico. 	455
+3130	RBPI 	Red-billed Pigeon 	5	Pigeon à bec rouge 	Patagioenas flavirostris 			453
+3140	WCPI 	White-crowned Pigeon 	4, 4A 	Pigeon à couronne blanche 	Patagioenas leucocephala 		Require 4 or 4A short. 	452
+3141	SNPI 	Scaly-naped Pigeon 	5	Pigeon à cou rouge 	Patagioenas squamosa 			451
+3151	SPDO 	Spotted Dove 	3A, 4 	Tourterelle tigrine 	Streptopelia chinensis 		Require 4 short. 	460
+3152	AFCD 	African Collared-Dove 	4, 4A 	Tourterelle rieuse 	Streptopelia roseogrisea 			458
+3153	ZEBD 	Zebra Dove 	3, 2 	Géopélie zébrée 	Geopelia striata 			461
+3154	WTGD 	White-throated Ground-Dove 	4, 3A 	Gallicolombe pampusane 	Gallicolumba xanthonura 			466
+3155	MAFD 	Mariana Fruit Dove 	3A, 3B 	Ptilope des Mariannes 	Ptilinopus roseicapilla 			470
+3158	PHTD 	Philippine Turtle-Dove 	4, 3A 	Tourterelle des Philippines 	Streptopelia bitorquata 			457
+3159	ECDO 	Eurasian Collared-Dove 	4A, 4 	Tourterelle turque 	Streptopelia decaocto 		Require 4 or 4A short. 	459
+3160	MODO 	Mourning Dove 	3A, 3B 	Tourterelle triste 	Zenaida macroura 			479
+3161	EADO 	Eared Dove 	3A 	Tourterelle oreillarde 	Zenaida auriculata 			478
+3170	ZEND 	Zenaida Dove 	4, 3A 	Tourterelle à queue carrée 	Zenaida aurita 			477
+3180	WTDO 	White-tipped Dove 	3A, 4, 3B 	Colombe de Verreaux 	Leptotila verreauxi 			474
+3181	CADO 	Caribbean Dove 	3A 	Colombe de la Jamaïque 	Leptotila jamaicensis 			475
+3190	WWDO 	White-winged Dove 	4, 3A 	Tourterelle à ailes blanches 	Zenaida asiatica 			476
+3200	COGD 	Common Ground-Dove 	2, 1D 	Colombe à queue noire 	Columbina passerina 			463
+3201	RUGD 	Ruddy Ground-Dove 	2	Colombe rousse 	Columbina talpacoti 			464
+3210	INDO 	Inca Dove 	2, 3 	Colombe inca 	Columbina inca 			462
+3220	KWQD 	Key West Quail-Dove 	3A, 4 	Colombe à joues blanches 	Geotrygon chrysia 			472
+3221	RUQD 	Ruddy Quail-Dove 	3A, 4, 3B 	Colombe rouviolette 	Geotrygon montana 			465
+3222	BRQD 	Bridled Quail-Dove 	3A, 4 	Colombe à croissants 	Geotrygon mystacea 			473
+3240	CALC 	California Condor 	8V 	Condor de Californie 	Gymnogyps californianus 	Y 	Cannot band with metal bands--request “air” bands for reporting wing-tagged birds. 	229
+3250	TUVU 	Turkey Vulture 	8V 	Urubu à tête rouge 	Cathartes aura 		Cannot band with metal bands--request “air” bands for reporting wing-tagged birds. 	228
+3260	BLVU 	Black Vulture 	8V 	Urubu noir 	Coragyps atratus 		Cannot band with metal bands--request “air” bands for reporting wing-tagged birds. 	227
+3270	STKI 	Swallow-tailed Kite 	6	Milan à queue fourchue 	Elanoides forficatus 		Lock-on bands recommended. 	232
+3271	HBKI 	Hook-billed Kite 	6, 7A 	Milan bec-en-croc 	Chondrohierax uncinatus 		Lock-on bands recommended. 	231
+3280	WTKI 	White-tailed Kite 	6, 5 	Élanion à queue blanche 	Elanus leucurus 		Lock-on bands recommended. 	233
+3290	MIKI 	Mississippi Kite 	5	Milan du Mississippi 	Ictinia mississippiensis 		Lock-on bands recommended. 	235
+3300	SNKI 	Snail Kite 	6	Milan des marais 	Rostrhamus sociabilis 	Y 	Lock-on bands recommended. 	234
+3310	NOHA 	Northern Harrier 	M: 4, 4A F: 5, 5A, 6 	Busard Saint-Martin 	Circus cyaneus 		Lock-on bands recommended. 	237
+3320	SSHA 	Sharp-shinned Hawk 	M: 2, 3 F: 3B, 3A, 3 	Épervier brun 	Accipiter striatus 			238
+3321	PSSH 	Puerto Rican Sharp-shinned Hawk 	M: 2, 3 F: 3, 3B 	Épervier brun (venator) 	Accipiter striatus venator 	Y 		239
+3330	COHA 	Cooper's Hawk 	M: 4, 4A, 5 F: 5, 6, 4A 	Épervier de Cooper 	Accipiter cooperii 		Lock-on bands recommended. 	240
+3340	NOGO 	Northern Goshawk 	M: 6, 7A F: 7A, 7B 	Autour des palombes 	Accipiter gentilis 	British Columbia 	Lock-on bands recommended. 	241
+3350	HRSH 	Harris's Hawk 	7A, 7B, 6 	Buse de Harris 	Parabuteo unicinctus 		Lock-on bands recommended. 	243
+3370	RTHA 	Red-tailed Hawk 	7B, 7D, 7A 	Buse à queue rousse 	Buteo jamaicensis 		Lock-on bands recommended. 	254
+3380	HRLH 	Harlan's Hawk 	7B, 7A 	Buse de Harlan 	Buteo jamaicensis harlani 		Lock-on bands recommended. 	255
+3390	RSHA 	Red-shouldered Hawk 	6, 5, 7A 	Buse à épaulettes 	Buteo lineatus 		Lock-on bands recommended. 	245
+3400	ZTHA 	Zone-tailed Hawk 	7A, 6 	Buse à queue barrée 	Buteo albonotatus 		Lock-on bands recommended. 	252
+3410	WTHA 	White-tailed Hawk 	7A, 7B 	Buse à queue blanche 	Geranoaetus albicaudatus 		Lock-on bands recommended. 	251
+3420	SWHA 	Swainson's Hawk 	M: 7A, 6 F: 7A, 7B 	Buse de Swainson 	Buteo swainsoni 		Lock-on bands recommended. 	250
+3430	BWHA 	Broad-winged Hawk 	5, 6 	Petite Buse 	Buteo platypterus 		Lock-on bands recommended. 	246
+3431	ROHA 	Roadside Hawk 	5	Buse à gros bec 	Rupornis magnirostris 		Lock-on bands recommended. 	244
+3432	PBWH 	Puerto Rican Broad-winged Hawk 	6	Petite Buse (Porto Rico) 	Buteo platypterus brunnescens 	Y 	Lock-on bands recommended. 	247
+3440	STHA 	Short-tailed Hawk 	6	Buse à queue courte 	Buteo brachyurus 		Lock-on bands recommended. 	249
+3441	HWHA 	Hawaiian Hawk 	6, 7A 	Buse d'Hawaï 	Buteo solitarius 	Y 	Lock-on bands recommended. 	253
+3450	CBHA 	Common Black Hawk 	7A, 6 	Buse noire 	Buteogallus anthracinus 		Lock-on bands recommended. 	242
+3460	GRHA 	Gray Hawk 	6, 7A 	Buse cendrée 	Buteo plagiatus 		Lock-on bands recommended. 	248
+3470	RLHA 	Rough-legged Hawk 	M: 7A, 7B, 6 F: 7B, 7A, 7D 	Buse pattue 	Buteo lagopus 		Lock-on bands recommended. 	257
+3480	FEHA 	Ferruginous Hawk 	7D, 8, 7B, 7A 	Buse rouilleuse 	Buteo regalis 	Alberta Manitoba Saskatchewan 	Lock-on bands recommended. 	256
+3490	GOEA 	Golden Eagle 	9, 9A, 9C 	Aigle royal 	Aquila chrysaetos 		Rivet bands only. 	258
+3520	BAEA 	Bald Eagle 	9, 8A, 9A 	Pygargue à tête blanche 	Haliaeetus leucocephalus 		Rivet bands only. 	236
+3540	GYRF 	Gyrfalcon 	7B 	Faucon gerfaut 	Falco rusticolus 		Lock-on bands recommended. 	609
+3550	PRFA 	Prairie Falcon 	M: 6, 7A, 5 F: 7A, 7B, 6 	Faucon des prairies 	Falco mexicanus 		Lock-on bands recommended. 	611
+3560	PEFA 	Peregrine Falcon 	M: 6, 7A F: 7A, 7B 	Faucon pèlerin 	Falco peregrinus 	Alberta British Columbia Manitoba New Brunswick Newfoundland and Labrador Nova Scotia Ontario Prince Edward Island Québec Saskatchewan Yukon Territory Northwest Territories Nunavut 	Lock-on bands recommended. 	610
+3570	MERL 	Merlin 	M: 3, 3B, 3A F: 4, 3A, 3B 	Faucon émerillon 	Falco columbarius 		Lock-on bands recommended. 	607
+3590	APFA 	Aplomado Falcon 	M: 4 F: 5 	Faucon aplomado 	Falco femoralis 	Y 	Lock-on bands recommended. 	608
+3591	EUKE 	Eurasian Kestrel 	3B, 4 	Faucon crécerelle 	Falco tinnunculus 			605
+3600	AMKE 	American Kestrel 	3B, 3A, 3 	Crécerelle d'Amérique 	Falco sparverius 			606
+3620	CRCA 	Crested Caracara 	M: 7A F: 7B 	Caracara du Nord 	Caracara cheriway 		Lock-on bands recommended. 	603
+3621	ACCA 	Audubon's Crested Caracara 	7A, 7B 		Caracara cheriway audubonii 	Y 	Endangered population in Florida. Lock-on bands recommended. 	604
+3640	OSPR 	Osprey 	8, 7D 	Balbuzard pêcheur 	Pandion haliaetus 		Lock-on bands recommended. 	230
+3650	BNOW 	Barn Owl 	6, 7A 	Effraie des clochers 	Tyto alba 	Ontario Québec 	Lock-on bands recommended. 	489
+3651	AFOW 	Ashy-faced Owl 	6, 7A 	Effraie d'Hispaniola 	Tyto glaucops 		Lock-on bands recommended. 	490
+3660	LEOW 	Long-eared Owl 	6, 5 	Hibou moyen-duc 	Asio otus 		Lock-on bands recommended. 	510
+3670	SEOW 	Short-eared Owl 	6	Hibou des marais 	Asio flammeus 		Lock-on bands recommended. 	511
+3680	BDOW 	Barred Owl 	7B, 7D 	Chouette rayée 	Strix varia 		Lock-on bands recommended. 	508
+3686	SBOH 	Spotted X Barred Owl Hybrid 	7B 	Hybride de Chouette tachetée et Chouette rayée 			Lock-on bands recommended. Strix occidentalis X S. varia. 	504
+3690	SPOW 	Spotted Owl 	7B 	Chouette tachetée 	Strix occidentalis 	British Columbia 	Lock-on bands recommended. 	503
+3691	CSOW 	California Spotted Owl 	7B, 7A 	Chouette tachetée (Californie) 	Strix occidentalis occidentalis 		Lock-on bands recommended. 	505
+3692	NSOW 	Northern Spotted Owl 	7B, 7A 	Chouette tachetée de la sous-espèce caurina 	Strix occidentalis caurina 	Y 	Lock-on bands recommended. 	506
+3693	MSOW 	Mexican Spotted Owl 	7B, 7A 		Strix occidentalis lucida 	Y 	Lock-on bands recommended. 	507
+3700	GGOW 	Great Gray Owl 	8	Chouette lapone 	Strix nebulosa 		Lock-on bands recommended. 	509
+3710	BOOW 	Boreal Owl 	5, 6 	Nyctale de Tengmalm 	Aegolius funereus 		Lock-on bands recommended. 	512
+3720	NSWO 	Northern Saw-whet Owl 	4, 3A, 4A 	Petite Nyctale 	Aegolius acadicus 	British Columbia 	Use 4 short. 	513
+3730	EASO 	Eastern Screech-Owl 	5, 4A, 4 	Petit-duc maculé 	Megascops asio 		Lock-on bands recommended. 	493
+3731	WHSO 	Whiskered Screech-Owl 	4, 3A 	Petit-duc à moustaches 	Megascops trichopsis 		Lock-on bands recommended. 	494
+3732	WESO 	Western Screech-Owl 	5, 4A, 4 	Petit-duc des montagnes 	Megascops kennicottii 	British Columbia 	Lock-on bands recommended. 	492
+3734	PRSO 	Puerto Rican Screech-Owl 	4, 4A 	Petit-duc de Porto Rico 	Megascops nudipes 		Lock-on bands recommended. 	495
+3740	FLOW 	Flammulated Owl 	3, 3B, 2 	Petit-duc nain 	Psiloscops flammeolus 			491
+3750	GHOW 	Great Horned Owl 	8, 8A, 9, 7D 	Grand-duc d'Amérique 	Bubo virginianus 		Lock-on bands recommended. 	496
+3760	SNOW 	Snowy Owl 	8A, 8, 9 	Harfang des neiges 	Bubo scandiacus 		Rivet or Lock-on bands recommended. 	497
+3770	NHOW 	Northern Hawk Owl 	7A, 7B 	Chouette épervière 	Surnia ulula 		Require 7A or 7B short. 	498
+3780	BUOW 	Burrowing Owl 	4	Chevêche des terriers 	Athene cunicularia 	Alberta British Columbia Manitoba Saskatchewan 	Lock-on bands recommended. 	502
+3790	NOPO 	Northern Pygmy-Owl 	3, 3B, 3A, 4 	Chevêchette naine 	Glaucidium gnoma 			499
+3800	FEPO 	Ferruginous Pygmy-Owl 	3B, 3A, 3 	Chevêchette brune 	Glaucidium brasilianum 	Y 		500
+3810	ELOW 	Elf Owl 	2, 2A 	Chevêchette des saguaros 	Micrathene whitneyi 			501
+3811	BHPA 	Black-headed Parakeet 	4, 3A 	Conure Nanday 	Nandayus nenday 		No butt-end bands, special parrot bands only. 	614
+3812	HPKT 	Hispaniolan Parakeet 	3A, 3B 	Conure maîtresse 	Psittacara chloropterus 		No butt-end bands, special parrot bands only. 	617
+3813	OFPA 	Orange-fronted Parakeet 	3A, 3B 	Conure à front rouge 	Eupsittula canicularis 		No butt-end bands, special parrot bands only. 	615
+3814	BTPA 	Brown-throated Parakeet 	3, 2 	Conure cuivrée 	Eupsittula pertinax 		No butt-end bands, special parrot bands only. 	616
+3815	BCLO 	Blue-crowned Lorikeet 	2	Lori fringillaire 	Vini australis 		No butt-end bands, special parrot bands only. 	612
+3821	TBPA 	Thick-billed Parrot 	4A, 4 	Conure à gros bec 	Rhynchopsitta pachyrhyncha 	Y 	No butt-end bands, special parrot bands only. 	618
+3824	MOPA 	Monk Parakeet 	4	Conure veuve 	Myiopsitta monachus 		No butt-end bands, special parrot bands only. 	613
+3825	CHCO 	Cherry-head Conure 	4A 	Conure à tête rouge 	Aratinga erythrogenys 		No butt-end bands, special parrot bands only. 	619
+3826	RCPA 	Red-crowned Parrot 	4A, 4 	Amazone à joues vertes 	Amazona viridigenalis 		No butt-end bands, special parrot bands only. 	622
+3827	HPRT 	Hispaniolan Parrot 	6	Amazone d'Hispaniola 	Amazona ventralis 		No butt-end bands, special parrot bands only. 	620
+3828	PRPA 	Puerto Rican Parrot 	4A, 4 	Amazone de Porto Rico 	Amazona vittata 	Y 	No butt-end bands, special parrot bands only. 	621
+3829	OWPA 	Orange-winged Parrot 	4A, 4 	Amazona amazonica 	Amazona amazonica 		No butt-end bands, special parrot bands only. 	623
+3830	SBAN 	Smooth-billed Ani 	3A, 4 	Ani à bec lisse 	Crotophaga ani 			487
+3840	GBAN 	Groove-billed Ani 	3A, 3B, 3 	Ani à bec cannelé 	Crotophaga sulcirostris 			488
+3850	GRRO 	Greater Roadrunner 	5	Grand Géocoucou 	Geococcyx californianus 			486
+3851	PRLC 	Puerto Rican Lizard-Cuckoo 	3B, 3, 3A 	Tacco de Porto Rico 	Coccyzus vieilloti 			484
+3860	MACU 	Mangrove Cuckoo 	2, 3, 3B 	Coulicou manioc 	Coccyzus minor 			482
+3870	YBCU 	Yellow-billed Cuckoo 	2, 3 	Coulicou à bec jaune 	Coccyzus americanus 			480
+3871	WYBC 	Western Yellow-billed Cuckoo 	2, 3 		Coccyzus americanus 	Y 	Endangered western US populations (AZ, CA, CO, ID, MT, NV, NM, OR, TX, UT, WA, WY). 	481
+3880	BBCU 	Black-billed Cuckoo 	2, 3 	Coulicou à bec noir 	Coccyzus erythropthalmus 			483
+3890	ELTR 	Elegant Trogon 	3, 2, 1D 	Trogon élégant 	Trogon elegans 			563
+3891	EAQU 	Eared Quetzal 	2	Quetzal oreillard 	Euptilotis neoxenus 			564
+3900	BEKI 	Belted Kingfisher 	3A, 3B, 3 	Martin-pêcheur d'Amérique 	Megaceryle alcyon 			571
+3901	RIKI 	Ringed Kingfisher 	4	Martin-pêcheur à ventre roux 	Megaceryle torquata 			570
+3910	GKIN 	Green Kingfisher 	1D, 1A, 2 	Martin-pêcheur vert 	Chloroceryle americana 		Size 2 needs to be filed to a shorter height; 1D may be best fit. 	572
+3912	PRTO 	Puerto Rican Tody 	X, 0A, 0 	Todier de Porto Rico 	Todus mexicanus 			566
+3920	IBWO 	Ivory-billed Woodpecker 	4	Pic à bec ivoire 	Campephilus principalis 	Y 		600
+3930	HAWO 	Hairy Woodpecker 	1D, 2, 1A 	Pic chevelu 	Picoides villosus 			589
+3940	DOWO 	Downy Woodpecker 	1B 	Pic mineur 	Picoides pubescens 			588
+3950	RCWO 	Red-cockaded Woodpecker 	1A 	Pic à face blanche 	Picoides borealis 	Y 		591
+3960	LBWO 	Ladder-backed Woodpecker 	1A, 1B 	Pic arlequin 	Picoides scalaris 			586
+3970	NUWO 	Nuttall's Woodpecker 	1A, 1B 	Pic de Nuttall 	Picoides nuttallii 			587
+3980	ARWO 	Arizona Woodpecker 	1A 	Pic de Strickland 	Picoides arizonae 			590
+3990	WHWO 	White-headed Woodpecker 	1D, 2, 1A 	Pic à tête blanche 	Picoides albolarvatus 	British Columbia 		592
+4000	BBWO 	Black-backed Woodpecker 	2	Pic à dos noir 	Picoides arcticus 			594
+4010	ATTW 	American Three-toed Woodpecker 	2	Pic à dos rayé 	Picoides dorsalis 			593
+4020	YBSA 	Yellow-bellied Sapsucker 	1B, 1A 	Pic maculé 	Sphyrapicus varius 			582
+4021	RNSA 	Red-naped Sapsucker 	1A, 1B 	Pic à nuque rouge 	Sphyrapicus nuchalis 			583
+4023	HYSA 	Hybrid Sapsucker 	1A, 1B 	Pic buveur de sève hybride 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	585
+4030	RBSA 	Red-breasted Sapsucker 	1A, 1B, 1D 	Pic à poitrine rouge 	Sphyrapicus ruber 			584
+4040	WISA 	Williamson's Sapsucker 	1A 	Pic de Williamson 	Sphyrapicus thyroideus 	British Columbia 		581
+4050	PIWO 	Pileated Woodpecker 	4, 3A 	Grand Pic 	Dryocopus pileatus 			599
+4060	RHWO 	Red-headed Woodpecker 	2, 1D, 2A 	Pic à tête rouge 	Melanerpes erythrocephalus 	Manitoba Ontario Québec Saskatchewan 		575
+4070	ACWO 	Acorn Woodpecker 	2, 1D, 2A 	Pic glandivore 	Melanerpes formicivorus 			576
+4071	PRWO 	Puerto Rican Woodpecker 	2, 1D, 2A 	Pic de Porto Rico 	Melanerpes portoricensis 			574
+4080	LEWO 	Lewis's Woodpecker 	3, 2 	Pic de Lewis 	Melanerpes lewis 			573
+4090	RBWO 	Red-bellied Woodpecker 	2	Pic à ventre roux 	Melanerpes carolinus 			579
+4092	WIWO 	West Indian Woodpecker 	3, 2A, 2 	Pic à sourcils noirs 	Melanerpes superciliaris 			580
+4100	GFWO 	Golden-fronted Woodpecker 	2	Pic à front doré 	Melanerpes aurifrons 			578
+4110	GIWO 	Gila Woodpecker 	2, 3, 2A 	Pic des saguaros 	Melanerpes uropygialis 			577
+4120	YSFL 	Yellow-shafted Flicker 	3, 3B 	Pic doré 	Colaptes auratus auratus 			595
+4123	FLIN 	Flicker Intergrade 	3, 3B 	Pic intermédiaire 	Colaptes auratus 		To be used for Northern Flickers that appear to be intergrades between two subspecies. 	596
+4130	RSFL 	Red-shafted Flicker 	3, 3B 	Pic rosé 	Colaptes auratus cafer 			597
+4140	GIFL 	Gilded Flicker 	3	Pic chrysoïde 	Colaptes chrysoides 			598
+4160	CWWI 	Chuck-will's-widow 	3	Engoulevent de Caroline 	Antrostomus carolinensis 			519
+4161	BCNI 	Buff-collared Nightjar 	2	Engoulevent de Ridgway 	Antrostomus ridgwayi 			520
+4170	EWPW 	Eastern Whip-poor-will 	1D, 2, 1A 	Engoulevent bois-pourri 	Antrostomus vociferus 			521
+4171	PRNI 	Puerto Rican Nightjar 	1D, 1A, 2 	Engoulevent de Porto Rico 	Antrostomus noctitherus 	Y 		523
+4172	MWPW 	Mexican Whip-poor-will 	1D, 1A, 2 	Engoulevent d'Arizona 	Antrostomus arizonae 			522
+4180	COPO 	Common Poorwill 	1A, 1D, 2 	Engoulevent de Nuttall 	Phalaenoptilus nuttallii 			518
+4190	COPA 	Common Pauraque 	2, 1D 	Engoulevent pauraqué 	Nyctidromus albicollis 			517
+4200	CONI 	Common Nighthawk 	1D, 2, 1A 	Engoulevent d'Amérique 	Chordeiles minor 	Alberta British Columbia Manitoba New Brunswick Newfoundland and Labrador Nova Scotia Ontario Prince Edward Island Québec Saskatchewan Yukon Territory Northwest Territories 		515
+4201	ANNI 	Antillean Nighthawk 	2, 1A, 1D 	Engoulevent piramidig 	Chordeiles gundlachii 			516
+4210	LENI 	Lesser Nighthawk 	1D, 1A, 2 	Engoulevent minime 	Chordeiles acutipennis 			514
+4220	BLSW 	Black Swift 	1A 	Martinet sombre 	Cypseloides niger 			524
+4230	CHSW 	Chimney Swift 	1B, 1 	Martinet ramoneur 	Chaetura pelagica 	Manitoba New Brunswick Nova Scotia Ontario Québec Saskatchewan 		525
+4231	STSW 	Short-tailed Swift 	1B, 1, 1C 	Martinet polioure 	Chaetura brachyura 			527
+4240	VASW 	Vaux's Swift 	1	Martinet de Vaux 	Chaetura vauxi 			526
+4250	WTSW 	White-throated Swift 	2	Martinet à gorge blanche 	Aeronautes saxatalis 			531
+4260	MAHU 	Magnificent Hummingbird 	X 	Colibri de Rivoli 	Eugenes fulgens 		Appropriate band size determined based on species, gender, and geographic considerations. 	538
+4261	PCST 	Plain-capped Starthroat 	X 	Colibri de Constant 	Heliomaster constantii 		Appropriate band size determined based on species, gender, and geographic considerations. 	539
+4270	BLUH 	Blue-throated Hummingbird 	X 	Colibri à gorge bleue 	Lampornis clemenciae 		Appropriate band size determined based on species, gender, and geographic considerations. 	540
+4271	GVIO 	Green Violetear 	X 	Colibri thalassin 	Colibri thalassinus 		Appropriate band size determined based on species, gender, and geographic considerations. 	532
+4280	RTHU 	Ruby-throated Hummingbird 	X 	Colibri à gorge rubis 	Archilochus colubris 		Appropriate band size determined based on species, gender, and geographic considerations. 	543
+4290	BCHU 	Black-chinned Hummingbird 	X 	Colibri à gorge noire 	Archilochus alexandri 		Appropriate band size determined based on species, gender, and geographic considerations. 	544
+4300	COHU 	Costa's Hummingbird 	X 	Colibri de Costa 	Calypte costae 		Appropriate band size determined based on species, gender, and geographic considerations. 	546
+4310	ANHU 	Anna's Hummingbird 	X 	Colibri d'Anna 	Calypte anna 		Appropriate band size determined based on species, gender, and geographic considerations. 	545
+4320	BTLH 	Broad-tailed Hummingbird 	X 	Colibri à queue large 	Selasphorus platycercus 		Appropriate band size determined based on species, gender, and geographic considerations. 	548
+4330	RUHU 	Rufous Hummingbird 	X 	Colibri roux 	Selasphorus rufus 		Appropriate band size determined based on species, gender, and geographic considerations. 	549
+4340	ALHU 	Allen's Hummingbird 	X 	Colibri d'Allen 	Selasphorus sasin 		Appropriate band size determined based on species, gender, and geographic considerations. 	550
+4350	BUHU 	Bumblebee Hummingbird 	X 	Colibri héloïse 	Atthis heloisa 		Appropriate band size determined based on species, gender, and geographic considerations. 	547
+4360	CAHU 	Calliope Hummingbird 	X 	Colibri calliope 	Selasphorus calliope 		Appropriate band size determined based on species, gender, and geographic considerations. 	553
+4361	JAMA 	Jamaican Mango 	X 	Mango de la Jamaïque 	Anthracothorax mango 		Appropriate band size determined based on species, gender, and geographic considerations. 	536
+4362	GRMA 	Green Mango 	X 	Mango vert 	Anthracothorax viridis 			535
+4363	GTCA 	Green-throated Carib 	X 	Colibri falle-vert 	Eulampis holosericeus 			537
+4364	ACHU 	Antillean Crested Hummingbird 	X 	Colibri huppé 	Orthorhyncus cristatus 			556
+4366	GREM 	Green-breasted Mango 	X 	Mango de Prévost 	Anthracothorax prevostii 		Appropriate band size determined based on species, gender, and geographic considerations. 	533
+4370	LUHU 	Lucifer Hummingbird 	X 	Colibri lucifer 	Calothorax lucifer 		Appropriate band size determined based on species, gender, and geographic considerations. 	542
+4371	BAWO 	Bahama Woodstar 	X 	Colibri des Bahamas 	Calliphlox evelynae 		Appropriate band size determined based on species, gender, and geographic considerations. 	541
+4380	RUFH 	Rufous-tailed Hummingbird 	X 	Ariane à ventre gris 	Amazilia tzacatl 		Appropriate band size determined based on species, gender, and geographic considerations. 	558
+4381	BEHU 	Berylline Hummingbird 	X 	Ariane béryl 	Amazilia beryllina 		Appropriate band size determined based on species, gender, and geographic considerations. 	557
+4390	BUFH 	Buff-bellied Hummingbird 	X 	Ariane du Yucatan 	Amazilia yucatanensis 		Appropriate band size determined based on species, gender, and geographic considerations. 	559
+4391	VCHU 	Violet-crowned Hummingbird 	X 	Ariane à couronne violette 	Amazilia violiceps 		Appropriate band size determined based on species, gender, and geographic considerations. 	560
+4401	WEHU 	White-eared Hummingbird 	X 	Saphir à oreilles blanches 	Hylocharis leucotis 		Appropriate band size determined based on species, gender, and geographic considerations. 	562
+4402	PREM 	Puerto Rican Emerald 	X 	Émeraude de Porto Rico 	Chlorostilbon maugaeus 		Appropriate band size determined based on species, gender, and geographic considerations. 	554
+4408	HYHU 	Hybrid Hummingbird 	X 	Hybride de colibri 			Appropriate band size determined based on species, gender, and geographic considerations. Explain in remarks what the parent species were 	551
+4409	UNHU 	Unidentified Hummingbird 	X 	Colibri non identifié 			Appropriate band size determined based on species, gender, and geographic considerations. 	552
+4410	BBLH 	Broad-billed Hummingbird 	X 	Colibri circé 	Cynanthus latirostris 		Appropriate band size determined based on species, gender, and geographic considerations. 	555
+4411	RTBE 	Rose-throated Becard 	1B, 1A, 1 	Bécarde à gorge rose 	Pachyramphus aglaiae 			679
+4420	FTFL 	Fork-tailed Flycatcher 	1A, 1B, 1 	Tyran des savanes 	Tyrannus savana 			678
+4430	STFL 	Scissor-tailed Flycatcher 	1A 	Tyran à longue queue 	Tyrannus forficatus 			677
+4440	EAKI 	Eastern Kingbird 	1B 	Tyran tritri 	Tyrannus tyrannus 			674
+4450	GRAK 	Gray Kingbird 	1A, 1D, 1B 	Tyran gris 	Tyrannus dominicensis 			675
+4451	TBKI 	Thick-billed Kingbird 	1A 	Tyran à bec épais 	Tyrannus crassirostris 			672
+4452	LOKI 	Loggerhead Kingbird 	1A, 1B 	Tyran tête-police 	Tyrannus caudifasciatus 			676
+4460	TRKI 	Tropical Kingbird 	1A, 1B, 1D 	Tyran mélancolique 	Tyrannus melancholicus 			669
+4461	COKI 	Couch's Kingbird 	1A, 1B 	Tyran de Couch 	Tyrannus couchii 			670
+4470	WEKI 	Western Kingbird 	1A, 1B 	Tyran de l'Ouest 	Tyrannus verticalis 			673
+4480	CAKI 	Cassin's Kingbird 	1A 	Tyran de Cassin 	Tyrannus vociferans 			671
+4490	GKIS 	Great Kiskadee 	2, 1D 	Tyran quiquivi 	Pitangus sulphuratus 			667
+4510	SBFL 	Sulphur-bellied Flycatcher 	1B, 1A 	Tyran tigré 	Myiodynastes luteiventris 			668
+4520	GCFL 	Great Crested Flycatcher 	1A, 1B 	Tyran huppé 	Myiarchus crinitus 			661
+4530	BCFL 	Brown-crested Flycatcher 	1A 	Tyran de Wied 	Myiarchus tyrannulus 			662
+4531	NUFL 	Nutting's Flycatcher 	1B 	Tyran de Nutting 	Myiarchus nuttingi 			660
+4540	ATFL 	Ash-throated Flycatcher 	1B, 1A, 1 	Tyran à gorge cendrée 	Myiarchus cinerascens 			659
+4550	DCFL 	Dusky-capped Flycatcher 	1B, 1, 1C 	Tyran olivâtre 	Myiarchus tuberculifer 			658
+4551	LSFL 	La Sagra's Flycatcher 	1, 1B, 1C 	Tyran de La Sagra 	Myiarchus sagrae 			663
+4552	PRFL 	Puerto Rican Flycatcher 	1B, 1A, 1 	Tyran de Porto Rico 	Myiarchus antillarum 			665
+4553	STOF 	Stolid Flycatcher 	1B 	Tyran grosse-tête 	Myiarchus stolidus 			664
+4554	LESF 	Lesser Antillean Flycatcher 	1B 	Tyran janeau 	Myiarchus oberi 			666
+4560	EAPH 	Eastern Phoebe 	0, 1C, 1 	Moucherolle phébi 	Sayornis phoebe 			654
+4570	SAPH 	Say's Phoebe 	1, 1C 	Moucherolle à ventre roux 	Sayornis saya 			655
+4580	BLPH 	Black Phoebe 	1, 1C 	Moucherolle noir 	Sayornis nigricans 			653
+4590	OSFL 	Olive-sided Flycatcher 	1B, 1, 1C 	Moucherolle à côtés olive 	Contopus cooperi 	Alberta British Columbia Manitoba New Brunswick Newfoundland and Labrador Nova Scotia Ontario Prince Edward Island Québec Saskatchewan Yukon Territory Northwest Territories 		630
+4600	GRPE 	Greater Pewee 	1B, 1 	Moucherolle de Coues 	Contopus pertinax 			631
+4610	EAWP 	Eastern Wood-Pewee 	0A, 0, 1C, 1 	Pioui de l'Est 	Contopus virens 			633
+4620	WEWP 	Western Wood-Pewee 	0A, 0, 1C, 1 	Pioui de l'Ouest 	Contopus sordidulus 			632
+4621	CUPE 	Cuban Pewee 	0, 0A, 1 	Moucherolle tête-fou 	Contopus caribaeus 			634
+4622	LAPE 	Lesser Antillean Pewee 	0, 0A, 1C 	Moucherolle gobemouche 	Contopus latirostris 			637
+4623	JAPE 	Jamaican Pewee 	0, 1C, 1 	Moucherolle de la Jamaïque 	Contopus pallidus 			635
+4624	HIPE 	Hispaniolan Pewee 	0, 1C, 1 	Moucherolle d'Hispaniola 	Contopus hispaniolensis 			636
+4630	YBFL 	Yellow-bellied Flycatcher 	0A, 0 	Moucherolle à ventre jaune 	Empidonax flaviventris 			638
+4640	COFL 	Cordilleran Flycatcher 	0A, 0 	Moucherolle des ravins 	Empidonax occidentalis 		AOU split from 4649-WEFL in 1989. 	650
+4641	PSFL 	Pacific-slope Flycatcher 	0A, 0 	Moucherolle côtier 	Empidonax difficilis 		AOU split from 4649-WEFL in 1989. 	648
+4649	WEFL 	Western Flycatcher 	0A, 0 	Moucherolle des ravins/Moucherolle côtier non identifié 				649
+4650	ACFL 	Acadian Flycatcher 	0A, 0 	Moucherolle vert 	Empidonax virescens 	Ontario 		639
+4660	WIFL 	Willow Flycatcher 	0A, 0 	Moucherolle des saules 	Empidonax traillii 		AOU split from 4669-TRFL in 1973. 	642
+4661	ALFL 	Alder Flycatcher 	0A, 0 	Moucherolle des aulnes 	Empidonax alnorum 		AOU split from 4669-TRFL in 1973. 	640
+4664	SWFL 	Southwestern Willow Flycatcher 	0, 0A 	Moucherolle des saules forme du Sud-Ouest 	Empidonax traillii extimus 	Y 		643
+4669	TRFL 	Traill's Flycatcher 	0A, 0 	Moucherolle de Traill 			Empidonax alnorum and E. traillii, prior to split in 1973. 	641
+4670	LEFL 	Least Flycatcher 	0A, 0 	Moucherolle tchébec 	Empidonax minimus 			644
+4679	UNEM 	Unidentified Empidonax 	0A, 0 	Moucherolle Empidonax non identifié 			Explain in Remarks why the unidentified code was chosen 	652
+4680	HAFL 	Hammond's Flycatcher 	0A, 0 	Moucherolle de Hammond 	Empidonax hammondii 			645
+4690	DUFL 	Dusky Flycatcher 	0A, 0 	Moucherolle sombre 	Empidonax oberholseri 			647
+4691	GRFL 	Gray Flycatcher 	0A, 0 	Moucherolle gris 	Empidonax wrightii 			646
+4700	BBFL 	Buff-breasted Flycatcher 	0A, 0 	Moucherolle beige 	Empidonax fulvifrons 			651
+4710	VEFL 	Vermilion Flycatcher 	0, 0A, 1C, 1 	Moucherolle vermillon 	Pyrocephalus rubinus 			656
+4711	GREL 	Greenish Elaenia 	0A, 0 	Élénie verdâtre 	Myiopagis viridicata 			626
+4720	NBTY 	Northern Beardless-Tyrannulet 	0A, 0 	Tyranneau imberbe 	Camptostoma imberbe 			624
+4721	CAEL 	Caribbean Elaenia 	1, 1C, 0, 1B 	Élénie siffleuse 	Elaenia martinica 			627
+4730	EUSK 	Eurasian Skylark 	1B 	Alouette des champs 	Alauda arvensis 			737
+4740	HOLA 	Horned Lark 	1B 	Alouette hausse-col 	Eremophila alpestris 			738
+4741	SHLA 	Streaked Horned Lark 	1B 		Eremophila alpestris strigata 	Y 	All E. a. strigata in OR, WA. 	739
+4750	BBMA 	Black-billed Magpie 	4, 3A, 3B 	Pie d'Amérique 	Pica hudsonia 			722
+4760	YBMA 	Yellow-billed Magpie 	3A 	Pie à bec jaune 	Pica nuttalli 			723
+4770	BLJA 	Blue Jay 	2, 3, 2A 	Geai bleu 	Cyanocitta cristata 			715
+4780	STJA 	Steller's Jay 	3, 2, 3B 	Geai de Steller 	Cyanocitta stelleri 			714
+4790	FLSJ 	Florida Scrub-Jay 	3, 2, 2A 	Geai à gorge blanche 	Aphelocoma coerulescens 	Y 		716
+4810	WESJ 	Western Scrub-Jay 	3, 2, 2A 	Geai buissonnier 	Aphelocoma californica 			718
+4811	ISSJ 	Island Scrub-Jay 	3, 3B 	Geai de Santa Cruz 	Aphelocoma insularis 			717
+4812	WOSJ 	Woodhouse's Scrub-Jay 	3, 2, 2A 					719
+4820	MEJA 	Mexican Jay 	3A, 3B 	Geai du Mexique 	Aphelocoma wollweberi 			720
+4830	GREJ 	Green Jay 	2, 2A, 3 	Geai vert 	Cyanocorax yncas 			712
+4832	BRJA 	Brown Jay 	4A, 4, 3A 	Geai enfumé 	Psilorhinus morio 			711
+4840	GRAJ 	Gray Jay 	3, 2, 2A 	Mésangeai du Canada 	Perisoreus canadensis 			710
+4860	CORA 	Common Raven 	7A, 6, 7 	Grand Corbeau 	Corvus corax 			733
+4870	CHRA 	Chihuahuan Raven 	5, 5A 	Corbeau à cou blanc 	Corvus cryptoleucus 			732
+4871	WNCR 	White-necked Crow 	5, 6 	Corneille d'Hispaniola 	Corvus leucognaphalus 	Y 		727
+4880	AMCR 	American Crow 	5, 5A 	Corneille d'Amérique 	Corvus brachyrhynchos 			725
+4890	NOCR 	Northwestern Crow 	4A, 4 	Corneille d'Alaska 	Corvus caurinus 			726
+4891	TACR 	Tamaulipas Crow 	4	Corneille du Mexique 	Corvus imparatus 			729
+4892	HCRO 	Hawaiian Crow 	6	Corneille d'Hawaï 	Corvus hawaiiensis 	Y 		731
+4900	FICR 	Fish Crow 	4A, 4 	Corneille de rivage 	Corvus ossifragus 			730
+4910	CLNU 	Clark's Nutcracker 	3, 3B, 3A 	Cassenoix d'Amérique 	Nucifraga columbiana 			721
+4920	PIJA 	Pinyon Jay 	3, 2, 2A 	Geai des pinèdes 	Gymnorhinus cyanocephalus 			713
+4930	EUST 	European Starling 	2, 3, 2A 	Étourneau sansonnet 	Sturnus vulgaris 			865
+4931	CRMY 	Crested Myna 	3, 2 	Martin huppé 	Acridotheres cristatellus 			866
+4932	COMY 	Common Myna 	3A, 3B, 3 	Martin triste 	Acridotheres tristis 			869
+4933	WVMY 	White-vented Myna 	1A, 2, 1D 	Martin à ventre blanc 	Acridotheres javanicus 			867
+4934	HIMY 	Hill Myna 	3	Mainate religieux 	Gracula religiosa 			870
+4935	JUMY 	Jungle Myna 	3B, 3 	Martin forestier 	Acridotheres fuscus 			868
+4940	BOBO 	Bobolink 	M: 1A, 1B F: 1B, 1A 	Goglu des prés 	Dolichonyx oryzivorus 			1074
+4950	BHCO 	Brown-headed Cowbird 	M: 1A, 1D, 2, 1B F: 1B, 1A, 1D 	Vacher à tête brune 	Molothrus ater 			1090
+4960	BROC 	Bronzed Cowbird 	M: 2, 1D F: 1A, 1D 	Vacher bronzé 	Molothrus aeneus 			1089
+4961	SHCO 	Shiny Cowbird 	2, 1D, 1A 	Vacher luisant 	Molothrus bonariensis 			1088
+4970	YHBL 	Yellow-headed Blackbird 	M: 2, 3, 1D F: 1A, 1D, 2 	Carouge à tête jaune 	Xanthocephalus xanthocephalus 			1081
+4980	RWBL 	Red-winged Blackbird 	M: 2, 1D F: 1A, 1D 	Carouge à épaulettes 	Agelaius phoeniceus 			1075
+5000	TRBL 	Tricolored Blackbird 	2, 2A, 1D 	Carouge de Californie 	Agelaius tricolor 			1076
+5001	TSBL 	Tawny-shouldered Blackbird 	1B, 1A 	Petit Carouge 	Agelaius humeralis 			1077
+5002	YSBL 	Yellow-shouldered Blackbird 	2	Carouge de Porto Rico 	Agelaius xanthomus 	Y 		1078
+5010	EAME 	Eastern Meadowlark 	M: 3 F: 2, 3 	Sturnelle des prés 	Sturnella magna 			1079
+5011	WEME 	Western Meadowlark 	M: 3 F: 2, 3 	Sturnelle de l'Ouest 	Sturnella neglecta 			1080
+5030	AUOR 	Audubon's Oriole 	2	Oriole d'Audubon 	Icterus graduacauda 			1106
+5031	ALOR 	Altamira Oriole 	3	Oriole à gros bec 	Icterus gularis 			1105
+5032	SPOO 	Spot-breasted Oriole 	2	Oriole maculé 	Icterus pectoralis 			1104
+5040	SCOR 	Scott's Oriole 	1A 	Oriole jaune-verdâtre 	Icterus parisorum 			1108
+5041	BVOR 	Black-vented Oriole 	2	Oriole cul-noir 	Icterus wagleri 			1095
+5042	BCOR 	Black-cowled Oriole 	1A, 1D, 2 	Oriole monacal 	Icterus prosthemelas 			1096
+5043	CUOR 	Cuban Oriole 	1A, 1D, 2 	Oriole de Cuba 	Icterus melanopsis 			1092
+5044	BAHO 	Bahama Oriole 	1A, 1D, 2 	Oriole des Bahamas 	Icterus northropi 			1091
+5045	PROR 	Puerto Rican Oriole 	1A, 1D, 2 	Oriole de Porto Rico 	Icterus portoricensis 			1094
+5046	HIOR 	Hispaniolan Oriole 	1A, 1D, 2 	Oriole d'Hispaniola 	Icterus dominicensis 			1093
+5050	HOOR 	Hooded Oriole 	1A, 1B 	Oriole masqué 	Icterus cucullatus 			1098
+5051	STRO 	Streak-backed Oriole 	1A 	Oriole à dos rayé 	Icterus pustulatus 			1100
+5060	OROR 	Orchard Oriole 	1B 	Oriole des vergers 	Icterus spurius 			1097
+5070	BAOR 	Baltimore Oriole 	1A, 1B, 1D 	Oriole de Baltimore 	Icterus galbula 			1107
+5078	BBOH 	Baltimore X Bullock's Oriole Hybrid 	1A 	Hybride d'Oriole de Bullock et d'Oriole de Baltimore 				1102
+5080	BUOR 	Bullock's Oriole 	1A, 1B, 1D 	Oriole de Bullock 	Icterus bullockii 			1101
+5090	RUBL 	Rusty Blackbird 	2, 1D 	Quiscale rouilleux 	Euphagus carolinus 			1082
+5100	BRBL 	Brewer's Blackbird 	2, 1D 	Quiscale de Brewer 	Euphagus cyanocephalus 			1083
+5110	COGR 	Common Grackle 	M: 3, 3B F: 3, 2A 	Quiscale bronzé 	Quiscalus quiscula 			1084
+5120	GTGR 	Great-tailed Grackle 	M: 4, 3A F: 3, 3B 	Quiscale à longue queue 	Quiscalus mexicanus 			1086
+5130	BTGR 	Boat-tailed Grackle 	M: 4, 3A F: 3, 3B 	Quiscale des marais 	Quiscalus major 			1085
+5131	GAGR 	Greater Antillean Grackle 	3, 2 	Quiscale noir 	Quiscalus niger 			1087
+5140	EVGR 	Evening Grosbeak 	1A, 2, 1D 	Gros-bec errant 	Coccothraustes vespertinus 			1160
+5141	BRAM 	Brambling 	1B, 1, 1C 	Pinson du Nord 	Fringilla montifringilla 			1110
+5142	HAWF 	Hawfinch 	1A, 2, 1D 	Gros-bec casse-noyaux 	Coccothraustes coccothraustes 			1161
+5143	COCH 	Common Chaffinch 	1B, 1, 1C 	Pinson des arbres 	Fringilla coelebs 			1109
+5150	PIGR 	Pine Grosbeak 	1A, 1D 	Durbec des sapins 	Pinicola enucleator 			1116
+5160	EUBU 	Eurasian Bullfinch 	1B, 1A 	Bouvreuil pivoine 	Pyrrhula pyrrhula 			1117
+5161	CORO 	Common Rosefinch 	1B, 1, 1C 	Roselin cramoisi 	Carpodacus erythrinus 			1141
+5170	PUFI 	Purple Finch 	1, 1C, 1B 	Roselin pourpré 	Haemorhous purpureus 			1143
+5180	CAFI 	Cassin's Finch 	1B, 1, 1C 	Roselin de Cassin 	Haemorhous cassinii 			1144
+5190	HOFI 	House Finch 	1B, 1, 1C 	Roselin familier 	Haemorhous mexicanus 			1142
+5210	RECR 	Red Crossbill 	1B, 1A 	Bec-croisé des sapins 	Loxia curvirostra 	Newfoundland and Labrador 		1145
+5211	CACR 	Cassia Crossbill 	1A, 1D 					1146
+5220	WWCR 	White-winged Crossbill 	1B 	Bec-croisé bifascié 	Loxia leucoptera 			1147
+5240	GCRF 	Gray-crowned Rosy-Finch 	1B, 1A, 1 	Roselin à tête grise 	Leucosticte tephrocotis 			1113
+5250	BLRF 	Black Rosy-Finch 	1B, 1A, 1 	Roselin noir 	Leucosticte atrata 			1114
+5260	BCRF 	Brown-capped Rosy-Finch 	1B, 1A, 1 	Roselin à tête brune 	Leucosticte australis 			1115
+5261	EUGO 	European Goldfinch 	0	Chardonneret élégant 	Carduelis carduelis 			1156
+5262	ORGR 	Oriental Greenfinch 	0, 1C, 1 	Verdier de Chine 	Chloris sinica 			1157
+5270	HORE 	Hoary Redpoll 	0, 0A 	Sizerin blanchâtre 	Acanthis hornemanni 			1149
+5276	UNRE 	Unidentified Common/Hoary Redpoll 	0	Sizerin non identifié 			Unspecified Acanthis flammea or A. hornemanni. 	1150
+5280	CORE 	Common Redpoll 	0, 0A 	Sizerin flammé 	Acanthis flammea 			1148
+5290	AMGO 	American Goldfinch 	0, 0A, 1C, 1 	Chardonneret jaune 	Spinus tristis 			1155
+5300	LEGO 	Lesser Goldfinch 	0A, 0 	Chardonneret mineur 	Spinus psaltria 			1153
+5310	LAGO 	Lawrence's Goldfinch 	0, 0A, 1C, 1 	Chardonneret gris 	Spinus lawrencei 			1154
+5321	RESI 	Red Siskin 	0	Chardonneret rouge 	Spinus cucullatus 			1152
+5330	PISI 	Pine Siskin 	0, 0A 	Tarin des pins 	Spinus pinus 			1151
+5331	COCA 	Common Canary 	1, 1C 	Serin des Canaries 	Serinus canaria 			1159
+5332	YFCA 	Yellow-fronted Canary 	0, 1 	Serin du Mozambique 	Serinus mozambicus 			1158
+5340	SNBU 	Snow Bunting 	1A, 1B 	Plectrophane des neiges 	Plectrophenax nivalis 			891
+5350	MKBU 	McKay's Bunting 	1B, 1A 	Plectrophane blanc 	Plectrophenax hyperboreus 			892
+5351	RUBU 	Rustic Bunting 	1, 1C 	Bruant rustique 	Emberiza rustica 			1052
+5352	LIBU 	Little Bunting 	1C, 1 	Bruant nain 	Emberiza pusilla 			1051
+5353	GRBU 	Gray Bunting 	1B 	Bruant gris 	Emberiza variabilis 			1053
+5354	PALB 	Pallas's Bunting 	1, 1C 	Bruant de Pallas 	Emberiza pallasi 			1054
+5355	REBU 	Reed Bunting 	1, 1C 	Bruant des roseaux 	Emberiza schoeniclus 			1055
+5360	LALO 	Lapland Longspur 	1, 1B 	Plectrophane lapon 	Calcarius lapponicus 			887
+5370	SMLO 	Smith's Longspur 	1, 1C 	Plectrophane de Smith 	Calcarius pictus 			889
+5380	CCLO 	Chestnut-collared Longspur 	1, 1C 	Plectrophane à ventre noir 	Calcarius ornatus 			888
+5390	MCLO 	McCown's Longspur 	1, 1C 	Plectrophane de McCown 	Rhynchophanes mccownii 			890
+5400	VESP 	Vesper Sparrow 	1B, 1, 1C 	Bruant vespéral 	Pooecetes gramineus 	British Columbia 		1006
+5410	IPSP 	Ipswich Sparrow 	1B, 1 	Bruant d’Ipswich 	Passerculus sandwichensis princeps 			1016
+5420	SAVS 	Savannah Sparrow 	1, 1C, 0 	Bruant des prés 	Passerculus sandwichensis 			1015
+5430	BSSP 	Belding's Savannah Sparrow 	1, 1C 	Bruant des prés (Belding) 	Passerculus sandwichensis beldingi 			1017
+5440	LBSP 	Large-billed Sparrow 	1, 1C 	Bruant du Sonora 	Passerculus sandwichensis rostratus 			1018
+5450	BAIS 	Baird's Sparrow 	1, 1C 	Bruant de Baird 	Ammodramus bairdii 			1021
+5460	GRSP 	Grasshopper Sparrow 	1, 1C, 0 	Bruant sauterelle 	Ammodramus savannarum 		Includes all subspecies not A. s. floridanus 	1019
+5464	FGSP 	Florida Grasshopper Sparrow 	1, 1C 	Bruant sauterelle forme de la Floride 	Ammodramus savannarum floridanus 	Y 		1020
+5470	HESP 	Henslow's Sparrow 	0, 1C, 1 	Bruant de Henslow 	Ammodramus henslowii 	Ontario 		1022
+5480	LCSP 	Le Conte's Sparrow 	1, 1C, 0 	Bruant de Le Conte 	Ammodramus leconteii 			1023
+5490	SALS 	Saltmarsh Sparrow 	1, 1B, 1C 	Bruant à queue aiguë 	Ammodramus caudacutus 			1025
+5491	NESP 	Nelson's Sparrow 	1, 1B, 1C 	Bruant de Nelson 	Ammodramus nelsoni 			1024
+5499	STSP 	Unidentified Sharp-tailed Sparrow 	1, 1B, 1C 	Bruant à queue aiguë non-identifié 			Unspecified Ammodramus caudacutus or A. nelsoni. 	1026
+5500	SESP 	Seaside Sparrow 	1B 	Bruant maritime 	Ammodramus maritimus 			1027
+5510	DSSP 	Dusky Seaside Sparrow 	1B 	Bruant à dos noirâtre 	Ammodramus maritimus nigrescens 			1028
+5511	CSSS 	Cape Sable Seaside Sparrow 	1B 	Bruant de Cape Sable 	Ammodramus maritimus mirabilis 	Y 		1029
+5520	LASP 	Lark Sparrow 	1B 	Bruant à joues marron 	Chondestes grammacus 			1007
+5530	HASP 	Harris's Sparrow 	1A 	Bruant à face noire 	Zonotrichia querula 			1036
+5540	WCSP 	White-crowned Sparrow 	1B 	Bruant à couronne blanche 	Zonotrichia leucophrys 			1037
+5541	EWCS 	Eastern White-crowned Sparrow 	1B 	Bruant à couronne blanche (race de l'est) 	Zonotrichia leucophrys leucophrys 			1038
+5546	MWCS 	Mountain White-crowned Sparrow 	1B 	Bruant à couronne blanche (race de montagne) 	Zonotrichia leucophrys oriantha 			1039
+5547	PSWS 	Puget Sound White-crowned Sparrow 	1B 	Bruant à couronne blanche (race de Puget Sound) 	Zonotrichia leucophrys pugetensis 			1040
+5550	GWCS 	Gambel's White-crowned Sparrow 	1B 	Bruant à couronne blanche (race de Gambel) 	Zonotrichia leucophrys gambelii 			1041
+5560	NWCS 	Nuttall's White-crowned Sparrow 	1B 	Bruant à couronne blanche (race de Nuttall) 	Zonotrichia leucophrys nuttalli 			1042
+5570	GCSP 	Golden-crowned Sparrow 	1B, 1A 	Bruant à couronne dorée 	Zonotrichia atricapilla 			1043
+5580	WTSP 	White-throated Sparrow 	1B 	Bruant à gorge blanche 	Zonotrichia albicollis 			1035
+5581	RUFS 	Rufous-collared Sparrow 	1, 1B 	Bruant chingolo 	Zonotrichia capensis 			1034
+5586	ZSHY 	Zonotrichia Sparrow Hybrid 	1B 	Hybride de bruant zonotrichia 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	1045
+5590	ATSP 	American Tree Sparrow 	1, 0, 1C 	Bruant hudsonien 	Spizella arborea 			999
+5600	CHSP 	Chipping Sparrow 	0, 0A, 1C, 1 	Bruant familier 	Spizella passerina 			1000
+5610	CCSP 	Clay-colored Sparrow 	0, 0A, 1C, 1 	Bruant des plaines 	Spizella pallida 			1001
+5620	BRSP 	Brewer's Sparrow 	0, 1C, 0A, 1 	Bruant de Brewer 	Spizella breweri 			1002
+5630	FISP 	Field Sparrow 	0, 0A, 1C, 1 	Bruant des champs 	Spizella pusilla 			1003
+5640	WOSP 	Worthen's Sparrow 	0, 0A 	Bruant de Worthen 	Spizella wortheni 			1004
+5650	BCSP 	Black-chinned Sparrow 	0, 1C, 1 	Bruant à menton noir 	Spizella atrogularis 			1005
+5660	WWJU 	White-winged Junco 	1, 0, 1C 	Junco ardoisé à ailes blanches 	Junco hyemalis aikeni 			1044
+5670	SCJU 	Slate-colored Junco 	0, 1C, 1 	Junco ardoisé 	Junco hyemalis hyemalis 			1046
+5671	ORJU 	Oregon Junco 	0, 1C, 1 	Junco ardoisé à dos roux 	Junco hyemalis oreganus 			1047
+5677	UDEJ 	Unidentified Dark-eyed Junco 	0, 1C, 1 	Junco ardoisé non identifié 	Junco hyemalis 		To be used for Dark-eyed Juncos whose subspecies cannot be determined. 	1048
+5690	GHJU 	Gray-headed Junco 	1, 0, 1C 	Junco ardoisé à tête grise 	Junco hyemalis caniceps 			1049
+5700	YEJU 	Yellow-eyed Junco 	1, 1C, 0 	Junco aux yeux jaunes 	Junco phaeonotus 			1050
+5730	BTSP 	Black-throated Sparrow 	0, 1C, 1 	Bruant à gorge noire 	Amphispiza bilineata 			1009
+5740	USSP 	Unspecified Sage Sparrow 	1, 1C 	Bruant des armoises 			Unspecified Artemisiospiza belli or A. nevadensis (not A. b. clementeae). 	1011
+5741	SCBS 	San Clemente Bell's Sparrow 	1		Artemisiospiza belli clementeae 	Y 		1012
+5742	FSSP 	Five-striped Sparrow 	1B 	Bruant pentaligne 	Amphispiza quinquestriata 			1008
+5743	SBSP 	Sagebrush Sparrow 	1, 1C 	Bruant des armoises 	Artemisiospiza nevadensis 		AOU split from 5740 Sage Sparrow in 2014. 	1010
+5744	BESP 	Bell's Sparrow 	1, 1C 	Bruant de Bell 	Artemisiospiza belli 		AOU split from 5740 Sage Sparrow in 2014. 	1013
+5750	BACS 	Bachman's Sparrow 	1, 1C 	Bruant des pinèdes 	Peucaea aestivalis 			998
+5760	BOSP 	Botteri's Sparrow 	1, 1C 	Bruant de Botteri 	Peucaea botterii 			996
+5780	CASP 	Cassin's Sparrow 	1, 1C 	Bruant de Cassin 	Peucaea cassinii 			997
+5790	RWSP 	Rufous-winged Sparrow 	0, 1C, 1 	Bruant à épaulettes 	Peucaea carpalis 			995
+5800	RCSP 	Rufous-crowned Sparrow 	1, 1C, 1B 	Tohi à calotte fauve 	Aimophila ruficeps 			991
+5810	SOSP 	Song Sparrow 	1B, 1, 1C 	Bruant chanteur 	Melospiza melodia 			1031
+5830	LISP 	Lincoln's Sparrow 	1, 0, 1C 	Bruant de Lincoln 	Melospiza lincolnii 			1032
+5840	SWSP 	Swamp Sparrow 	1, 1C, 0 	Bruant des marais 	Melospiza georgiana 			1033
+5850	FOSP 	Fox Sparrow 	1A, 1B 	Bruant fauve 	Passerella iliaca 			1030
+5860	OLSP 	Olive Sparrow 	1B, 1, 1C 	Tohi olive 	Arremonops rufivirgatus 			984
+5861	SAFI 	Saffron Finch 	1B, 1 	Sicale bouton-d'or 	Sicalis flaveola 			983
+5870	EATO 	Eastern Towhee 	M: 2, 1D, 1A F: 1A, 1D, 2 	Tohi à flancs roux 	Pipilo erythrophthalmus 		AOU split from 5876 in 1998. 	987
+5876	URST 	Unidentified Rufous-sided Towhee 	2, 1A, 1D 	Tohi à flancs roux non identifié 			Includes Pipilo erythrophthalmus and P. maculatus prior to split in 1998. 	988
+5880	SPTO 	Spotted Towhee 	1A, 2, 1D 	Tohi tacheté 	Pipilo maculatus 		AOU split from 5876 in 1998. 	986
+5900	GTTO 	Green-tailed Towhee 	1A, 1B, 1D 	Tohi à queue verte 	Pipilo chlorurus 			985
+5906	HYTO 	Hybrid Towhee 	1A, 1B 	Hybride de Tohi 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	989
+5910	CANT 	Canyon Towhee 	1A, 1D, 2 	Tohi des canyons 	Melozone fusca 			992
+5911	CALT 	California Towhee 	2, 1A, 1D 	Tohi de Californie 	Melozone crissalis 			993
+5912	ICTO 	Inyo California Towhee 	1D, 2, 1A 	Tohi de Californie (eremophilus) 	Melozone crissalis eremophilus 	Y 		990
+5920	ABTO 	Abert's Towhee 	1A, 2, 1D 	Tohi d'Abert 	Melozone aberti 			994
+5922	RCCA 	Red-crested Cardinal 	1A, 1D, 2 	Paroare huppé 	Paroaria coronata 			965
+5923	YBCA 	Yellow-billed Cardinal 	1A, 1D 	Paroare à bec jaune 	Paroaria capitata 			966
+5930	NOCA 	Northern Cardinal 	1A, 2, 1D 	Cardinal rouge 	Cardinalis cardinalis 			1061
+5940	PYRR 	Pyrrhuloxia 	1A, 1D 	Cardinal pyrrhuloxia 	Cardinalis sinuatus 			1062
+5950	RBGR 	Rose-breasted Grosbeak 	1A, 1D, 2 	Cardinal à poitrine rose 	Pheucticus ludovicianus 			1064
+5960	BHGR 	Black-headed Grosbeak 	1A, 1D, 2 	Cardinal à tête noire 	Pheucticus melanocephalus 			1065
+5961	YEGR 	Yellow Grosbeak 	2, 1A, 1D 	Cardinal jaune 	Pheucticus chrysopeplus 			1063
+5970	BLGR 	Blue Grosbeak 	1B, 1A 	Guiraca bleu 	Passerina caerulea 			1067
+5971	BLBU 	Blue Bunting 	1, 1B, 1C 	Évêque paré 	Cyanocompsa parellina 			1066
+5980	INBU 	Indigo Bunting 	1, 1C, 0 	Passerin indigo 	Passerina cyanea 			1070
+5986	ILBH 	Indigo X Lazuli Bunting Hybrid 	1, 1C 	Hybride de Passerin indigo et de Passerin azuré 			Passerina cyanea X P. amoena. 	1069
+5990	LAZB 	Lazuli Bunting 	1, 1C, 0 	Passerin azuré 	Passerina amoena 			1068
+6000	VABU 	Varied Bunting 	1, 1C 	Passerin varié 	Passerina versicolor 			1071
+6010	PABU 	Painted Bunting 	1, 1C 	Passerin nonpareil 	Passerina ciris 			1072
+6020	WCSE 	White-collared Seedeater 	0, 0A 	Sporophile à col blanc 	Sporophila torqueola 			973
+6021	PUEB 	Puerto Rican Bullfinch 	1A, 1B 	Sporophile de Porto Rico 	Loxigilla portoricensis 			979
+6022	LESB 	Lesser Antillean Bullfinch 	1, 1B 	Sporophile rougegorge 	Loxigilla noctis 			981
+6030	BFGR 	Black-faced Grassquit 	0, 0A, 1C, 1 	Sporophile cici 	Tiaris bicolor 			977
+6031	CUGR 	Cuban Grassquit 	0A, 0 	Sporophile petit-chanteur 	Tiaris canorus 			975
+6032	YFGR 	Yellow-faced Grassquit 	0, 0A, 1C 	Sporophile grand-chanteur 	Tiaris olivaceus 			976
+6040	DICK 	Dickcissel 	1B 	Dickcissel d'Amérique 	Spiza americana 			1073
+6050	LARB 	Lark Bunting 	1A 	Bruant noir et blanc 	Calamospiza melanocorys 			1014
+6061	ANEU 	Antillean Euphonia 	0, 1C, 1 	Organiste louis-d'or 	Euphonia musica 			1112
+6070	WETA 	Western Tanager 	1B 	Piranga à tête rouge 	Piranga ludoviciana 			1059
+6071	FCTA 	Flame-colored Tanager 	1A, 1B 	Piranga à dos rayé 	Piranga bidentata 			1060
+6080	SCTA 	Scarlet Tanager 	1B 	Piranga écarlate 	Piranga olivacea 			1058
+6090	HETA 	Hepatic Tanager 	1A 	Piranga orangé 	Piranga flava 			1056
+6100	SUTA 	Summer Tanager 	1A, 1B 	Piranga vermillon 	Piranga rubra 			1057
+6101	WESP 	Western Spindalis 	1B, 1A 	Zéna à tête rayée 	Spindalis zena 			968
+6102	PRTA 	Puerto Rican Tanager 	1A, 1B 	Tangara de Porto Rico 	Nesospingus speculiferus 			967
+6103	HISP 	Hispaniolan Spindalis 	1B, 1A 		Spindalis dominicensis 			969
+6104	PRSP 	Puerto Rican Spindalis 	1B, 1A 		Spindalis portoricensis 			970
+6105	JAMS 	Jamaican Spindalis 	1B, 1A 		Spindalis nigricephala 			971
+6110	PUMA 	Purple Martin 	1D, 1A, 2 	Hirondelle noire 	Progne subis 			740
+6112	GBMA 	Gray-breasted Martin 	1A 	Hirondelle chalybée 	Progne chalybea 			742
+6113	CAMA 	Caribbean Martin 	1A 	Hirondelle à ventre blanc 	Progne dominicensis 			741
+6120	CLSW 	Cliff Swallow 	1, 1C 	Hirondelle à front blanc 	Petrochelidon pyrrhonota 			748
+6121	CASW 	Cave Swallow 	1, 1C 	Hirondelle à front brun 	Petrochelidon fulva 			749
+6130	BARS 	Barn Swallow 	1, 0, 1C 	Hirondelle rustique 	Hirundo rustica 			750
+6140	TRES 	Tree Swallow 	1, 0, 1C 	Hirondelle bicolore 	Tachycineta bicolor 			743
+6150	VGSW 	Violet-green Swallow 	1, 0, 1C 	Hirondelle à face blanche 	Tachycineta thalassina 			744
+6151	BAHS 	Bahama Swallow 	0, 1, 1C 	Hirondelle des Bahamas 	Tachycineta cyaneoviridis 			745
+6160	BANS 	Bank Swallow 	0, 1C, 1, 0A 	Hirondelle de rivage 	Riparia riparia 			747
+6170	NRWS 	Northern Rough-winged Swallow 	0, 1C, 1, 0A 	Hirondelle à ailes hérissées 	Stelgidopteryx serripennis 			746
+6180	BOWA 	Bohemian Waxwing 	1A 	Jaseur boréal 	Bombycilla garrulus 			881
+6190	CEDW 	Cedar Waxwing 	1B 	Jaseur d'Amérique 	Bombycilla cedrorum 			882
+6200	PHAI 	Phainopepla 	1B 	Phénopèple luisant 	Phainopepla nitens 			885
+6210	NSHR 	Northern Shrike 	2, 1D 	Pie-grièche grise 	Lanius excubitor 			686
+6211	BRSH 	Brown Shrike 	1B, 1A 	Pie-grièche brune 	Lanius cristatus 			683
+6220	LOSH 	Loggerhead Shrike 	1D, 1A, 2 	Pie-grièche migratrice 	Lanius ludovicianus 	Alberta Manitoba Ontario Québec Saskatchewan 		684
+6221	KAOO 	Kauai Oo 	2	Moho de Kauai 	Moho braccatus 	Y 		883
+6223	BIOO 	Bishop's Oo 	3	Moho de Bishop 	Moho bishopi 	Y 		884
+6226	JAWE 	Japanese White-eye 	0A, 0 	Zostérops du Japon 	Zosterops japonicus 			799
+6227	SLSH 	San Clemente Loggerhead Shrike 	1D, 1A, 2 	Pie-grièche migratrice (mearnsi) 	Lanius ludovicianus mearnsi 	Y 		685
+6230	BWVI 	Black-whiskered Vireo 	1, 1C 	Viréo à moustaches 	Vireo altiloquus 			705
+6240	REVI 	Red-eyed Vireo 	1C, 1, 0 	Viréo aux yeux rouges 	Vireo olivaceus 			703
+6250	YGVI 	Yellow-green Vireo 	1, 1C, 0 	Viréo jaune-verdâtre 	Vireo flavoviridis 			704
+6260	PHVI 	Philadelphia Vireo 	0, 0A 	Viréo de Philadelphie 	Vireo philadelphicus 			702
+6270	WAVI 	Warbling Vireo 	0, 1C, 1 	Viréo mélodieux 	Vireo gilvus 			701
+6280	YTVI 	Yellow-throated Vireo 	1C, 1 	Viréo à gorge jaune 	Vireo flavifrons 			695
+6290	BHVI 	Blue-headed Vireo 	1C, 1, 0 	Viréo à tête bleue 	Vireo solitarius 		AOU split from 6299-SOVI in 1998. 	698
+6291	PLVI 	Plumbeous Vireo 	1C, 1, 0 	Viréo plombé 	Vireo plumbeus 		AOU split from 6299-SOVI in 1998. 	696
+6292	CAVI 	Cassin's Vireo 	1C, 1, 0 	Viréo de Cassin 	Vireo cassinii 		AOU split from 6299-SOVI in 1998. 	697
+6299	SOVI 	Solitary Vireo 	1C, 1, 0 	Viréo à tête bleue (espèce non identifiée) 			Includes Vireo solitarius, V. plumbeus, and V. cassinii, prior to split in 1998. 	699
+6300	BCVI 	Black-capped Vireo 	0, 1C, 0A, 1 	Viréo à tête noire 	Vireo atricapilla 	Y 		693
+6310	WEVI 	White-eyed Vireo 	0, 0A 	Viréo aux yeux blancs 	Vireo griseus 			687
+6320	HUVI 	Hutton's Vireo 	0	Viréo de Hutton 	Vireo huttoni 			700
+6330	BEVI 	Bell's Vireo 	0	Viréo de Bell 	Vireo bellii 			691
+6331	PRVI 	Puerto Rican Vireo 	0, 1, 1C 	Viréo de Porto Rico 	Vireo latimeri 			690
+6334	LBVI 	Least Bell's Vireo 	0	Viréo de Bell (forme minime) 	Vireo bellii pusillus 	Y 		692
+6340	GRVI 	Gray Vireo 	1, 1C 	Viréo gris 	Vireo vicinior 			694
+6350	BANA 	Bananaquit 	0, 0A, 1C, 1 	Sucrier à ventre jaune 	Coereba flaveola 			964
+6360	BAWW 	Black-and-white Warbler 	0, 0A, 1C, 1 	Paruline noir et blanc 	Mniotilta varia 			902
+6366	HYWA 	Hybrid Warbler 	0, 0A, 1 	Hybride de paruline 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	963
+6370	PROW 	Prothonotary Warbler 	0	Paruline orangée 	Protonotaria citrea 	Ontario 		903
+6380	SWWA 	Swainson's Warbler 	1, 1C, 0 	Paruline de Swainson 	Limnothlypis swainsonii 			904
+6390	WEWA 	Worm-eating Warbler 	1C, 0, 1 	Paruline vermivore 	Helmitheros vermivorum 			894
+6410	BWWA 	Blue-winged Warbler 	0A, 0 	Paruline à ailes bleues 	Vermivora cyanoptera 			898
+6412	BRWA 	Brewster's Warbler 	0A, 0 	Paruline de Brewster 				899
+6413	LAWA 	Lawrence's Warbler 	0A, 0 	Paruline de Lawrence 				900
+6416	GBWH 	Golden-winged x Blue-winged Warbler Hybrid 	0A, 0 				Vermivora chrysoptera X V. cyanoptera. 	901
+6420	GWWA 	Golden-winged Warbler 	0A, 0 	Paruline à ailes dorées 	Vermivora chrysoptera 	Manitoba Ontario Québec 		897
+6430	LUWA 	Lucy's Warbler 	0A, 0 	Paruline de Lucy 	Oreothlypis luciae 			908
+6440	VIWA 	Virginia's Warbler 	0A, 0 	Paruline de Virginia 	Oreothlypis virginiae 			910
+6450	NAWA 	Nashville Warbler 	0A, 0 	Paruline à joues grises 	Oreothlypis ruficapilla 			909
+6460	OCWA 	Orange-crowned Warbler 	0, 0A 	Paruline verdâtre 	Oreothlypis celata 			906
+6470	TEWA 	Tennessee Warbler 	0A, 0 	Paruline obscure 	Oreothlypis peregrina 			905
+6471	COLW 	Colima Warbler 	0, 1, 1C 	Paruline de Colima 	Oreothlypis crissalis 			907
+6480	NOPA 	Northern Parula 	0A, 0 	Paruline à collier 	Setophaga americana 			925
+6490	TRPA 	Tropical Parula 	0A 	Paruline à joues noires 	Setophaga pitiayumi 			926
+6500	CMWA 	Cape May Warbler 	0, 0A, 1C, 1 	Paruline tigrée 	Setophaga tigrina 			923
+6510	OLWA 	Olive Warbler 	0, 0A 	Fauvine des pins 	Peucedramus taeniatus 			886
+6520	YEWA 	Yellow Warbler 	0, 0A, 1C, 1 	Paruline jaune 	Setophaga petechia 			930
+6540	BTBW 	Black-throated Blue Warbler 	0, 0A 	Paruline bleue 	Setophaga caerulescens 			933
+6550	MYWA 	Myrtle Warbler 	0, 1C, 0A, 1 	Paruline à croupion jaune 	Setophaga coronata coronata 			938
+6556	UYRW 	Unknown Yellow-rumped Warbler 	0, 1C, 0A, 1 	Paruline à croupion jaune non identifiée 	Setophaga coronata 		Undifferentiated Myrtle / Audubon's Warbler. Use only if uncertain. 	939
+6560	AUWA 	Audubon's Warbler 	0, 1C, 0A, 1 	Paruline à croupion jaune de l'ouest 	Setophaga coronata auduboni 			940
+6570	MAWA 	Magnolia Warbler 	0A, 0 	Paruline à tête cendrée 	Setophaga magnolia 			927
+6580	CERW 	Cerulean Warbler 	0A, 0 	Paruline azurée 	Setophaga cerulea 			924
+6581	EWWA 	Elfin-woods Warbler 	0	Paruline d'Angela 	Setophaga angelae 			918
+6590	CSWA 	Chestnut-sided Warbler 	0A, 0 	Paruline à flancs marron 	Setophaga pensylvanica 			931
+6600	BBWA 	Bay-breasted Warbler 	0, 1C, 0A, 1 	Paruline à poitrine baie 	Setophaga castanea 			928
+6610	BLPW 	Blackpoll Warbler 	0, 1C, 0A, 1 	Paruline rayée 	Setophaga striata 			932
+6620	BLBW 	Blackburnian Warbler 	0, 0A 	Paruline à gorge orangée 	Setophaga fusca 			929
+6630	YTWA 	Yellow-throated Warbler 	0A, 0 	Paruline à gorge jaune 	Setophaga dominica 			941
+6634	SUWA 	Sutton's Warbler 	0A 	Paruline de Sutton 				942
+6640	GRWA 	Grace's Warbler 	0A, 0 	Paruline de Grace 	Setophaga graciae 			947
+6641	ADWA 	Adelaide's Warbler 	0A, 0 	Paruline d'Adélaïde 	Setophaga adelaidae 			944
+6642	BARW 	Barbuda Warbler 	0A, 0 	Paruline de Barbuda 	Setophaga subita 			945
+6643	SLWA 	St. Lucia Warbler 	0A, 0 	Paruline de Sainte-Lucie 	Setophaga delicata 			946
+6650	BTYW 	Black-throated Gray Warbler 	0A, 0 	Paruline grise 	Setophaga nigrescens 			948
+6660	GCWA 	Golden-cheeked Warbler 	0A 	Paruline à dos noir 	Setophaga chrysoparia 	Y 		952
+6670	BTNW 	Black-throated Green Warbler 	0A, 0 	Paruline à gorge noire 	Setophaga virens 			953
+6680	TOWA 	Townsend's Warbler 	0A, 0 	Paruline de Townsend 	Setophaga townsendi 			949
+6686	THWH 	Townsend's X Hermit Warbler Hybrid 	0A, 0 	Hybride de Paruline de Townsend/Paruline à tête jaune 				950
+6690	HEWA 	Hermit Warbler 	0A, 0 	Paruline à tête jaune 	Setophaga occidentalis 			951
+6700	KIWA 	Kirtland's Warbler 	1C, 1 	Paruline de Kirtland 	Setophaga kirtlandii 	Y 		922
+6710	PIWA 	Pine Warbler 	0, 0A 	Paruline des pins 	Setophaga pinus 			937
+6720	WPWA 	Western Palm Warbler 	0, 0A 	Paruline à couronne rousse de l'ouest 	Setophaga palmarum palmarum 			934
+6729	YPWA 	Yellow Palm Warbler 	0, 0A 	Paruline à couronne rousse 	Setophaga palmarum hypochrysea 			935
+6730	PRAW 	Prairie Warbler 	0A, 0 	Paruline des prés 	Setophaga discolor 			943
+6740	OVEN 	Ovenbird 	1, 1C, 0 	Paruline couronnée 	Seiurus aurocapilla 			893
+6750	NOWA 	Northern Waterthrush 	1, 0, 1C 	Paruline des ruisseaux 	Parkesia noveboracensis 			896
+6760	LOWA 	Louisiana Waterthrush 	1C, 1 	Paruline hochequeue 	Parkesia motacilla 			895
+6770	KEWA 	Kentucky Warbler 	0, 1C, 1 	Paruline du Kentucky 	Geothlypis formosa 			915
+6780	CONW 	Connecticut Warbler 	1, 0, 1C 	Paruline à gorge grise 	Oporornis agilis 			911
+6790	MOWA 	Mourning Warbler 	0, 0A, 1, 1C 	Paruline triste 	Geothlypis philadelphia 			914
+6800	MGWA 	MacGillivray's Warbler 	1C, 1, 0, 0A 	Paruline des buissons 	Geothlypis tolmiei 			913
+6810	COYE 	Common Yellowthroat 	0, 1C, 0A, 1 	Paruline masquée 	Geothlypis trichas 			917
+6821	GCYE 	Gray-crowned Yellowthroat 	1, 1C, 1B 	Paruline à calotte grise 	Geothlypis poliocephala 			912
+6830	YBCH 	Yellow-breasted Chat 	1B, 1A, 1D 	Paruline polyglotte 	Icteria virens 	British Columbia 	Some may require size 2 	962
+6840	HOWA 	Hooded Warbler 	0, 0A, 1C, 1 	Paruline à capuchon 	Setophaga citrina 			920
+6850	WIWA 	Wilson's Warbler 	0A, 0 	Paruline à calotte noire 	Cardellina pusilla 			958
+6860	CAWA 	Canada Warbler 	0, 0A 	Paruline du Canada 	Cardellina canadensis 	Alberta British Columbia Manitoba New Brunswick Nova Scotia Ontario Prince Edward Island Québec Saskatchewan Yukon Territory Northwest Territories 		957
+6870	AMRE 	American Redstart 	0A, 0 	Paruline flamboyante 	Setophaga ruticilla 			921
+6880	PARE 	Painted Redstart 	0A, 0 	Paruline à ailes blanches 	Myioborus pictus 			960
+6881	FTWA 	Fan-tailed Warbler 	1	Paruline des rochers 	Basileuterus lachrymosus 			954
+6882	HOSP 	House Sparrow 	1B, 1 	Moineau domestique 	Passer domesticus 			1162
+6883	ETSP 	Eurasian Tree Sparrow 	1, 1B, 1C 	Moineau friquet 	Passer montanus 			1163
+6890	SLAR 	Slate-throated Redstart 	0A, 0 	Paruline ardoisée 	Myioborus miniatus 			961
+6900	RFWA 	Red-faced Warbler 	0A, 0 	Paruline à face rouge 	Cardellina rubrifrons 			959
+6920	GOLW 	Golden-crowned Warbler 	0A, 0 	Paruline à couronne dorée 	Basileuterus culicivorus 			956
+6921	RCWA 	Rufous-capped Warbler 	1, 0 	Paruline à calotte rousse 	Basileuterus rufifrons 			955
+6940	WHWA 	White Wagtail 	1, 1C 	Bergeronnette grise 	Motacilla alba 			874
+6951	BWAG 	Black-backed Wagtail 	1, 1C 	Bergeronnette lugubre 	Motacilla alba lugens 			875
+6960	EYWA 	Eastern Yellow Wagtail 	1, 1C 	Bergeronnette de Béringie 	Motacilla tschutschensis 			872
+6961	GRAW 	Gray Wagtail 	1, 1C 	Bergeronnette des ruisseaux 	Motacilla cinerea 			873
+6970	AMPI 	American Pipit 	1, 1C 	Pipit d'Amérique 	Anthus rubescens 			879
+6981	PEPI 	Pechora Pipit 	1, 1C 	Pipit de la Petchora 	Anthus gustavi 			877
+6983	OBPI 	Olive-backed Pipit 	1, 1C 	Pipit à dos olive 	Anthus hodgsoni 			876
+6990	RTPI 	Red-throated Pipit 	1, 1C 	Pipit à gorge rousse 	Anthus cervinus 			878
+7000	SPPI 	Sprague's Pipit 	1, 1C 	Pipit de Sprague 	Anthus spragueii 	Alberta Manitoba Saskatchewan 		880
+7010	AMDI 	American Dipper 	2, 1D, 1A 	Cincle d'Amérique 	Cinclus mexicanus 			789
+7020	SATH 	Sage Thrasher 	1B, 1A, 1D 	Moqueur des armoises 	Oreoscoptes montanus 	Alberta British Columbia Saskatchewan 		858
+7030	NOMO 	Northern Mockingbird 	2, 1D, 1A 	Moqueur polyglotte 	Mimus polyglottos 			861
+7031	BAMO 	Bahama Mockingbird 	2, 1D, 1A 	Moqueur des Bahamas 	Mimus gundlachii 			859
+7032	TRMO 	Tropical Mockingbird 	1A, 1D, 2 	Moqueur des savanes 	Mimus gilvus 			860
+7040	GRCA 	Gray Catbird 	1A 	Moqueur chat 	Dumetella carolinensis 			848
+7050	BRTH 	Brown Thrasher 	2, 3 	Moqueur roux 	Toxostoma rufum 			852
+7060	LBTH 	Long-billed Thrasher 	2, 3 	Moqueur à long bec 	Toxostoma longirostre 			853
+7070	CBTH 	Curve-billed Thrasher 	3, 2, 2A 	Moqueur à bec courbe 	Toxostoma curvirostre 			851
+7080	BETH 	Bendire's Thrasher 	2	Moqueur de Bendire 	Toxostoma bendirei 			854
+7100	CATH 	California Thrasher 	3	Moqueur de Californie 	Toxostoma redivivum 			855
+7110	LCTH 	Le Conte's Thrasher 	2	Moqueur de Le Conte 	Toxostoma lecontei 			856
+7111	PETH 	Pearly-eyed Thrasher 	3, 3B, 2 	Moqueur corossol 	Margarops fuscatus 			849
+7120	CRTH 	Crissal Thrasher 	2	Moqueur cul-roux 	Toxostoma crissale 			857
+7130	CACW 	Cactus Wren 	1B, 1A 	Troglodyte des cactus 	Campylorhynchus brunneicapillus 			783
+7150	ROWR 	Rock Wren 	1, 1C, 0 	Troglodyte des rochers 	Salpinctes obsoletus 			773
+7170	CANW 	Canyon Wren 	1, 1C 	Troglodyte des canyons 	Catherpes mexicanus 			774
+7180	CARW 	Carolina Wren 	1B, 1 	Troglodyte de Caroline 	Thryothorus ludovicianus 			781
+7190	BEWR 	Bewick's Wren 	1, 0, 1C 	Troglodyte de Bewick 	Thryomanes bewickii 			782
+7210	HOWR 	House Wren 	0, 0A, 1C, 1 	Troglodyte familier 	Troglodytes aedon 			775
+7220	WIWR 	Winter Wren 	0A, 0 	Troglodyte des forêts 	Troglodytes hiemalis 			778
+7221	PAWR 	Pacific Wren 	0A, 0 	Troglodyte de Baird 	Troglodytes pacificus 			777
+7240	SEWR 	Sedge Wren 	0A, 0 	Troglodyte à bec court 	Cistothorus platensis 			779
+7250	MAWR 	Marsh Wren 	1C, 1, 0 	Troglodyte des marais 	Cistothorus palustris 			780
+7260	BRCR 	Brown Creeper 	0A, 0 	Grimpereau brun 	Certhia americana 			772
+7261	RWBU 	Red-whiskered Bulbul 	1B, 1A 	Bulbul orphée 	Pycnonotus jocosus 			791
+7262	RVBU 	Red-vented Bulbul 	2, 1D, 1A 	Bulbul à ventre rouge 	Pycnonotus cafer 			790
+7270	WBNU 	White-breasted Nuthatch 	1B, 1, 1C 	Sittelle à poitrine blanche 	Sitta carolinensis 			769
+7280	RBNU 	Red-breasted Nuthatch 	0, 1C, 1 	Sittelle à poitrine rousse 	Sitta canadensis 			768
+7290	BHNU 	Brown-headed Nuthatch 	0, 1C 	Sittelle à tête brune 	Sitta pusilla 			771
+7300	PYNU 	Pygmy Nuthatch 	0, 1C 	Sittelle pygmée 	Sitta pygmaea 			770
+7310	TUTI 	Tufted Titmouse 	1B 	Mésange bicolore 	Baeolophus bicolor 			763
+7320	BCTI 	Black-crested Titmouse 	1B 	Mésange à plumet noir 	Baeolophus atricristatus 			765
+7330	OATI 	Oak Titmouse 	1, 1C 	Mésange unicolore 	Baeolophus inornatus 		AOU split from 7339-PLTI in 1998. 	761
+7331	JUTI 	Juniper Titmouse 	1, 1C 	Mésange des genévriers 	Baeolophus ridgwayi 		AOU split from 7339-PLTI in 1998. 	762
+7339	PLTI 	Plain Titmouse 	1	Mésange unicolore 			Unspecified Baeolophus inornatus or B. ridgwayi. 	764
+7340	BRTI 	Bridled Titmouse 	1, 1C 	Mésange arlequin 	Baeolophus wollweberi 			760
+7341	VATI 	Varied Tit 	1B, 1, 1C 	Mésange variée 	Cyanistes varius 			759
+7350	BCCH 	Black-capped Chickadee 	0, 0A, 1C, 1 	Mésange à tête noire 	Poecile atricapillus 			752
+7356	HYCH 	Hybrid Chickadee 	0, 1C, 1 	Mésange hybride 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	758
+7360	CACH 	Carolina Chickadee 	0, 0A, 1C 	Mésange de Caroline 	Poecile carolinensis 			751
+7370	MECH 	Mexican Chickadee 	0	Mésange grise 	Poecile sclateri 			754
+7380	MOCH 	Mountain Chickadee 	0, 0A 	Mésange de Gambel 	Poecile gambeli 			753
+7390	GHCH 	Gray-headed Chickadee 	1C, 0, 1 	Mésange lapone 	Poecile cinctus 			757
+7400	BOCH 	Boreal Chickadee 	0, 0A, 1C, 1 	Mésange à tête brune 	Poecile hudsonicus 			756
+7410	CBCH 	Chestnut-backed Chickadee 	0, 0A 	Mésange à dos marron 	Poecile rufescens 			755
+7420	WREN 	Wrentit 	1, 1C, 1B 	Cama brune 	Chamaea fasciata 			798
+7421	RBLE 	Red-billed Leiothrix 	1B 	Léiothrix jaune 	Leiothrix lutea 			802
+7422	HWAM 	Hwamei 	2, 3 	Garrulaxe hoamy 	Garrulax canorus 			801
+7423	GNLA 	Greater Necklaced Laughingthrush 	2	Garrulaxe à plastron 	Garrulax pectoralis 			800
+7424	OBNT 	Orange-billed Nightingale-Thrush 	1B 	Grive à bec orange 	Catharus aurantiirostris 			828
+7430	BUSH 	Bushtit 	0A, 0 	Mésange buissonnière 	Psaltriparus minimus 			767
+7460	VERD 	Verdin 	0A, 0 	Auripare verdin 	Auriparus flaviceps 			766
+7461	JABW 	Japanese Bush-Warbler 	M: 1, 1C F: 0, 1C 	Bouscarle chanteuse 	Cettia diphone 			794
+7462	MILL 	Millerbird 	0A 	Rousserolle obscure 	Acrocephalus familiaris 	Y 		803
+7470	ARWA 	Arctic Warbler 	0A, 0 	Pouillot boréal 	Phylloscopus borealis 			797
+7471	MIGW 	Middendorff's Grasshopper-Warbler 	0A 	Locustelle de Middendorff 	Locustella ochotensis 			805
+7473	WOWA 	Wood Warbler 	0A 	Pouillot siffleur 	Phylloscopus sibilatrix 			795
+7474	DUWA 	Dusky Warbler 	0A 	Pouillot brun 	Phylloscopus fuscatus 			796
+7475	LANW 	Lanceolated Warbler 	0A 	Locustelle lancéolée 	Locustella lanceolata 			809
+7480	GCKI 	Golden-crowned Kinglet 	0A 	Roitelet à couronne dorée 	Regulus satrapa 			792
+7490	RCKI 	Ruby-crowned Kinglet 	0A 	Roitelet à couronne rubis 	Regulus calendula 			793
+7491	SIAC 	Siberian Accentor 	0A 	Accenteur montanelle 	Prunella montanella 			871
+7510	BGGN 	Blue-gray Gnatcatcher 	0A 	Gobemoucheron gris-bleu 	Polioptila caerulea 			784
+7520	BTGN 	Black-tailed Gnatcatcher 	0A 	Gobemoucheron à queue noire 	Polioptila melanura 			787
+7530	CAGN 	California Gnatcatcher 	0A 	Gobemoucheron de Californie 	Polioptila californica 	Y 		785
+7531	BCGN 	Black-capped Gnatcatcher 	0A 	Gobemoucheron à coiffe noire 	Polioptila nigriceps 			788
+7532	BACG 	Baja Gnatcatcher 	0A 		Polioptila californica 			786
+7540	TOSO 	Townsend's Solitaire 	1B 	Solitaire de Townsend 	Myadestes townsendi 			822
+7541	OMAO 	Omao 	1A, 1D 	Solitaire d'Hawaï 	Myadestes obscurus 			826
+7542	PUAI 	Puaiohi 	1A 	Solitaire puaïohi 	Myadestes palmeri 	Y 		827
+7543	KAMA 	Kamao 	1A 	Solitaire kamao 	Myadestes myadestinus 	Y 		824
+7545	OLOM 	Olomao 	1A 	Solitaire de Lanai 	Myadestes lanaiensis 	Y 		825
+7550	WOTH 	Wood Thrush 	1A 	Grive des bois 	Hylocichla mustelina 			835
+7560	VEER 	Veery 	1B 	Grive fauve 	Catharus fuscescens 			829
+7570	GCTH 	Gray-cheeked Thrush 	1B 	Grive à joues grises 	Catharus minimus 			830
+7571	BITH 	Bicknell's Thrush 	1B 	Grive de Bicknell 	Catharus bicknelli 			831
+7579	GCBT 	Unidentified Gray-cheeked/Bicknell's Thrush 	1B 	Grive à joues grises/Grive de Bicknell non identifié 				832
+7580	SWTH 	Swainson's Thrush 	1B 	Grive à dos olive 	Catharus ustulatus 			833
+7590	HETH 	Hermit Thrush 	1B, 1 	Grive solitaire 	Catharus guttatus 			834
+7600	REDW 	Redwing 	2, 1A, 1D 	Grive mauvis 	Turdus iliacus 			839
+7610	AMRO 	American Robin 	2	Merle d'Amérique 	Turdus migratorius 			843
+7612	FIEL 	Fieldfare 	2	Grive litorne 	Turdus pilaris 			838
+7613	EYTH 	Eyebrowed Thrush 	2	Merle obscur 	Turdus obscurus 			836
+7614	DUTH 	Dusky Thrush 	2	Grive de Naumann 	Turdus naumanni 			837
+7621	CCTH 	Clay-colored Thrush 	2	Merle fauve 	Turdus grayi 			840
+7622	RBRO 	Rufous-backed Robin 	2	Merle à dos roux 	Turdus rufopalliatus 			842
+7623	RLTH 	Red-legged Thrush 	2	Merle vantard 	Turdus plumbeus 			845
+7630	VATH 	Varied Thrush 	2	Grive à collier 	Ixoreus naevius 			846
+7631	AZTH 	Aztec Thrush 	2	Grive aztèque 	Ridgwayia pinicola 			847
+7640	BLUE 	Bluethroat 	1, 1C 	Gorgebleue à miroir 	Luscinia svecica 			814
+7641	SIRU 	Siberian Rubythroat 	1B, 1 	Rossignol calliope 	Luscinia calliope 			813
+7642	RFBL 	Red-flanked Bluetail 	0	Rossignol à flancs roux 	Tarsiger cyanurus 			815
+7650	NOWH 	Northern Wheatear 	1B 	Traquet motteux 	Oenanthe oenanthe 			817
+7660	EABL 	Eastern Bluebird 	1B, 1, 1A 	Merlebleu de l'Est 	Sialia sialis 			818
+7670	WEBL 	Western Bluebird 	1B 	Merlebleu de l'Ouest 	Sialia mexicana 			819
+7676	HYBL 	Hybrid Western/Mountain Bluebird 	1B, 1A 	Hybride de Merlebleu de l'Ouest et de Merlebleu azuré 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	821
+7680	MOBL 	Mountain Bluebird 	1B, 1A 	Merlebleu azuré 	Sialia currucoides 			820
+7690	WRSH 	White-rumped Shama 	1B, 1A, 1D 	Shama à croupion blanc 	Copsychus malabaricus 			812
+7700	HAEL 	Hawaii Elepaio 	1, 0, 1C 	Monarque d'Hawaï 	Chasiempis sandwichensis 			736
+7701	OAEL 	Oahu Elepaio 	1	Monarque d'Oahu 	Chasiempis ibidis 	Y 		735
+7702	KAEL 	Kauai Elepaio 	1, 0 	Monarque de Kauai 	Chasiempis sclateri 			734
+7710	TAFL 	Taiga Flycatcher 	0	Gobemouche de la taïga 	Ficedula albicilla 			816
+7720	DSFL 	Dark-sided Flycatcher 	0	Gobemouche de Sibérie 	Muscicapa sibirica 			811
+7730	GSFL 	Gray-streaked Flycatcher 	0, 1C, 1 	Gobemouche à taches grises 	Muscicapa griseisticta 			810
+7740	LAFI 	Laysan Finch 	1A, 1B 	Psittirostre de Laysan 	Telespiza cantans 	Y 		1118
+7750	NIFI 	Nihoa Finch 	1B, 1 	Psittirostre de Nihoa 	Telespiza ultima 	Y 		1119
+7760	OU 	Ou 	2	Psittirostre psittacin 	Psittirostra psittacea 	Y 		1120
+7770	PALI 	Palila 	1A, 1B 	Psittirostre palila 	Loxioides bailleui 	Y 		1121
+7810	MAPA 	Maui Parrotbill 	1B, 1A 	Psittirostre de Maui 	Pseudonestor xanthophrys 	Y 		1122
+7820	HAAM 	Hawaii Amakihi 	1, 1B 	Amakihi familier 	Chlorodrepanis virens 			1123
+7821	OAAM 	Oahu Amakihi 	1, 1C, 1B 	Amakihi d'Oahu 	Chlorodrepanis flava 			1124
+7830	KAAM 	Kauai Amakihi 	1, 1C, 1B 	Amakihi de Kauai 	Chlorodrepanis stejnegeri 			1125
+7840	ANIA 	Anianiau 	0, 1C, 1 	Anianiau de Kauai 	Magumma parva 			1129
+7870	GREA 	Greater Akialoa 	1, 0 	Hémignathe à long bec 	Akialoa ellisianus 	Y 		1126
+7880	NUKU 	Nukupuu 	1C, 1 	Hémignathe nukupuu 	Hemignathus lucidus 	Y 		1127
+7890	AKIP 	Akiapolaau 	1A, 1B 	Hémignathe akiapolaau 	Hemignathus munroi 	Y 		1128
+7900	AKIK 	Akikiki 	1, 1C, 0 	Grimpeur de Kauai 	Oreomystis bairdi 	Y 		1130
+7910	HCRE 	Hawaii Creeper 	1, 1C, 0 	Grimpeur d'Hawaï 	Loxops mana 	Y 		1134
+7920	MAAL 	Maui Alauahio 	1C, 1 	Grimpeur de Maui 	Paroreomyza montana 			1133
+7930	KAKA 	Kakawahie 	0, 1C, 1 	Grimpeur de Molokai 	Paroreomyza flammea 	Y 		1132
+7940	OAAL 	Oahu Alauahio 	1, 1C 	Grimpeur d'Oahu 	Paroreomyza maculata 	Y 		1131
+7950	AKEP 	Akepa 	0, 1 	Loxopse des Hawaï 	Loxops coccineus 	Y 		1136
+7960	AKEK 	Akekee 	1, 1C 	Loxopse de Kauai 	Loxops caeruleirostris 	Y 		1135
+7980	IIWI 	Iiwi 	1B 	Iiwi rouge 	Drepanis coccinea 			1137
+8010	AKOH 	Akohekohe 	1A 	Palmérie huppée 	Palmeria dolei 	Y 		1138
+8020	APAP 	Apapane 	1, 1C, 1B 	Picchion cramoisi 	Himatione sanguinea 			1139
+8040	POUL 	Poo-uli 	1B 	Po-o-uli masqué 	Melamprosops phaeosoma 	Y 		1140
+8041	NRBI 	Northern Red Bishop 	0A 	Euplecte franciscain 	Euplectes franciscanus 			1165
+8042	YCBI 	Yellow-crowned Bishop 	0A 	Euplecte vorabé 	Euplectes afer 			1164
+8050	RCCO 	Red-cheeked Cordonbleu 	1C, 1 	Cordonbleu à joues rouges 	Uraeginthus bengalus 			1166
+8060	LAVW 	Lavender Waxbill 	0	Astrild queue-de-vinaigre 	Estrilda caerulescens 			1167
+8070	ORAW 	Orange-cheeked Waxbill 	0A, 0 	Astrild à joues orange 	Estrilda melpoda 			1168
+8080	BRWX 	Black-rumped Waxbill 	0, 1C, 1 	Astrild cendré 	Estrilda troglodytes 			1169
+8081	COMW 	Common Waxbill 	0A, 0 	Astrild ondulé 	Estrilda astrild 			1170
+8090	REAV 	Red Avadavat 	0A, 0 	Bengali rouge 	Amandava amandava 			1171
+8100	AFSI 	African Silverbill 	0, 0A, 1C 	Capucin bec-d'argent 	Euodice cantans 			1173
+8101	BRMA 	Bronze Mannikin 	0A 	Capucin nonnette 	Spermestes cucullata 			1172
+8110	SBMU 	Scaly-breasted Munia 	0, 0A 	Capucin damier 	Lonchura punctulata 			1175
+8120	TRMU 	Tricolored Munia 	0, 1C, 1 	Capucin à dos marron 	Lonchura malacca 			1176
+8130	JAVS 	Java Sparrow 	1B, 1A 	Padda de Java 	Lonchura oryzivora 			1174
+8131	PTWH 	Pin-tailed Whydah 	1, 0, 1B 	Veuve dominicaine 	Vidua macroura 			1177
+8501	KIPE 	King Penguin 	9	Manchot royal 	Aptenodytes patagonicus 			100
+8502	EMPE 	Emperor Penguin 	9	Manchot empereur 	Aptenodytes forsteri 			101
+8503	GEPE 	Gentoo Penguin 	9	Manchot papou 	Pygoscelis papua 			102
+8504	ADPE 	Adelie Penguin 	9	Manchot d'Adélie 	Pygoscelis adeliae 			103
+8505	CHPE 	Chinstrap Penguin 	9	Manchot à jugulaire 	Pygoscelis antarcticus 			104
+8506	VIPE 	Victoria Penguin 	9	Gorfou du Fiordland 	Eudyptes pachyrynchus 			105
+8508	ROCP 	Rockhopper Penguin 	9	Gorfou sauteur 	Eudyptes chrysocome 			106
+8509	ROYP 	Royal Penguin 	9	Gorfou de Schlegel 	Eudyptes schlegeli 			107
+8510	MACP 	Macaroni Penguin 	9	Gorfou doré 	Eudyptes chrysolophus 			108
+8512	FAPE 	Fairy Penguin 	9	Manchot pygmée 	Eudyptula minor 			109
+8514	AFPE 	African Penguin 	9	Manchot du Cap 	Spheniscus demersus 			110
+8515	HUPE 	Humboldt Penguin 	9	Manchot de Humboldt 	Spheniscus humboldti 			112
+8516	MAGP 	Magellanic Penguin 	9	Manchot de Magellan 	Spheniscus magellanicus 			111
+8517	GALP 	Galapagos Penguin 	9	Manchot des Galapagos 	Spheniscus mendiculus 			113
+8519	ROAL 	Royal Albatross 	8	Albatros royal 	Diomedea epomophora 			128
+8521	BUAL 	Buller's Albatross 	8	Albatros de Buller 	Thalassarche bulleri 			119
+8522	GHAL 	Gray-headed Albatross 	8	Albatros à tête grise 	Thalassarche chrysostoma 			118
+8523	SOAL 	Sooty Albatross 	8		Phoebetria fusca 			129
+8524	LMSA 	Light-mantled Albatross 	8	Albatros fuligineux 	Phoebetria palpebrata 			117
+8525	SGPE 	Southern Giant Petrel 	8, 7D 	Pétrel géant 	Macronectes giganteus 			121
+8526	SOFU 	Southern Fulmar 	5	Fulmar argenté 	Fulmarus glacialoides 			131
+8527	BLPE 	Blue Petrel 	3	Prion bleu 	Halobaena caerulea 			135
+8528	BBPR 	Broad-billed Prion 	3	Prion de Forster 	Pachyptila vittata 			136
+8529	DOPR 	Dove Prion 	3	Prion de la désolation 	Pachyptila desolata 			137
+8530	TBPR 	Thin-billed Prion 	3	Prion de Belcher 	Pachyptila belcheri 			138
+8531	FAPR 	Fairy Prion 	3	Prion colombe 	Pachyptila turtur 			139
+8532	ANPE 	Antarctic Petrel 	5	Pétrel Antarctique 	Thalassoica antarctica 			132
+8533	WCPE 	White-chinned Petrel 	7A, 6, 5A, 5 	Puffin à menton blanc 	Procellaria aequinoctialis 			153
+8536	KEPE 	Kerguelen Petrel 	4	Pétrel de Kerguelen 	Lugensa brevirostris 			140
+8537	SNPE 	Snow Petrel 	4	Pétrel des neiges 	Pagodroma nivea 			134
+8538	GBSP 	Gray-backed Storm-Petrel 	1B, 1A 	Océanite néréide 	Garrodia nereis 			172
+8541	BECO 	Blue-eyed Cormorant 	8, 7D 	Cormoran impérial 	Leucocarbo atriceps 			203
+8543	SNSH 	Snowy Sheathbill 	7A, 6 	Chionis blanc 	Chionis alba 			303
+8544	LESH 	Lesser Sheathbill 	7A 	Petit Chionis 	Chionis minor 			304
+8546	SBBG 	Southern Black-backed Gull 	7A, 7, 7B 	Goéland dominicain 	Larus dominicanus 			416
+8548	ANTE 	Antarctic Tern 	3, 3B 	Sterne couronnée 	Sterna vittata 			441
+8549	KETE 	Kerguelen Tern 	3	Sterne de Kerguelen 	Sterna virgata 			442
+8552	HYSK 	Hybrid Skua 	7B, 7A 	Hybride de Labbe 			Report suspected parentage as a remark (e.g. Species1 x Species2). 	362
+8553	NGPE 	Northern Giant Petrel 	8	Pétrel de Hall 	Macronectes halli 			122
+8554	BRSK 	Brown Skua 	7B, 7A 	Grand labbe 	Stercorarius antarctica 			361
+8560	TIMO 	Tinian Monarch 	0, 1C 	Monarque de Tinian 	Monarcha takatsukasae 			709
+8570	MARC 	Mariana Crow 	4, 4A 	Corneille de Guam 	Corvus kubaryi 	Y 		724
+8580	GUSW 	Guam Swiftlet 	0A, X 	Salangane de Guam 	Aerodramus bartschi 	Y 		529
+8590	NIRW 	Nightingale Reed Warbler 	1A, 1D 	Rousserolle rossignol 	Acrocephalus luscinia 	Y 		804
+8600	MIME 	Micronesian Megapode 	6	Mégapode de La Pérouse 	Megapodius laperouse 	Y 		85
+8610	WRSW 	White-rumped Swiftlet 	0, 1, 1C 	Salangane à croupion blanc 	Aerodramus spodiopygia 			528
+8620	PCFD 	Purple-capped Fruit Dove 	3A, 4 	Tourterelle à collier 	Ptilinopus porphyraceus 			469
+8630	COLK 	Collared Kingfisher 	3, 3B, 2 	Martin-chasseur à collier blanc 	Todiramphus chloris 			567
+8640	SAST 	Samoan Starling 	4, 4A 	Stourne de Samoa 	Aplonis atrifusca 			864
+8650	POST 	Polynesian Starling 	2	Stourne de Polynésie 	Aplonis tabuensis 			863
+8660	CAHO 	Cardinal Honeyeater 	1, 1C, 0 	Myzomèle cardinal 	Myzomela cardinalis 			680
+8670	WAHO 	Wattled Honeyeater 	2	Méliphage foulehaio 	Foulehaio carunculatus 			681
+8680	MIHO 	Micronesian Honeyeater 	1, 1B 	Myzomèle de Micronésie 	Myzomela rubratra 			682
+8690	RUFA 	Rufous Fantail 	0A, 0 	Rhipidure roux 	Rhipidura rufifrons 			707
+8691	FISH 	Fiji Shrikebill 	2	Monarque des Fidji 	Clytorhynchus vitiensis 			708
+8700	BRWE 	Bridled White-eye 	0A, 0 	Zostérops bridé 	Zosterops conspicillatus 	Y 		808
+8710	GOWE 	Golden White-eye 	1B 	Zostérops doré 	Cleptornis marchei 			806
+8720	MIST 	Micronesian Starling 	3, 2 	Stourne de Micronésie 	Aplonis opaca 			862
+8740	BLDR 	Black Drongo 	2	Drongo royal 	Dicrurus macrocercus 			706
+8750	LTCU 	Long-tailed Cuckoo 	3B, 3A, 4 	Coucou de Nouvelle-Zélande 	Eudynamys taitensis 			485
+8760	MCFD 	Many-colored Fruit Dove 	3A, 4, 3B 	Ptilope de La Pérouse 	Ptilinopus perousii 			468
+8770	PAPI 	Pacific Pigeon 	6	Carpophage Pacifique 	Ducula pacifica 			471
+8780	SHGD 	Shy Ground Dove 	4, 3A, 3B 	Gallicolombe de stair 	Gallicolumba stairi 	Y 		467
+8790	MICK 	Micronesian Kingfisher 	3	Martin-chasseur cannelle 	Todiramphus cinnamominus 	Y 	Includes subspecies not T. c. cinnamominus. 	568
+8791	GMKI 	Guam Micronesian Kingfisher 	3		Todiramphus cinnamominus cinnamominus 	Y 	Endangered subspecies on Guam. 	569
+8800	MASW 	Mariana Swiftlet 	0	Salangane de Guam 	Aerodramus bartschi 	Y 		530
+8810	ROWE 	Rota White-eye 	0	Zostérops de Rota 	Zosterops rotensis 	Y 		807
+9067	ANMA 	Antillean Mango 	X 	Mango doré 	Anthracothorax dominicus 			534
+9071	STTL 	Streamertail 	X 	Colibri à tête noire 	Trochilus polytmus 			561
+9081	JATO 	Jamaican Tody 	0	Todier de la Jamaïque 	Todus todus 			565
+9094	SAFL 	Sad Flycatcher 	1C, 1 	Tyran triste 	Myiarchus barbirostris 			657
+9099	YBEL 	Yellow-bellied Elaenia 	1, 1B 	Élénie à ventre jaune 	Elaenia flavogaster 			628
+9101	GAEL 	Greater Antillean Elaenia 	0A, 0 	Élénie sara 	Elaenia fallax 			629
+9102	JAEL 	Jamaican Elaenia 	0A, 0 	Élénie de la Jamaïque 	Myiopagis cotta 			625
+9107	JACR 	Jamaican Crow 	6	Corneille de la Jamaïque 	Corvus jamaicensis 			728
+9109	SHWR 	Southern House Wren 	0	Troglodyte familier du sud 	Troglodytes aedon musculus 			776
+9116	BRTR 	Brown Trembler 	2, 1D 	Trembleur brun 	Cinclocerthia ruficauda 			850
+9120	WETH 	White-eyed Thrush 	2	Merle aux yeux blancs 	Turdus jamaicensis 			841
+9122	WCTH 	White-chinned Thrush 	2	Merle à miroir 	Turdus aurantius 			844
+9127	RTSO 	Rufous-throated Solitaire 	1, 1B, 1C 	Solitaire siffleur 	Myadestes genibarbis 			823
+9130	TBVI 	Thick-billed Vireo 	1C, 1 	Viréo à bec fort 	Vireo crassirostris 			688
+9132	JAVI 	Jamaican Vireo 	0	Viréo de la Jamaïque 	Vireo modestus 			689
+9138	OLIW 	Olive-capped Warbler 	0A 	Paruline à calotte verte 	Setophaga pityophila 			936
+9141	ARRW 	Arrowhead Warbler 	0A 	Paruline de la Jamaïque 	Setophaga pharetra 			919
+9145	BAYE 	Bahama Yellowthroat 	1, 1C 	Paruline des Bahamas 	Geothlypis rostrata 			916
+9151	ORAN 	Orangequit 	1C, 1 	Pique-orange de la Jamaïque 	Euneornis campestris 			982
+9153	JAEU 	Jamaican Euphonia 	0, 0A 	Organiste de la Jamaïque 	Euphonia jamaica 			1111
+9166	VETR 	Venezuelan Troupial 	3	Oriole troupiale 	Icterus icterus 			1099
+9169	JAOR 	Jamaican Oriole 	2, 1D 	Oriole de la Jamaïque 	Icterus leucopteryx 			1103
+9176	YSGR 	Yellow-shouldered Grassquit 	0, 1 	Sporophile mantelé 	Loxipasser anoxanthus 			978
+9178	GABU 	Greater Antillean Bullfinch 	1B, 1 	Sporophile petit-coq 	Loxigilla violacea 			980
+9182	YBSE 	Yellow-bellied Seedeater 	0	Sporophile à ventre jaune 	Sporophila nigricollis 			974
+9184	BBGR 	Blue-black Grassquit 	0, 0A 	Jacarini noir 	Volatinia jacarina 			972
+9986	HYNO 	Hybrid Nonpasserine 	1A, 3A, 4, 4A, 5, 6, 7, 7A, 7B 	Hybride de non-passerin 			Report suspected parentage as a Remark (e.g. Species1 x Species2). 	601
+9996	HYPA 	Hybrid Passerine 	0, 0A, 1, 1A, 1B, 1D, 3A, 3B 	Hybride de passerin 			Report suspected parentage as a Remark (e.g. Species1 x Species2). 	602
