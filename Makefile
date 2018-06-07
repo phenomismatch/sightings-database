@@ -4,10 +4,9 @@ PYTHON=python
 PROCESSED=./data/processed
 RAW=./data/raw
 
-SQLITE_DB=macrosystems.sqlite.db
+SQLITE_DB=sightings.sqlite.db
 SQLITE_SRC="$(PROCESSED)/$(SQLITE_DB)"
 SQLITE_DST="$(PROCESSED)/$(basename $(SQLITE_DB))_$(DATE).db"
-SQLITE_MAPS_DB=$(RAW)/maps/maps.sqlite.db
 
 all: clean sqlite bbs maps ebird
 
@@ -27,5 +26,4 @@ backup:
 	cp $(SQLITE_SRC) $(SQLITE_DST)
 
 clean:
-	rm -f $(SQLITE_MAPS_DB)
 	rm -f $(SQLITE_SRC)

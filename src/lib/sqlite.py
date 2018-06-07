@@ -7,7 +7,7 @@ import sqlite3
 
 DATA_DIR = Path('data')
 # DATA_DIR = Path('..') / 'data'
-SQLITE_DB = fspath(DATA_DIR / 'processed' / 'macrosystems.sqlite.db')
+SQLITE_DB = fspath(DATA_DIR / 'processed' / 'sightings.sqlite.db')
 SQLITE_PATH = fspath(Path('src') / 'sql' / 'sqlite_01_create_db.sql')
 SPATIALITE_MODULE = '/usr/local/lib/mod_spatialite.so'
 
