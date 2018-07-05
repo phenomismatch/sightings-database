@@ -40,7 +40,7 @@ Misc. tables:
 Getting the indices correct for the various queries is an ongoing effort.
 
 #### Using geohashes
-For this to work well we want to setup some geohashed polygons of our study regions. These queries perform reasonably fast.
+For this to work well we want to setup some geohashed polygons of our study regions. These queries perform reasonably fast. Additionally, they do not need spatialite.
 ```
 SELECT * FROM events
  WHERE year = 2014
@@ -63,7 +63,7 @@ SELECT *
 I am currently working on improving this. We may want to combine the various ecoregions into study regions.
 ```
 with points as (select * from events where year = 2014 and day between 160 and 179),
-regions as (select * from eco3 where pk_id in (1518, 1519))
+regions as (select * from eco3 where pk_uid in (1518, 1519))
 select * from points, regions where contains(geometry, point) = 1;
 ```
 
