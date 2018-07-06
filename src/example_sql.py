@@ -11,7 +11,7 @@ def queries():
     cxn = db.connect()
     now = datetime.now()
 
-    report_name = f'sample_plates_report_{now.strftime("%Y-%m-%d")}.xlsx'
+    report_name = f'sample_queries_{now.strftime("%Y-%m-%d")}.xlsx'
     report_path = Path('output') / report_name
 
     bbs_sql, bbs_df = _bbs_query(cxn)
@@ -30,8 +30,8 @@ def queries():
         front_df.to_excel(writer, sheet_name='Queries', index=False)
         global_df.to_excel(writer, sheet_name='Combined', index=False)
         bbs_df.to_excel(writer, sheet_name='BBS', index=False)
-        bbs_df.maps_df(writer, sheet_name='MAPS', index=False)
-        bbs_df.ebird_df(writer, sheet_name='eBird', index=False)
+        maps_df.to_excel(writer, sheet_name='MAPS', index=False)
+        ebird_df.to_excel(writer, sheet_name='eBird', index=False)
 
 
 def _bbs_query(cxn):
@@ -48,6 +48,7 @@ def _bbs_query(cxn):
            AND latitude    BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
+    df.point = 'BLOB'
     return sql, df
 
 
@@ -65,6 +66,7 @@ def _maps_query(cxn):
            AND events.latitude  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
+    df.point = 'BLOB'
     return sql, df
 
 
@@ -82,6 +84,7 @@ def _ebird_query(cxn):
            AND latitude  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
+    df.point = 'BLOB'
     return sql, df
 
 
@@ -97,6 +100,7 @@ def _global_query(cxn):
            AND latitude  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
+    df.point = 'BLOB'
     return sql, df
 
 
