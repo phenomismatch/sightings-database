@@ -9,6 +9,7 @@ __pycache__
 .ipynb_checkpoints/
 
 # Data
+output/*
 data/raw/bbs/*
 data/raw/maps/*
 data/raw/ebird/*
