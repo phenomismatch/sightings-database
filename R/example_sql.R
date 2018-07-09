@@ -26,9 +26,9 @@ combined = events %>%
   inner_join(counts, by = "event_id") %>%
   inner_join(taxons, by = "taxon_id") %>%
   filter(between(year, 2010, 2014)) %>%
-  filter(between(day, 100, 120)) %>%
-  filter(between(longitude, -79, -78)) %>%
-  filter(between(latitude, 40, 41)) %>%
+  filter(between(day, 100, 200)) %>%
+  filter(between(longitude, -73, -72)) %>%
+  filter(between(latitude, 40, 44)) %>%
   head(100) %>%
   as.data.frame()
 
@@ -39,9 +39,9 @@ bbs = events %>%
   inner_join(bbs_events, by = "event_id") %>%
   inner_join(bbs_counts, by = "count_id") %>%
   filter(between(year, 2010, 2014)) %>%
-  filter(between(day, 100, 120)) %>%
-  filter(between(longitude, -79, -78)) %>%
-  filter(between(latitude, 40, 41)) %>%
+  filter(between(day, 100, 200)) %>%
+  filter(between(longitude, -73, -72)) %>%
+  filter(between(latitude, 40, 44)) %>%
   head(100) %>%
   as.data.frame()
 
@@ -51,9 +51,9 @@ maps = events %>%
   inner_join(maps_events, by = "event_id") %>%
   inner_join(maps_counts, by = "count_id") %>%
   filter(between(year, 2010, 2014)) %>%
-  filter(between(day, 100, 120)) %>%
-  filter(between(longitude, -79, -78)) %>%
-  filter(between(latitude, 40, 41)) %>%
+  filter(between(day, 100, 200)) %>%
+  filter(between(longitude, -73, -72)) %>%
+  filter(between(latitude, 40, 44)) %>%
   head(100) %>%
   as.data.frame()
 
@@ -63,8 +63,8 @@ ebird = events %>%
   inner_join(ebird_events, by = "event_id") %>%
   inner_join(ebird_counts, by = "count_id") %>%
   filter(between(year, 2010, 2014)) %>%
-  filter(between(day, 100, 120)) %>%
-  filter(between(longitude, -79, -78)) %>%
-  filter(between(latitude, 40, 41)) %>%
+  filter(between(day, 100, 200)) %>%
+  filter(between(longitude, -73, -72)) %>%
+  filter(between(latitude, 40, 44)) %>%
   head(100) %>%
   as.data.frame()
