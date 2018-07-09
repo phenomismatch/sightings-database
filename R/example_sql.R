@@ -18,7 +18,9 @@ ebird_events <- tbl(cxn, "ebird_events")
 ebird_counts <- tbl(cxn, "ebird_counts")
 
 
-# May want to avoid the as.data.frame() function, it is there only to show how to convert it.
+# "dplyr" is lazy and only evaluates as little as possible to create the desired output.
+# This helps with efficiency. So, you may want to avoid the as.data.frame() function,
+# it is there only to show how to convert the queries into a dataframe.
 
 combined = events %>%
   inner_join(counts, by = "event_id") %>%
