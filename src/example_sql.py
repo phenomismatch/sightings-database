@@ -42,10 +42,10 @@ def _bbs_query(cxn):
           JOIN counts     USING (event_id)
           JOIN bbs_counts USING (count_id)
           JOIN taxons     USING (taxon_id)
-         WHERE events.year BETWEEN 2010 AND 2014
-           AND day         BETWEEN  100 AND  200
-           AND longitude   BETWEEN  -73 AND  -72
-           AND latitude    BETWEEN   40 AND   44
+         WHERE year      BETWEEN 2010 AND 2014
+           AND day       BETWEEN  100 AND  200
+           AND longitude BETWEEN  -79 AND  -78
+           AND latitude  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
     df.point = 'BLOB'
@@ -60,10 +60,10 @@ def _maps_query(cxn):
           JOIN counts      USING (event_id)
           JOIN maps_counts USING (count_id)
           JOIN taxons      USING (taxon_id)
-         WHERE year             BETWEEN 2010 AND 2014
-           AND day              BETWEEN  100 AND  200
-           AND events.longitude BETWEEN  -73 AND  -72
-           AND events.latitude  BETWEEN   40 AND   44
+         WHERE year      BETWEEN 2010 AND 2014
+           AND day       BETWEEN  100 AND  200
+           AND longitude BETWEEN  -79 AND  -78
+           AND latitude  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
     df.point = 'BLOB'
@@ -80,7 +80,7 @@ def _ebird_query(cxn):
           JOIN taxons       USING (taxon_id)
          WHERE year      BETWEEN 2010 AND 2014
            AND day       BETWEEN  100 AND  200
-           AND longitude BETWEEN  -73 AND  -72
+           AND longitude BETWEEN  -79 AND  -78
            AND latitude  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
@@ -96,7 +96,7 @@ def _global_query(cxn):
           JOIN taxons USING (taxon_id)
          WHERE year      BETWEEN 2010 AND 2014
            AND day       BETWEEN  100 AND  200
-           AND longitude BETWEEN  -73 AND  -72
+           AND longitude BETWEEN  -79 AND  -78
            AND latitude  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)

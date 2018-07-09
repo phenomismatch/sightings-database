@@ -114,7 +114,10 @@ def read_stations():
     stations = stations.drop(columns=[
         c for c in stations.columns if c not in keep], axis=1)
 
-    rename = {'DECLAT': 'latitude', 'DECLNG': 'longitude'}
+    rename = {'LATITUDE': 'maps_latitude',
+              'LONGITUDE': 'maps_longitude',
+              'DECLAT': 'latitude',
+              'DECLNG': 'longitude'}
     stations = stations.rename(columns=rename)
 
     radii = {

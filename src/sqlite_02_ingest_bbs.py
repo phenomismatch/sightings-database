@@ -79,12 +79,13 @@ def insert_counts(cxn, keys, taxons):
 
     counts = pd.read_sql('SELECT * FROM bbs.breed_bird_survey_counts', cxn)
     counts = counts.drop(['record_id'], axis=1).rename(
-        columns={'speciestotal': 'count'})
+        columns={'speciestotal': 'count', 'year': 'bbs_year'})
 
     counts = data.add_count_id(counts, cxn)
     counts = data.map_to_taxon_ids(counts, 'aou', taxons)
     counts = data.map_keys_to_event_ids(
-        counts, keys, counts.statenum, counts.route, counts.rpid, counts.year)
+        counts, keys, counts.statenum, counts.route,
+        counts.rpid, counts.bbs_year)
 
     data.insert_counts(counts, cxn, 'bbs_counts')
 

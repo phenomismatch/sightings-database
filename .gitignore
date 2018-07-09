@@ -48,3 +48,6 @@ phenomismatch/
 # Editors
 .ropeproject/
 *~
+
+# R
+.Rhistory
