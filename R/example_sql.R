@@ -17,9 +17,19 @@ maps_counts <- tbl(cxn, "maps_counts")
 ebird_events <- tbl(cxn, "ebird_events")
 ebird_counts <- tbl(cxn, "ebird_counts")
 
-rows = events %>% inner_join(counts, by = "event_id") %>% inner_join(taxons, by = "taxon_id") %>%
-  filter(between(year, 2010, 2014)) %>% filter(between(day, 100, 120)) %>%
-  filter(between(longitude, -79, -78)) %>% filter(between(latitude, 40, 41))
+
+# May want to avoid the as.data.frame() function, it is there only to show how to convert it.
+
+combined = events %>%
+  inner_join(counts, by = "event_id") %>%
+  inner_join(taxons, by = "taxon_id") %>%
+  filter(between(year, 2010, 2014)) %>%
+  filter(between(day, 100, 120)) %>%
+  filter(between(longitude, -79, -78)) %>%
+  filter(between(latitude, 40, 41)) %>%
+  head(100) %>%
+  as.data.frame()
+
 
 bbs = events %>%
   inner_join(counts, by = "event_id") %>%
@@ -29,7 +39,9 @@ bbs = events %>%
   filter(between(year, 2010, 2014)) %>%
   filter(between(day, 100, 120)) %>%
   filter(between(longitude, -79, -78)) %>%
-  filter(between(latitude, 40, 41))
+  filter(between(latitude, 40, 41)) %>%
+  head(100) %>%
+  as.data.frame()
 
 maps = events %>%
   inner_join(counts, by = "event_id") %>%
@@ -39,7 +51,9 @@ maps = events %>%
   filter(between(year, 2010, 2014)) %>%
   filter(between(day, 100, 120)) %>%
   filter(between(longitude, -79, -78)) %>%
-  filter(between(latitude, 40, 41))
+  filter(between(latitude, 40, 41)) %>%
+  head(100) %>%
+  as.data.frame()
 
 ebird = events %>%
   inner_join(counts, by = "event_id") %>%
@@ -49,4 +63,6 @@ ebird = events %>%
   filter(between(year, 2010, 2014)) %>%
   filter(between(day, 100, 120)) %>%
   filter(between(longitude, -79, -78)) %>%
-  filter(between(latitude, 40, 41))
+  filter(between(latitude, 40, 41)) %>%
+  head(100) %>%
+  as.data.frame()
