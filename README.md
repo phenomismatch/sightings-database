@@ -28,8 +28,8 @@ Note that these tables are under heavy development.
 Sidecar tables:
 Each dataset has "extra" associated data that may be useful in analysis. It is impossible to normalize this data so we just store them as is.
 1. code tables; ebird_codes, maps_codes, bbs_codes: What the code fields mean in the corresponding datasets
-1. event tables; ebird_events, maps_events, bbs_events: Data associated with each event record that is unique to the dataset.
-1. count tables; ebird_counts, maps_counts, bbs_counts: Data associated with each count record that is unique to the dataset.
+1. event tables; ebird_events, maps_events, bbs_events, pollard_events: Data associated with each event record that is unique to the dataset.
+1. count tables; ebird_counts, maps_counts, bbs_counts, pollard_counts: Data associated with each count record that is unique to the dataset.
 
 Misc. tables:
 1. datasets: Information about what datasets were collected
@@ -40,7 +40,10 @@ Misc. tables:
 Getting the indices correct for the various queries is an ongoing effort.
 
 #### Samples in R
-See [this R scipt](R/example_sql.R) for how to access the spatialite database in R.
+See this R [script](R/example_sql.R) for how to access the spatialite database in R.
+
+#### Samples in Python
+Most of the scripts in the src directory access the database. I have moved common code into this [library](src/lib/sqlite.py). A some sample_queries that use this library are in this Python [script](src/example_sql.py).
 
 #### Using geohashes
 For this to work well we want to setup some geohashed polygons of our study regions. These queries perform reasonably fast. Additionally, they do not need spatialite.
