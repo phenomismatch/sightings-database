@@ -39,6 +39,9 @@ Misc. tables:
 ### Sample queries (Under heavy development)
 Getting the indices correct for the various queries is an ongoing effort.
 
+#### Samples in R
+See [this R scipt](R/example_sql.R) for how to access the spatialite database in R.
+
 #### Using geohashes
 For this to work well we want to setup some geohashed polygons of our study regions. These queries perform reasonably fast. Additionally, they do not need spatialite.
 ```
