@@ -67,7 +67,7 @@ def insert_dataset(cxn):
         extracted=str(date.today()),
         version='2017.0',
         url='https://www.birdpop.org/pages/maps.php')
-    return db.insert_dataset(cxn, dataset)
+    db.insert_dataset(cxn, dataset)
 
 
 def insert_codes(cxn):

@@ -18,7 +18,7 @@ def ingest_ebird():
 
     cxn = db.connect()
 
-    db.delete_dataset(cxn)
+    db.delete_dataset(cxn, DATASET_ID)
     insert_dataset(cxn)
     taxons = select_taxons(cxn)
     insert_codes(cxn)
@@ -36,7 +36,7 @@ def insert_dataset(cxn):
         extracted=str(date.today()),
         version='relFeb-2018',
         url='https://ebird.org/home')
-    return db.insert_dataset(cxn, dataset)
+    db.insert_dataset(cxn, dataset)
 
 
 def select_taxons(cxn):

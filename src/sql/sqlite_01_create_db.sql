@@ -17,16 +17,19 @@ CREATE TABLE datasets (
 
 DROP TABLE IF EXISTS taxons;
 CREATE TABLE taxons (
-  taxon_id  INTEGER NOT NULL PRIMARY KEY,
-  sci_name  TEXT NOT NULL UNIQUE,
-  class     TEXT NOT NULL,
-  ordr      TEXT,
-  family    TEXT,
-  genus     TEXT,
-  is_target INTEGER,
+  taxon_id    INTEGER NOT NULL PRIMARY KEY,
+  dataset_id  TEXT NOT NULL,
+  sci_name    TEXT NOT NULL UNIQUE,
+  class       TEXT NOT NULL,
+  ordr        TEXT,
+  family      TEXT,
+  genus       TEXT,
+  synonyms    TEXT,
+  is_target   INTEGER,
   common_name TEXT
 );
-CREATE INDEX taxons_scientific_name ON taxons (sci_name);
+CREATE INDEX taxons_sci_name   ON taxons (sci_name);
+CREATE INDEX taxons_dataset_id ON taxons (dataset_id);
 CREATE INDEX taxons_class  ON taxons (class);
 CREATE INDEX taxons_order  ON taxons (ordr);
 CREATE INDEX taxons_family ON taxons (family);

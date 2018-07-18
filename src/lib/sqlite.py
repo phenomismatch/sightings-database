@@ -73,7 +73,6 @@ def insert_dataset(cxn, rec):
         """
     cxn.execute(sql, rec)
     cxn.commit()
-    return last_insert_rowid(cxn)
 
 
 def select_dataset_points(cxn, dataset_id):
@@ -92,6 +91,8 @@ def delete_dataset(cxn, dataset_id):
     print(f'Deleting old {dataset_id} records')
 
     cxn.execute("DELETE FROM datasets WHERE dataset_id = ?", (dataset_id, ))
+
+    cxn.execute("DELETE FROM taxons WHERE dataset_id = ?", (dataset_id, ))
 
     sql = """DELETE FROM events
             WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""
