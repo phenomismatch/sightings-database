@@ -62,20 +62,13 @@ def read_data():
         'Taxon as reported': 'Taxon_as_reported'})
 
     pollard.start_ts = pd.to_datetime(pollard.start_ts, errors='coerce')
-
-    has_time = pollard.start_ts.notna()
-    has_sci_name = pollard.sci_name.notna()
-    has_site = pollard.Site.isin(locations.Site)
-    has_route = pollard.Route.isin(locations.Route)
-    pollard = pollard[has_time & has_sci_name & has_site & has_route]
+    pollard = pollard[pollard.start_ts.notna() & pollard.sci_name.notna()]
 
     pollard = pd.merge(pollard, locations, on=['Site', 'Route'], how='left')
 
     pollard.latitude = pd.to_numeric(pollard.latitude, errors='coerce')
     pollard.longitude = pd.to_numeric(pollard.longitude, errors='coerce')
-    has_lat = pollard.latitude.notna()
-    has_lng = pollard.longitude.notna()
-    pollard = pollard[has_lat & has_lng]
+    pollard = pollard[pollard.latitude.notna() & pollard.longitude.notna()]
 
     return pollard
 
