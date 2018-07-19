@@ -65,10 +65,10 @@ def read_data():
     pollard = pollard[pollard.start_ts.notna() & pollard.sci_name.notna()]
 
     pollard = pd.merge(pollard, locations, on=['Site', 'Route'], how='left')
-
     pollard.latitude = pd.to_numeric(pollard.latitude, errors='coerce')
     pollard.longitude = pd.to_numeric(pollard.longitude, errors='coerce')
     pollard = pollard[pollard.latitude.notna() & pollard.longitude.notna()]
+    print(pollard.shape)
 
     return pollard
 
