@@ -1,5 +1,6 @@
 """Ingest Pollard data."""
 
+import re
 import warnings
 from datetime import date
 import pandas as pd
@@ -20,15 +21,15 @@ def ingest_pollard():
 
     db.delete_dataset(cxn, DATASET_ID)
 
-    pollard = read_data()
-    pollard = get_species(pollard)
-    insert_dataset(cxn)
-    taxons = insert_taxons(cxn, pollard)
-    insert_records(cxn, pollard, taxons)
+    pollard = _read_data()
+    pollard = _get_species(pollard)
+    _insert_dataset(cxn)
+    taxons = _insert_taxons(cxn, pollard)
+    _insert_records(cxn, pollard, taxons)
     db.update_points(cxn, DATASET_ID)
 
 
-def read_data():
+def _read_data():
     print('Reading data')
 
     locations = pd.read_csv(
@@ -42,38 +43,21 @@ def read_data():
     pollard = pollard.rename(columns={
         'Scientific Name': 'sci_name',
         'Species': 'common_name',
-        'Land Owner': 'Land_Owner',
-        'Start time': 'start_ts',
-        'End time': 'end_ts',
-        'Total': 'count',
-        'A-key': 'A_key',
-        'B-key': 'B_key',
-        'C-key': 'C_key',
-        'D-key': 'D_key',
-        'E-key': 'E_key',
-        'Observer/Spotter': 'Observer_Spotter',
-        'Other participants': 'Other_participants',
-        'Recorder/Scribe': 'Recorder_Scribe',
-        'Was the survey completed?': 'Was_completed',
-        'Monitoring Program': 'Monitoring_Program',
-        'Temperature (end)': 'Temperature_end',
-        'Sky (end)': 'Sky_end',
-        'Wind (end)': 'Wind_end',
-        'Taxon as reported': 'Taxon_as_reported'})
+        'Total': 'count'})
 
-    pollard.start_ts = pd.to_datetime(pollard.start_ts, errors='coerce')
-    pollard = pollard[pollard.start_ts.notna() & pollard.sci_name.notna()]
+    pollard['Start time'] = pd.to_datetime(
+        pollard['Start time'], errors='coerce')
+    pollard = pollard[pollard['Start time'].notna() & pollard.sci_name.notna()]
 
     pollard = pd.merge(pollard, locations, on=['Site', 'Route'], how='left')
     pollard.latitude = pd.to_numeric(pollard.latitude, errors='coerce')
     pollard.longitude = pd.to_numeric(pollard.longitude, errors='coerce')
     pollard = pollard[pollard.latitude.notna() & pollard.longitude.notna()]
-    print(pollard.shape)
 
     return pollard
 
 
-def get_species(pollard):
+def _get_species(pollard):
     parts = pollard.sci_name.str.split(expand=True).drop([2], axis=1).rename(
         columns={0: 'genus', 1: 'combined'})
     pollard = pollard.join(parts)
@@ -95,8 +79,7 @@ def get_species(pollard):
     return pollard
 
 
-def insert_dataset(cxn):
-    """Insert a dataset record."""
+def _insert_dataset(cxn):
     print('Inserting dataset')
 
     dataset = dict(
@@ -108,7 +91,7 @@ def insert_dataset(cxn):
     db.insert_dataset(cxn, dataset)
 
 
-def insert_taxons(cxn, pollard):
+def _insert_taxons(cxn, pollard):
     print('Inserting taxons')
 
     taxons = pollard.loc[:, ['sci_name', 'common_name']]
@@ -127,15 +110,15 @@ def insert_taxons(cxn, pollard):
     return taxons.reset_index().set_index('sci_name').taxon_id.to_dict()
 
 
-def insert_records(cxn, pollard, taxons):
+def _insert_records(cxn, pollard, taxons):
     print('Inserting event and count records')
 
     pollard['dataset_id'] = DATASET_ID
-    pollard['start_time'] = pollard.start_ts.dt.strftime('%H:%M:%S')
+    pollard['start_time'] = pollard['Start time'].dt.strftime('%H:%M:%S')
     pollard['end_time'] = pd.to_datetime(
-        pollard.end_ts, format='%H:%M:%S', errors='coerce')
-    pollard['year'] = pollard.start_ts.dt.strftime('%Y')
-    pollard['day'] = pollard.start_ts.dt.strftime('%j')
+        pollard['End time'], format='%H:%M:%S', errors='coerce')
+    pollard['year'] = pollard['Start time'].dt.strftime('%Y')
+    pollard['day'] = pollard['Start time'].dt.strftime('%j')
     pollard['radius'] = None
     pollard['geohash'] = pollard.apply(lambda x: geohash2.encode(
         x.latitude, x.longitude, precision=7), axis=1)
@@ -145,18 +128,18 @@ def insert_records(cxn, pollard, taxons):
     count_id = db.next_id(cxn, 'counts')
     pollard['count_id'] = range(count_id, count_id + pollard.shape[0])
 
-    event_cols = db.EVENT_COLUMNS + [
-        'Site', 'Route', 'County', 'State', 'Land_Owner', 'start_time',
-        'end_time', 'Duration', 'Survey', 'Temp', 'Sky', 'Wind', 'transect_id',
-        'Route_Poin', 'Route_Po_1', 'Route_Po_2', 'latitude', 'longitude',
-        'Date', 'Temperature_end', 'Sky_end', 'Wind_end', 'CLIMDIV_ID',
-        'CD_sub', 'CD_Name', 'ST', 'PRE_MEAN', 'PRE_STD', 'TMP_MEAN',
-        'TMP_STD', 'Was_completed']
-    count_cols = db.COUNT_COLUMNS + [
-        'sci_name', 'A', 'B', 'C', 'D', 'E', 'count', 'A_key',
-        'B_key', 'C_key', 'D_key', 'E_key', 'Archived', 'Observer_Spotter',
-        'Taxon_as_reported', 'Other_participants', 'Recorder_Scribe',
-        'Monitoring_Program']
+    event_cols = db.EVENT_COLUMNS + re.split(
+        r',\s*',
+        '''Site, Route, County, State, Land Owner, Duration, Survey, Temp, Sky,
+           Wind, Was the survey completed?, Date, Temperature (end), Sky (end),
+           Wind (end), Start time, End time, transect_id, Route_Poin,
+           Route_Po_1, Route_Po_2, CLIMDIV_ID, CD_sub, CD_Name, ST, PRE_MEAN,
+           PRE_STD, TMP_MEAN, TMP_STD''')
+    count_cols = db.COUNT_COLUMNS + re.split(
+        r',\s*',
+        '''A, B, C, D, E, A-key, B-key, C-key, D-key, E-key, Archived,
+           Observer/Spotter, Other participants, Recorder/Scribe,
+           Monitoring Program, Taxon as reported''')
 
     pollard = pollard.set_index('event_id')
     data.insert_events(pollard.loc[:, event_cols], cxn, 'pollard_events')
