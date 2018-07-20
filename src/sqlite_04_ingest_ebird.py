@@ -43,23 +43,23 @@ def select_taxons(cxn):
     """Build a dictionary of scientific names and taxon_ids."""
     print('Selecting taxons')
 
-    sql = """SELECT taxon_id, sci_name FROM taxons WHERE is_target = 1"""
+    sql = """SELECT taxon_id, sci_name FROM taxons WHERE target = 1"""
     taxons = pd.read_sql(sql, cxn)
     return taxons.set_index('sci_name').taxon_id.to_dict()
 
 
 def insert_records(cxn, taxons):
     """Insert event and event detail records."""
-    print('Inserting events and counts')
+    print('Inserting dates and counts')
 
     in_path = EBIRD_PATH / 'ebd_relFeb-2018.txt'
 
     rename_columns = {
         'OBSERVATION COUNT': 'count',
         'EFFORT DISTANCE KM': 'radius',
-        'TIME OBSERVATIONS STARTED': 'start_time',
-        'LATITUDE': 'latitude',
-        'LONGITUDE': 'longitude'}
+        'TIME OBSERVATIONS STARTED': 'started',
+        'LATITUDE': 'lat',
+        'LONGITUDE': 'lng'}
     event_cols = db.EVENT_COLUMNS + [
         'COUNTRY CODE', 'STATE CODE', 'COUNTY CODE', 'IBA CODE', 'BCR CODE',
         'USFWS CODE', 'ATLAS BLOCK', 'LOCALITY ID', ' LOCALITY TYPE',
@@ -103,12 +103,12 @@ def insert_records(cxn, taxons):
         df['taxon_id'] = df['SCIENTIFIC NAME'].map(taxons)
         df['dataset_id'] = DATASET_ID
 
-        df['start_time'] = pd.to_datetime(df['start_time'], format='%H:%M:%S')
+        df['started'] = pd.to_datetime(df['started'], format='%H:%M:%S')
         df['delta'] = pd.to_numeric(df['DURATION MINUTES'], errors='coerce')
         df.delta = pd.to_timedelta(df.delta, unit='m', errors='coerce')
-        df['end_time'] = df.start_time + df.delta
-        convert_to_time(df, 'start_time')
-        convert_to_time(df, 'end_time')
+        df['ended'] = df.started + df.delta
+        convert_to_time(df, 'started')
+        convert_to_time(df, 'ended')
 
         is_na = df.radius.isna()
         df.radius = pd.to_numeric(df.radius, errors='coerce').fillna(0.0)
@@ -116,24 +116,24 @@ def insert_records(cxn, taxons):
         df.loc[is_na, 'radius'] = None
 
         dups = df['SAMPLING EVENT IDENTIFIER'].duplicated()
-        events = df[~dups]
-        old_events = events['SAMPLING EVENT IDENTIFIER'].isin(sample_ids)
-        events = events[~old_events]
+        dates = df[~dups]
+        old_events = dates['SAMPLING EVENT IDENTIFIER'].isin(sample_ids)
+        dates = dates[~old_events]
 
-        event_id = db.next_id(cxn, 'events')
-        events['event_id'] = range(event_id, event_id + events.shape[0])
-        events['geohash'] = events.apply(lambda x: geohash2.encode(
-            x.latitude, x.longitude, precision=7), axis=1)
+        date_id = db.next_id(cxn, 'dates')
+        dates['date_id'] = range(date_id, date_id + dates.shape[0])
+        dates['geohash'] = dates.apply(lambda x: geohash2.encode(
+            x.lat, x.lng, precision=7), axis=1)
 
-        events = events.set_index('SAMPLING EVENT IDENTIFIER', drop=False)
-        new_sample_ids = events.event_id.to_dict()
+        dates = dates.set_index('SAMPLING EVENT IDENTIFIER', drop=False)
+        new_sample_ids = dates.date_id.to_dict()
         sample_ids = {**sample_ids, **new_sample_ids}
 
-        events = events.set_index('event_id')
+        dates = dates.set_index('date_id')
 
-        data.insert_events(events.loc[:, event_cols], cxn, 'ebird_events')
+        data.insert_events(dates.loc[:, event_cols], cxn, 'ebird_events')
 
-        df['event_id'] = df['SAMPLING EVENT IDENTIFIER'].map(sample_ids)
+        df['date_id'] = df['SAMPLING EVENT IDENTIFIER'].map(sample_ids)
         df = data.add_count_id(df, cxn)
 
         data.insert_counts(df.loc[:, count_cols], cxn, 'ebird_counts')

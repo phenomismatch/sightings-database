@@ -33,44 +33,44 @@ def ingest_bbs():
 
 def insert_events(cxn):
     """Insert event and event detail records."""
-    print('Inserting events')
+    print('Inserting dates')
 
     sql = """SELECT *
                FROM bbs.breed_bird_survey_weather
                JOIN bbs.breed_bird_survey_routes USING (statenum, route)"""
-    events = pd.read_sql(sql, cxn)
+    dates = pd.read_sql(sql, cxn)
 
-    events = events.loc[:, ~events.columns.duplicated()]
-    events = events.rename(
-        columns={'starttime': 'start_time', 'endtime': 'end_time'})
+    dates = dates.loc[:, ~dates.columns.duplicated()]
+    dates = dates.rename(
+        columns={'starttime': 'started', 'endtime': 'ended'})
 
-    events = data.add_event_id(events, cxn)
+    dates = data.add_event_id(dates, cxn)
 
     twenty_five_miles = 1609.344 * 25
-    events['radius'] = twenty_five_miles
+    dates['radius'] = twenty_five_miles
 
-    events['dataset_id'] = DATASET_ID
-    events['geohash'] = events.apply(lambda x: geohash2.encode(
-        x.latitude, x.longitude, precision=7), axis=1)
-    events['day'] = pd.to_datetime(
-        events.loc[:, ['year', 'month', 'day']]).dt.strftime('%j')
-    convert_to_time(events, 'start_time')
-    convert_to_time(events, 'end_time')
+    dates['dataset_id'] = DATASET_ID
+    dates['geohash'] = dates.apply(lambda x: geohash2.encode(
+        x.lat, x.lng, precision=7), axis=1)
+    dates['day'] = pd.to_datetime(
+        dates.loc[:, ['year', 'month', 'day']]).dt.strftime('%j')
+    convert_to_time(dates, 'started')
+    convert_to_time(dates, 'ended')
 
-    data.insert_events(events, cxn, 'bbs_events')
+    data.insert_events(dates, cxn, 'bbs_events')
 
     return data.make_key_event_id_dict(
-        events, events.statenum, events.route, events.rpid, events.year)
+        dates, dates.statenum, dates.route, dates.rpid, dates.year)
 
 
-def convert_to_time(events, column):
+def convert_to_time(dates, column):
     """Convert the time field from int hMM format to HH:MM format."""
-    is_na = pd.to_numeric(events[column], errors='coerce').isna()
-    events[column] = events[column].fillna(0).astype(int).astype(str)
-    events[column] = events[column].str.pad(4, fillchar='0')
-    events[column] = pd.to_datetime(
-        events[column], format='%H%M', errors='coerce').dt.strftime('%H:%M')
-    events.loc[is_na, column] = None
+    is_na = pd.to_numeric(dates[column], errors='coerce').isna()
+    dates[column] = dates[column].fillna(0).astype(int).astype(str)
+    dates[column] = dates[column].str.pad(4, fillchar='0')
+    dates[column] = pd.to_datetime(
+        dates[column], format='%H%M', errors='coerce').dt.strftime('%H:%M')
+    dates.loc[is_na, column] = None
 
 
 def insert_counts(cxn, keys, taxons):

@@ -8,15 +8,15 @@ import pandas as pd
 import lib.sqlite as db
 
 
-warnings.simplefilter(action='ignore', category=UserWarning)
-
-BIRD_DATASET_ID = 'clem'
+BIRD_DATASET_ID = 'clements'
 EXTERNAL = db.DATA_DIR / 'external'
 TAXONOMY = EXTERNAL / 'taxonomy'
 
 
 def create_database():
     """Create the database and input constant data."""
+    warnings.simplefilter(action='ignore', category=UserWarning)
+
     if os.path.exists(db.SQLITE_DB):
         os.remove(db.SQLITE_DB)
 
@@ -34,8 +34,8 @@ def create_database():
 
 def _insert_version(cxn):
     print('Inserting version')
-    cxn.execute('INSERT INTO version (version, version_date) VALUES (?, ?)',
-                ('v0.2', str(date.today())))
+    cxn.execute('INSERT INTO version (version, created) VALUES (?, ?)',
+                ('v0.3', str(date.today())))
     cxn.commit()
 
 
@@ -72,14 +72,13 @@ def _get_clem_species(datasets):
 
     datasets.append({
         'dataset_id': BIRD_DATASET_ID,
-        'title': 'Standardized birds species codes',
         'extracted': str(date.today()),
         'version': '2017-07-27',
+        'title': 'Standardized birds species codes',
         'url': 'https://www.birdpop.org/pages/birdSpeciesCodes.php'})
 
-    birds = (pd.read_csv(path)
-               .rename(columns={'scientific name': 'sci_name',
-                                'English name': 'common_name'}))
+    birds = pd.read_csv(path).rename(columns={'scientific name': 'sci_name',
+                                              'English name': 'common_name'})
     is_species = birds.category == 'species'
     birds = birds.loc[is_species,
                       ['sci_name', 'order', 'family', 'common_name']]
@@ -88,24 +87,24 @@ def _get_clem_species(datasets):
 
 def _set_target_birds(birds):
     targets = pd.read_csv(TAXONOMY / 'target_birds.csv').sci_name.tolist()
-    is_target = birds.sci_name.isin(targets)
-    birds.loc[is_target, 'is_target'] = 1
+    target = birds.sci_name.isin(targets)
+    birds.loc[target, 'target'] = 1
 
 
 def _insert_countries(cxn, datasets):
     print('Inserting countries')
 
-    path = str(EXTERNAL / 'misc' / 'ISO_3166-1_country_codes.csv')
     datasets.append({
         'dataset_id': 'ISO 3166-1',
-        'title': 'ISO 3166-1',
         'extracted': '2018-01-11',
         'version': '2018-01-11',
+        'title': 'ISO 3166-1',
         'url': 'https://en.wikipedia.org/wiki/ISO_3166-1'})
 
-    (pd.read_csv(path)
-       .rename_axis('country_id')
-       .to_sql('countries', cxn, if_exists='replace'))
+    path = str(EXTERNAL / 'misc' / 'ISO_3166-1_country_codes.csv')
+    df = pd.read_csv(path).rename_axis('country_id')
+
+    df.to_sql('countries', cxn, if_exists='replace')
     cxn.execute('CREATE INDEX countries_code ON countries(code)')
     cxn.execute('CREATE INDEX countries_alpha2 ON countries(alpha2)')
     cxn.execute('CREATE INDEX countries_alpha3 ON countries(alpha3)')

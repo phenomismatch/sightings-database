@@ -84,10 +84,10 @@ def read_effort():
 
     effort = pd.read_csv(MAPS_PATH / '1117ef.csv', dtype='unicode')
     effort = effort.groupby(['STA', 'DATE']).agg({'START': min, 'END': max})
-    effort = effort.rename(columns={'START': 'start_time', 'END': 'end_time'})
+    effort = effort.rename(columns={'START': 'started', 'END': 'ended'})
 
-    convert_to_time(effort, 'start_time')
-    convert_to_time(effort, 'end_time')
+    convert_to_time(effort, 'started')
+    convert_to_time(effort, 'ended')
 
     return effort
 
@@ -116,8 +116,8 @@ def read_stations():
 
     rename = {'LATITUDE': 'maps_latitude',
               'LONGITUDE': 'maps_longitude',
-              'DECLAT': 'latitude',
-              'DECLNG': 'longitude'}
+              'DECLAT': 'lat',
+              'DECLNG': 'lng'}
     stations = stations.rename(columns=rename)
 
     radii = {
@@ -150,22 +150,22 @@ def read_bands(taxons, stations):
 
 def insert_events(cxn, effort, stations):
     """Insert event records."""
-    print('Inserting events')
+    print('Inserting dates')
 
-    events = effort.reset_index(level=['STA', 'DATE'])
-    events = events.merge(right=stations, how='inner', on='STA')
+    dates = effort.reset_index(level=['STA', 'DATE'])
+    dates = dates.merge(right=stations, how='inner', on='STA')
 
-    events = data.add_event_id(events, cxn)
-    events['dataset_id'] = DATASET_ID
-    events.DATE = pd.to_datetime(events.DATE)
-    events['year'] = events.DATE.dt.strftime('%Y')
-    events['day'] = events.DATE.dt.strftime('%j')
-    events['geohash'] = events.apply(lambda x: geohash2.encode(
-        x.latitude, x.longitude, precision=7), axis=1)
-    keys = data.make_key_event_id_dict(events, events.STA, events.DATE)
-    events.DATE = events.DATE.dt.date
+    dates = data.add_event_id(dates, cxn)
+    dates['dataset_id'] = DATASET_ID
+    dates.DATE = pd.to_datetime(dates.DATE)
+    dates['year'] = dates.DATE.dt.strftime('%Y')
+    dates['day'] = dates.DATE.dt.strftime('%j')
+    dates['geohash'] = dates.apply(lambda x: geohash2.encode(
+        x.lat, x.lng, precision=7), axis=1)
+    keys = data.make_key_event_id_dict(dates, dates.STA, dates.DATE)
+    dates.DATE = dates.DATE.dt.date
 
-    data.insert_events(events, cxn, 'maps_events')
+    data.insert_events(dates, cxn, 'maps_events')
 
     return keys
 

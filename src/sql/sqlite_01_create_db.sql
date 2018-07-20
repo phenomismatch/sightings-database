@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS version;
 CREATE TABLE version (
-  version      TEXT NOT NULL PRIMARY KEY,
-  version_date TEXT NOT NULL
+  version TEXT NOT NULL PRIMARY KEY,
+  created TEXT NOT NULL
 );
 
 
@@ -25,7 +25,7 @@ CREATE TABLE taxons (
   family      TEXT,
   genus       TEXT,
   synonyms    TEXT,
-  is_target   INTEGER,
+  target      INTEGER,
   common_name TEXT
 );
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
@@ -36,33 +36,41 @@ CREATE INDEX taxons_family ON taxons (family);
 CREATE INDEX taxons_genus  ON taxons (genus);
 
 
-DROP TABLE IF EXISTS events;
-CREATE TABLE events (
-  event_id    INTEGER NOT NULL PRIMARY KEY,
-  dataset_id  TEXT NOT NULL,
-  year        NUMBER NOT NULL,
-  day         NUMBER NOT NULL,
-  start_time  TEXT,
-  end_time    TEXT,
-  latitude    NUMBER NOT NULL,
-  longitude   NUMBER NOT NULL,
-  radius      NUMBER,
-  geohash     TEXT
+DROP TABLE IF EXISTS points;
+CREATE TABLE points (
+  point_id   INTEGER NOT NULL PRIMARY KEY,
+  dataset_id TEXT NOT NULL,
+  lng        NUMBER NOT NULL,
+  lat        NUMBER NOT NULL,
+  geohash    TEXT,
+  radius     NUMBER
 );
-CREATE INDEX events_dataset_id   ON events (dataset_id);
-CREATE INDEX events_date_lng_lat ON events (year, day, longitude, latitude);
-CREATE INDEX events_date_geohash ON events (year, day, geohash);
-SELECT AddGeometryColumn('events', 'point', 4326, 'POINT', 'XY', 0);
-SELECT CreateSpatialIndex('events', 'point');
+CREATE INDEX points_dataset_id ON points (dataset_id);
+CREATE INDEX points_lng_lat    ON points (lng, lat);
+CREATE INDEX points_geohash    ON points (geohash);
+SELECT AddGeometryColumn('points', 'point', 4326, 'POINT', 'XY', 0);
+SELECT CreateSpatialIndex('points', 'point');
+
+
+DROP TABLE IF EXISTS dates;
+CREATE TABLE dates (
+  date_id  INTEGER NOT NULL PRIMARY KEY,
+  point_id INTEGER NOT NULL,
+  year     NUMBER NOT NULL,
+  day      NUMBER NOT NULL,
+  started  TEXT,
+  ended    TEXT
+);
+CREATE INDEX dates_point_id ON dates (point_id);
+CREATE INDEX dates_year_day ON dates (year, day);
 
 
 DROP TABLE IF EXISTS counts;
 CREATE TABLE counts (
-  count_id    INTEGER NOT NULL PRIMARY KEY,
-  event_id    INTEGER NOT NULL,
-  taxon_id    INTEGER NOT NULL,
-  count       INTEGER NOT NULL
+  count_id INTEGER NOT NULL PRIMARY KEY,
+  date_id  INTEGER NOT NULL,
+  taxon_id INTEGER NOT NULL,
+  count    INTEGER NOT NULL
 );
-CREATE INDEX counts_event_id ON counts (event_id);
+CREATE INDEX counts_event_id ON counts (date_id);
 CREATE INDEX counts_taxon_id ON counts (taxon_id);
-CREATE INDEX counts_event_taxon ON counts (event_id, taxon_id);

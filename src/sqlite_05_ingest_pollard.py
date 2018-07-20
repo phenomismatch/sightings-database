@@ -35,7 +35,7 @@ def _read_data():
     locations = pd.read_csv(
         POLLARD_PATH / 'Pollard_locations.csv', dtype='unicode')
     locations = locations.rename(
-        columns={'lat': 'latitude', 'long': 'longitude'})
+        columns={'lat': 'lat', 'long': 'lng'})
     locations = locations.drop_duplicates(['Site', 'Route'])
 
     pollard = pd.read_csv(
@@ -50,9 +50,9 @@ def _read_data():
     pollard = pollard[pollard['Start time'].notna() & pollard.sci_name.notna()]
 
     pollard = pd.merge(pollard, locations, on=['Site', 'Route'], how='left')
-    pollard.latitude = pd.to_numeric(pollard.latitude, errors='coerce')
-    pollard.longitude = pd.to_numeric(pollard.longitude, errors='coerce')
-    pollard = pollard[pollard.latitude.notna() & pollard.longitude.notna()]
+    pollard.lat = pd.to_numeric(pollard.lat, errors='coerce')
+    pollard.lng = pd.to_numeric(pollard.lng, errors='coerce')
+    pollard = pollard[pollard.lat.notna() & pollard.lng.notna()]
 
     return pollard
 
@@ -101,7 +101,7 @@ def _insert_taxons(cxn, pollard):
     taxons['class'] = 'lepidoptera'
     taxons['ordr'] = ''
     taxons['family'] = ''
-    taxons['is_target'] = 1
+    taxons['target'] = 1
 
     taxon_id = db.next_id(cxn, 'taxons')
     taxons['taxon_id'] = range(taxon_id, taxon_id + taxons.shape[0])
@@ -114,17 +114,17 @@ def _insert_records(cxn, pollard, taxons):
     print('Inserting event and count records')
 
     pollard['dataset_id'] = DATASET_ID
-    pollard['start_time'] = pollard['Start time'].dt.strftime('%H:%M:%S')
-    pollard['end_time'] = pd.to_datetime(
+    pollard['started'] = pollard['Start time'].dt.strftime('%H:%M:%S')
+    pollard['ended'] = pd.to_datetime(
         pollard['End time'], format='%H:%M:%S', errors='coerce')
     pollard['year'] = pollard['Start time'].dt.strftime('%Y')
     pollard['day'] = pollard['Start time'].dt.strftime('%j')
     pollard['radius'] = None
     pollard['geohash'] = pollard.apply(lambda x: geohash2.encode(
-        x.latitude, x.longitude, precision=7), axis=1)
+        x.lat, x.lng, precision=7), axis=1)
     pollard['taxon_id'] = pollard.sci_name.map(taxons)
-    event_id = db.next_id(cxn, 'events')
-    pollard['event_id'] = range(event_id, event_id + pollard.shape[0])
+    date_id = db.next_id(cxn, 'dates')
+    pollard['date_id'] = range(date_id, date_id + pollard.shape[0])
     count_id = db.next_id(cxn, 'counts')
     pollard['count_id'] = range(count_id, count_id + pollard.shape[0])
 
@@ -141,7 +141,7 @@ def _insert_records(cxn, pollard, taxons):
            Observer/Spotter, Other participants, Recorder/Scribe,
            Monitoring Program, Taxon as reported''')
 
-    pollard = pollard.set_index('event_id')
+    pollard = pollard.set_index('date_id')
     data.insert_events(pollard.loc[:, event_cols], cxn, 'pollard_events')
 
     pollard = pollard.reset_index().set_index('count_id')

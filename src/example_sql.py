@@ -37,15 +37,15 @@ def queries():
 def _bbs_query(cxn):
     sql = """
         SELECT *
-          FROM events
-          JOIN bbs_events USING (event_id)
-          JOIN counts     USING (event_id)
+          FROM dates
+          JOIN bbs_events USING (date_id)
+          JOIN counts     USING (date_id)
           JOIN bbs_counts USING (count_id)
           JOIN taxons     USING (taxon_id)
-         WHERE year      BETWEEN 2010 AND 2014
-           AND day       BETWEEN  100 AND  200
-           AND longitude BETWEEN  -79 AND  -78
-           AND latitude  BETWEEN   40 AND   44
+         WHERE year BETWEEN 2010 AND 2014
+           AND day  BETWEEN  100 AND  200
+           AND lng  BETWEEN  -79 AND  -78
+           AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
     df.point = 'BLOB'
@@ -55,15 +55,15 @@ def _bbs_query(cxn):
 def _maps_query(cxn):
     sql = """
         SELECT *
-          FROM events
-          JOIN maps_events USING (event_id)
-          JOIN counts      USING (event_id)
+          FROM dates
+          JOIN maps_events USING (date_id)
+          JOIN counts      USING (date_id)
           JOIN maps_counts USING (count_id)
           JOIN taxons      USING (taxon_id)
-         WHERE year      BETWEEN 2010 AND 2014
-           AND day       BETWEEN  100 AND  200
-           AND longitude BETWEEN  -79 AND  -78
-           AND latitude  BETWEEN   40 AND   44
+         WHERE year BETWEEN 2010 AND 2014
+           AND day  BETWEEN  100 AND  200
+           AND lng  BETWEEN  -79 AND  -78
+           AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
     df.point = 'BLOB'
@@ -73,15 +73,15 @@ def _maps_query(cxn):
 def _ebird_query(cxn):
     sql = """
         SELECT *
-          FROM events
-          JOIN ebird_events USING (event_id)
-          JOIN counts       USING (event_id)
+          FROM dates
+          JOIN ebird_events USING (date_id)
+          JOIN counts       USING (date_id)
           JOIN ebird_counts USING (count_id)
           JOIN taxons       USING (taxon_id)
-         WHERE year      BETWEEN 2010 AND 2014
-           AND day       BETWEEN  100 AND  200
-           AND longitude BETWEEN  -79 AND  -78
-           AND latitude  BETWEEN   40 AND   44
+         WHERE year BETWEEN 2010 AND 2014
+           AND day  BETWEEN  100 AND  200
+           AND lng  BETWEEN  -79 AND  -78
+           AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
     df.point = 'BLOB'
@@ -91,13 +91,13 @@ def _ebird_query(cxn):
 def _global_query(cxn):
     sql = """
         SELECT *
-          FROM events
-          JOIN counts USING (event_id)
+          FROM dates
+          JOIN counts USING (date_id)
           JOIN taxons USING (taxon_id)
-         WHERE year      BETWEEN 2010 AND 2014
-           AND day       BETWEEN  100 AND  200
-           AND longitude BETWEEN  -79 AND  -78
-           AND latitude  BETWEEN   40 AND   44
+         WHERE year BETWEEN 2010 AND 2014
+           AND day  BETWEEN  100 AND  200
+           AND lng  BETWEEN  -79 AND  -78
+           AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
     df.point = 'BLOB'

@@ -14,12 +14,12 @@ SPATIALITE_MODULE = '/usr/local/lib/mod_spatialite.so'
 SQLITE_CREATE = f'spatialite {SQLITE_DB} < {SQLITE_PATH}'
 # SQLITE_CREATE = f'sqlite3 {SQLITE_DB} < {SQLITE_PATH}'
 
-EVENT_INDEX = 'event_id'
-EVENT_COLUMNS = """dataset_id year day start_time end_time
-                   latitude longitude radius geohash""".split()
+EVENT_INDEX = 'date_id'
+EVENT_COLUMNS = """dataset_id year day started ended
+                   lat lng radius geohash""".split()
 
 COUNT_INDEX = 'count_id'
-COUNT_COLUMNS = 'event_id taxon_id count'.split()
+COUNT_COLUMNS = 'date_id taxon_id count'.split()
 
 
 def connect(path=SQLITE_DB):
@@ -78,8 +78,8 @@ def insert_dataset(cxn, rec):
 def select_dataset_points(cxn, dataset_id):
     """Select all points from a dataset."""
     sql = """
-        SELECT event_id, longitude, latitude
-          FROM events
+        SELECT date_id, lng, lat
+          FROM dates
          WHERE dataset_id = ?
         """
     result = cxn.execute(sql, (dataset_id, ))
@@ -94,26 +94,26 @@ def delete_dataset(cxn, dataset_id):
 
     cxn.execute("DELETE FROM taxons WHERE dataset_id = ?", (dataset_id, ))
 
-    sql = """DELETE FROM events
+    sql = """DELETE FROM dates
             WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""
     cxn.execute(sql)
 
     sql = """DELETE FROM counts
-              WHERE event_id NOT IN (SELECT event_id FROM events)"""
+              WHERE date_id NOT IN (SELECT date_id FROM dates)"""
     cxn.execute(sql)
 
     cxn.commit()
 
-    for sidecar in ['codes', 'counts', 'events']:
+    for sidecar in ['codes', 'counts', 'dates']:
         cxn.execute(f'DROP TABLE IF EXISTS {dataset_id}_{sidecar}')
 
 
 def update_point_macro(event):
     """Return a macro for updating the given point."""
     return """
-        UPDATE events
+        UPDATE dates
            SET point = GeomFromText('POINT({} {})', 4326)
-         WHERE event_id = {};
+         WHERE date_id = {};
         """.format(event[1], event[2], event[0])
 
 
