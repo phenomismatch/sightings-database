@@ -50,26 +50,29 @@ class Connection:
 
     def execute(self, sql, values=None):
         """Execute and commit the given query."""
-        self.cxn.execute(sql, values)
+        if values:
+            self.cxn.execute(sql, values)
+        else:
+            self.cxn.execute(sql)
         self.cxn.commit()
 
-    # def exists(cxn, table):
-    #     """Check if a table exists."""
-    #     sql = """
-    #         SELECT COUNT(*) AS count
-    #           FROM sqlite_master
-    #          WHERE type='table' AND name = ?"""
-    #     results = cxn.execute(sql, (table, ))
-    #     return results.fetchone()[0]
-    #
-    # def next_id(cxn, table):
-    #     """Get the max value from the table's field."""
-    #     if not os.exists(cxn, table):
-    #         return 1
-    #     field = table[:-1] + '_id'
-    #     sql = 'SELECT COALESCE(MAX({}), 0) AS id FROM {}'.format(field, table)
-    #     return cxn.execute(sql).fetchone()[0] + 1
-    #
+    def next_id(self, table):
+        """Get the max value from the table's field."""
+        if not self.exists(table):
+            return 1
+        field = table[:-1] + '_id'
+        sql = 'SELECT COALESCE(MAX({}), 0) AS id FROM {}'.format(field, table)
+        return self.cxn.execute(sql).fetchone()[0] + 1
+
+    def exists(self, table):
+        """Check if a table exists."""
+        sql = """
+            SELECT COUNT(*) AS count
+              FROM sqlite_master
+             WHERE type='table' AND name = ?"""
+        results = self.cxn.execute(sql, (table, ))
+        return results.fetchone()[0]
+
     # def last_insert_rowid(cxn):
     #     """
     #     Get the last inserted row ID.

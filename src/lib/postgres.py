@@ -1,5 +1,6 @@
 """Functions for dealing with the postgres database."""
 
+import re
 import subprocess
 from os import fspath
 from pathlib import Path
@@ -28,5 +29,15 @@ class Connection:
 
     def execute(self, sql, values=None):
         """Execute and commit the given query."""
+        sql = re.sub(r'\?', '%s', sql)
         self.cxn.cursor().execute(sql, values)
         self.cxn.commit()
+
+    def next_id(self, table):
+        """Get the max value from the table's field."""
+        field = table[:-1] + '_id'
+        sql = 'SELECT COALESCE(MAX({}), 0) AS id FROM {}'.format(field, table)
+        with self.cxn.cursor() as cur:
+            cur.execute(sql)
+            max_id = cur.fetchone()[0]
+        return max_id + 1

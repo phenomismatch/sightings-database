@@ -26,7 +26,7 @@ CREATE TABLE taxons (
   genus       TEXT,
   synonyms    TEXT,
   common_name TEXT,
-  target      INTEGER
+  target      TEXT
 );
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
 CREATE INDEX taxons_dataset_id ON taxons (dataset_id);
