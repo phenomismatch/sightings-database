@@ -48,7 +48,7 @@ def _bbs_query(cxn):
            AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
-    df.point = 'BLOB'
+    df.geopoint = 'BLOB'
     return sql, df
 
 
@@ -66,7 +66,7 @@ def _maps_query(cxn):
            AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
-    df.point = 'BLOB'
+    df.geopoint = 'BLOB'
     return sql, df
 
 
@@ -84,7 +84,7 @@ def _ebird_query(cxn):
            AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
-    df.point = 'BLOB'
+    df.geopoint = 'BLOB'
     return sql, df
 
 
@@ -100,7 +100,7 @@ def _global_query(cxn):
            AND lat  BETWEEN   40 AND   44
          LIMIT 100"""
     df = pd.read_sql(sql, cxn)
-    df.point = 'BLOB'
+    df.geopoint = 'BLOB'
     return sql, df
 
 

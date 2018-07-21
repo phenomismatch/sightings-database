@@ -25,8 +25,8 @@ CREATE TABLE taxons (
   family      TEXT,
   genus       TEXT,
   synonyms    TEXT,
-  target      INTEGER,
-  common_name TEXT
+  common_name TEXT,
+  target      INTEGER
 );
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
 CREATE INDEX taxons_dataset_id ON taxons (dataset_id);
@@ -48,16 +48,16 @@ CREATE TABLE points (
 CREATE INDEX points_dataset_id ON points (dataset_id);
 CREATE INDEX points_lng_lat    ON points (lng, lat);
 CREATE INDEX points_geohash    ON points (geohash);
-SELECT AddGeometryColumn('points', 'point', 4326, 'POINT', 'XY', 0);
-SELECT CreateSpatialIndex('points', 'point');
+SELECT AddGeometryColumn('points', 'geopoint', 4326, 'POINT', 'XY', 0);
+SELECT CreateSpatialIndex('points', 'geopoint');
 
 
 DROP TABLE IF EXISTS dates;
 CREATE TABLE dates (
   date_id  INTEGER NOT NULL PRIMARY KEY,
   point_id INTEGER NOT NULL,
-  year     NUMBER NOT NULL,
-  day      NUMBER NOT NULL,
+  year     INTEGER NOT NULL,
+  day      INTEGER NOT NULL,
   started  TEXT,
   ended    TEXT
 );
