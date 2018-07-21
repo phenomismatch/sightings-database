@@ -73,14 +73,32 @@ class Connection:
         results = self.cxn.execute(sql, (table, ))
         return results.fetchone()[0]
 
-    # def last_insert_rowid(cxn):
-    #     """
-    #     Get the last inserted row ID.
-    #
-    #     It's a DB global so we have to do it immediately after the insert.
-    #     """
-    #     return cxn.execute('SELECT last_insert_rowid() AS id').fetchone()[0]
-    #
+    def delete_dataset(self, dataset_id):
+        """Clear dataset from the database."""
+        print(f'Deleting old {dataset_id} records')
+
+        self.cxn.execute(
+            "DELETE FROM datasets WHERE dataset_id = ?", (dataset_id, ))
+
+        self.cxn.execute(
+            "DELETE FROM taxons WHERE dataset_id = ?", (dataset_id, ))
+
+        self.cxn.execute(
+            "DELETE FROM points WHERE dataset_id = ?", (dataset_id, ))
+
+        sql = """DELETE FROM dates
+                WHERE point_id NOT IN (SELECT point_id FROM points)"""
+        self.cxn.execute(sql)
+
+        sql = """DELETE FROM counts
+                  WHERE date_id NOT IN (SELECT date_id FROM dates)"""
+        self.cxn.execute(sql)
+
+        self.cxn.commit()
+
+        for sidecar in ['codes', 'counts', 'dates']:
+            self.cxn.execute(f'DROP TABLE IF EXISTS {dataset_id}_{sidecar}')
+
     # def insert_dataset(cxn, rec):
     #     """Insert a dataset record."""
     #     sql = """
@@ -99,27 +117,6 @@ class Connection:
     #         """
     #     result = cxn.execute(sql, (dataset_id, ))
     #     return result.fetchall()
-    #
-    # def delete_dataset(cxn, dataset_id):
-    #     """Clear MAPS data from the database."""
-    #     print(f'Deleting old {dataset_id} records')
-    #
-    #     cxn.execute("DELETE FROM datasets WHERE dataset_id = ?", (dataset_id, ))
-    #
-    #     cxn.execute("DELETE FROM taxons WHERE dataset_id = ?", (dataset_id, ))
-    #
-    #     sql = """DELETE FROM dates
-    #             WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""
-    #     cxn.execute(sql)
-    #
-    #     sql = """DELETE FROM counts
-    #               WHERE date_id NOT IN (SELECT date_id FROM dates)"""
-    #     cxn.execute(sql)
-    #
-    #     cxn.commit()
-    #
-    #     for sidecar in ['codes', 'counts', 'dates']:
-    #         cxn.execute(f'DROP TABLE IF EXISTS {dataset_id}_{sidecar}')
     #
     # def update_point_macro(event):
     #     """Return a macro for updating the given point."""
