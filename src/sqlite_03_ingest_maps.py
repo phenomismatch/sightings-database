@@ -32,7 +32,7 @@ def ingest_maps():
 
     keys = insert_events(cxn, effort, stations)
     insert_counts(cxn, bands, keys, taxons)
-    db.update_points(cxn, DATASET_ID)
+    db.upevent_places(cxn, DATASET_ID)
 
 
 def convert_dbf_to_csv(dbf_file, csv_file):
@@ -150,22 +150,22 @@ def read_bands(taxons, stations):
 
 def insert_events(cxn, effort, stations):
     """Insert event records."""
-    print('Inserting dates')
+    print('Inserting events')
 
-    dates = effort.reset_index(level=['STA', 'DATE'])
-    dates = dates.merge(right=stations, how='inner', on='STA')
+    events = effort.reset_index(level=['STA', 'DATE'])
+    events = events.merge(right=stations, how='inner', on='STA')
 
-    dates = data.add_event_id(dates, cxn)
-    dates['dataset_id'] = DATASET_ID
-    dates.DATE = pd.to_datetime(dates.DATE)
-    dates['year'] = dates.DATE.dt.strftime('%Y')
-    dates['day'] = dates.DATE.dt.strftime('%j')
-    dates['geohash'] = dates.apply(lambda x: geohash2.encode(
+    events = data.add_event_id(events, cxn)
+    events['dataset_id'] = DATASET_ID
+    events.DATE = pd.to_datetime(events.DATE)
+    events['year'] = events.DATE.dt.strftime('%Y')
+    events['day'] = events.DATE.dt.strftime('%j')
+    events['geohash'] = events.apply(lambda x: geohash2.encode(
         x.lat, x.lng, precision=7), axis=1)
-    keys = data.make_key_event_id_dict(dates, dates.STA, dates.DATE)
-    dates.DATE = dates.DATE.dt.date
+    keys = data.make_key_event_id_dict(events, events.STA, events.DATE)
+    events.DATE = events.DATE.dt.date
 
-    data.insert_events(dates, cxn, 'maps_events')
+    data.insert_events(events, cxn, 'maps_events')
 
     return keys
 

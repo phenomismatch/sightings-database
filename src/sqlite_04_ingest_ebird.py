@@ -23,7 +23,7 @@ def ingest_ebird():
     taxons = select_taxons(cxn)
     insert_codes(cxn)
     insert_records(cxn, taxons)
-    db.update_points(cxn, DATASET_ID)
+    db.upevent_places(cxn, DATASET_ID)
 
 
 def insert_dataset(cxn):
@@ -50,7 +50,7 @@ def select_taxons(cxn):
 
 def insert_records(cxn, taxons):
     """Insert event and event detail records."""
-    print('Inserting dates and counts')
+    print('Inserting events and counts')
 
     in_path = EBIRD_PATH / 'ebd_relFeb-2018.txt'
 
@@ -116,24 +116,24 @@ def insert_records(cxn, taxons):
         df.loc[is_na, 'radius'] = None
 
         dups = df['SAMPLING EVENT IDENTIFIER'].duplicated()
-        dates = df[~dups]
-        old_events = dates['SAMPLING EVENT IDENTIFIER'].isin(sample_ids)
-        dates = dates[~old_events]
+        events = df[~dups]
+        old_events = events['SAMPLING EVENT IDENTIFIER'].isin(sample_ids)
+        events = events[~old_events]
 
-        date_id = db.next_id(cxn, 'dates')
-        dates['date_id'] = range(date_id, date_id + dates.shape[0])
-        dates['geohash'] = dates.apply(lambda x: geohash2.encode(
+        event_id = db.next_id(cxn, 'events')
+        events['event_id'] = range(event_id, event_id + events.shape[0])
+        events['geohash'] = events.apply(lambda x: geohash2.encode(
             x.lat, x.lng, precision=7), axis=1)
 
-        dates = dates.set_index('SAMPLING EVENT IDENTIFIER', drop=False)
-        new_sample_ids = dates.date_id.to_dict()
+        events = events.set_index('SAMPLING EVENT IDENTIFIER', drop=False)
+        new_sample_ids = events.event_id.to_dict()
         sample_ids = {**sample_ids, **new_sample_ids}
 
-        dates = dates.set_index('date_id')
+        events = events.set_index('event_id')
 
-        data.insert_events(dates.loc[:, event_cols], cxn, 'ebird_events')
+        data.insert_events(events.loc[:, event_cols], cxn, 'ebird_events')
 
-        df['date_id'] = df['SAMPLING EVENT IDENTIFIER'].map(sample_ids)
+        df['event_id'] = df['SAMPLING EVENT IDENTIFIER'].map(sample_ids)
         df = data.add_count_id(df, cxn)
 
         data.insert_counts(df.loc[:, count_cols], cxn, 'ebird_counts')

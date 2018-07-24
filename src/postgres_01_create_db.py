@@ -1,7 +1,7 @@
 """Create the Postgres version of the sightings database."""
 
 from lib.base_01_create_db import BaseCreateDb
-from lib.postgres import Connection
+from lib.postgres_db import PostgresDb
 
 
 class PostgresCreateDb(BaseCreateDb):
@@ -13,4 +13,4 @@ class PostgresCreateDb(BaseCreateDb):
 
 
 if __name__ == '__main__':
-    PostgresCreateDb(Connection).create_database()
+    PostgresCreateDb(PostgresDb).create_database()

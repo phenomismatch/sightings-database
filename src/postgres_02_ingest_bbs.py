@@ -1,7 +1,7 @@
 """Ingest Breed Bird Survey data into the Postgres database."""
 
 from lib.base_02_ingest_bbs import BaseIngestBbs
-from lib.postgres import Connection
+from lib.postgres_db import PostgresDb
 
 
 class PostgresIngestBbs(BaseIngestBbs):
@@ -9,4 +9,4 @@ class PostgresIngestBbs(BaseIngestBbs):
 
 
 if __name__ == '__main__':
-    PostgresIngestBbs(Connection).ingest()
+    PostgresIngestBbs(PostgresDb).ingest()

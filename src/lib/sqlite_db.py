@@ -1,12 +1,13 @@
-"""Functions for dealing with the sqlite database."""
+"""Functions for dealing with the sqlite database connections."""
 
 import os
 import subprocess
 from pathlib import Path
 import sqlite3
+from lib.base_db import BaseDb
 
 
-class Connection:
+class SqliteDb(BaseDb):
     """sqlite functions."""
 
     DATA_DIR = Path('data')
@@ -18,12 +19,12 @@ class Connection:
     CREATE_CMD = f'spatialite {SQLITE_DB} < {CREATE_SCRIPT}'
     # CREATE_CMD = f'sqlite3 {SQLITE_DB} < {CREATE_SCRIPT}'
 
-    EVENT_INDEX = 'date_id'
+    EVENT_INDEX = 'event_id'
     EVENT_COLUMNS = """dataset_id year day started ended
                        lat lng radius geohash""".split()
 
     COUNT_INDEX = 'count_id'
-    COUNT_COLUMNS = 'date_id taxon_id count'.split()
+    COUNT_COLUMNS = 'event_id taxon_id count'.split()
 
     @classmethod
     def create(cls):
@@ -43,6 +44,7 @@ class Connection:
         self.cxn.execute("PRAGMA busy_timeout = 10000")
         self.cxn.execute("PRAGMA synchronous = OFF")
         self.cxn.execute("PRAGMA journal_mode = OFF")
+        self.cxn.execute("PRAGMA foreign_keys = ON")
 
         self.cxn.enable_load_extension(True)
         self.cxn.execute(
@@ -73,32 +75,6 @@ class Connection:
         results = self.cxn.execute(sql, (table, ))
         return results.fetchone()[0]
 
-    def delete_dataset(self, dataset_id):
-        """Clear dataset from the database."""
-        print(f'Deleting old {dataset_id} records')
-
-        self.cxn.execute(
-            "DELETE FROM datasets WHERE dataset_id = ?", (dataset_id, ))
-
-        self.cxn.execute(
-            "DELETE FROM taxons WHERE dataset_id = ?", (dataset_id, ))
-
-        self.cxn.execute(
-            "DELETE FROM points WHERE dataset_id = ?", (dataset_id, ))
-
-        sql = """DELETE FROM dates
-                WHERE point_id NOT IN (SELECT point_id FROM points)"""
-        self.cxn.execute(sql)
-
-        sql = """DELETE FROM counts
-                  WHERE date_id NOT IN (SELECT date_id FROM dates)"""
-        self.cxn.execute(sql)
-
-        self.cxn.commit()
-
-        for sidecar in ['codes', 'counts', 'dates']:
-            self.cxn.execute(f'DROP TABLE IF EXISTS {dataset_id}_{sidecar}')
-
     # def insert_dataset(cxn, rec):
     #     """Insert a dataset record."""
     #     sql = """
@@ -108,38 +84,38 @@ class Connection:
     #     cxn.execute(sql, rec)
     #     cxn.commit()
     #
-    # def select_dataset_points(cxn, dataset_id):
-    #     """Select all points from a dataset."""
+    # def select_dataset_places(cxn, dataset_id):
+    #     """Select all places from a dataset."""
     #     sql = """
-    #         SELECT date_id, lng, lat
-    #           FROM dates
+    #         SELECT event_id, lng, lat
+    #           FROM events
     #          WHERE dataset_id = ?
     #         """
     #     result = cxn.execute(sql, (dataset_id, ))
     #     return result.fetchall()
     #
-    # def update_point_macro(event):
+    # def upevent_place_macro(event):
     #     """Return a macro for updating the given point."""
     #     return """
-    #         UPDATE dates
+    #         UPDATE events
     #            SET geopoint = GeomFromText('POINT({} {})', 4326)
-    #          WHERE date_id = {};
+    #          WHERE event_id = {};
     #         """.format(event[1], event[2], event[0])
     #
-    # def update_points(cxn, dataset_id):
+    # def upevent_places(cxn, dataset_id):
     #     """Update point records with the point geometry."""
-    #     print('Updating points')
+    #     print('Updating places')
     #
-    #     points = []
-    #     for i, event in enumerate(self.select_dataset_points(cxn, dataset_id), 1):
-    #         points.append(self.update_point_macro(event))
+    #     places = []
+    #     for i, event in enumerate(self.select_dataset_places(cxn, dataset_id), 1):
+    #         places.append(self.upevent_place_macro(event))
     #         if i % 100_000 == 0:
     #             print(f'Completed {i:,}')
-    #             script = ''.join(points)
+    #             script = ''.join(places)
     #             cxn.executescript(script)
     #             cxn.commit()
-    #             points = []
+    #             places = []
     #
-    #     script = ''.join(points)
+    #     script = ''.join(places)
     #     cxn.executescript(script)
     #     cxn.commit()

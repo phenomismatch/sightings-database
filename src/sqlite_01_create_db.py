@@ -1,7 +1,7 @@
 """Create the SQLite3 version of the sightings database."""
 
 from lib.base_01_create_db import BaseCreateDb
-from lib.sqlite import Connection
+from lib.sqlite_db import SqliteDb
 
 
 class SqliteCreateDb(BaseCreateDb):
@@ -9,4 +9,4 @@ class SqliteCreateDb(BaseCreateDb):
 
 
 if __name__ == '__main__':
-    SqliteCreateDb(Connection).create_database()
+    SqliteCreateDb(SqliteDb).create_database()

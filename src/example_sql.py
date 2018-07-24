@@ -37,9 +37,9 @@ def queries():
 def _bbs_query(cxn):
     sql = """
         SELECT *
-          FROM dates
-          JOIN bbs_events USING (date_id)
-          JOIN counts     USING (date_id)
+          FROM events
+          JOIN bbs_events USING (event_id)
+          JOIN counts     USING (event_id)
           JOIN bbs_counts USING (count_id)
           JOIN taxons     USING (taxon_id)
          WHERE year BETWEEN 2010 AND 2014
@@ -55,9 +55,9 @@ def _bbs_query(cxn):
 def _maps_query(cxn):
     sql = """
         SELECT *
-          FROM dates
-          JOIN maps_events USING (date_id)
-          JOIN counts      USING (date_id)
+          FROM events
+          JOIN maps_events USING (event_id)
+          JOIN counts      USING (event_id)
           JOIN maps_counts USING (count_id)
           JOIN taxons      USING (taxon_id)
          WHERE year BETWEEN 2010 AND 2014
@@ -73,9 +73,9 @@ def _maps_query(cxn):
 def _ebird_query(cxn):
     sql = """
         SELECT *
-          FROM dates
-          JOIN ebird_events USING (date_id)
-          JOIN counts       USING (date_id)
+          FROM events
+          JOIN ebird_events USING (event_id)
+          JOIN counts       USING (event_id)
           JOIN ebird_counts USING (count_id)
           JOIN taxons       USING (taxon_id)
          WHERE year BETWEEN 2010 AND 2014
@@ -91,8 +91,8 @@ def _ebird_query(cxn):
 def _global_query(cxn):
     sql = """
         SELECT *
-          FROM dates
-          JOIN counts USING (date_id)
+          FROM events
+          JOIN counts USING (event_id)
           JOIN taxons USING (taxon_id)
          WHERE year BETWEEN 2010 AND 2014
            AND day  BETWEEN  100 AND  200

@@ -5,8 +5,8 @@
 DROP TABLE IF EXISTS version;
 DROP TABLE IF EXISTS datasets CASCADE;
 DROP TABLE IF EXISTS taxons   CASCADE;
-DROP TABLE IF EXISTS points   CASCADE;
-DROP TABLE IF EXISTS dates    CASCADE;
+DROP TABLE IF EXISTS places   CASCADE;
+DROP TABLE IF EXISTS events   CASCADE;
 DROP TABLE IF EXISTS counts;
 
 
@@ -27,7 +27,7 @@ CREATE TABLE datasets (
 
 CREATE TABLE taxons (
   taxon_id    SERIAL PRIMARY KEY,
-  dataset_id  TEXT REFERENCES datasets (dataset_id),
+  dataset_id  TEXT REFERENCES datasets (dataset_id) ON DELETE CASCADE,
   sci_name    VARCHAR(80) NOT NULL UNIQUE,
   class       VARCHAR(20) NOT NULL,
   ordr        VARCHAR(40),
@@ -44,33 +44,33 @@ CREATE INDEX ON taxons (family);
 CREATE INDEX ON taxons (genus);
 
 
-CREATE TABLE points (
-  point_id   SERIAL PRIMARY KEY,
-  dataset_id TEXT REFERENCES datasets (dataset_id),
+CREATE TABLE places (
+  place_id   SERIAL PRIMARY KEY,
+  dataset_id TEXT REFERENCES datasets (dataset_id) ON DELETE CASCADE,
   lng        NUMERIC(4) NOT NULL,
   lat        NUMERIC(4) NOT NULL,
   radius     NUMERIC(4),
   geohash    VARCHAR(7),
   geopoint   GEOGRAPHY(POINT, 4326)
 );
-CREATE INDEX ON points (lng, lat);
-CREATE INDEX ON points (geohash);
+CREATE INDEX ON places (lng, lat);
+CREATE INDEX ON places (geohash);
 
 
-CREATE TABLE dates (
-  date_id  SERIAL PRIMARY KEY,
-  point_id INTEGER REFERENCES points (point_id),
+CREATE TABLE events (
+  event_id SERIAL PRIMARY KEY,
+  place_id INTEGER REFERENCES places (place_id) ON DELETE CASCADE,
   year     SMALLINT NOT NULL,
   day      SMALLINT NOT NULL,
   started  TIME,
   ended    TIME
 );
-CREATE INDEX ON dates (year, day);
+CREATE INDEX ON events (year, day);
 
 
 CREATE TABLE counts (
   count_id SERIAL PRIMARY KEY,
-  date_id  INTEGER REFERENCES dates  (date_id),
+  event_id  INTEGER REFERENCES events  (event_id) ON DELETE CASCADE,
   taxon_id INTEGER REFERENCES taxons (taxon_id),
   count    INTEGER NOT NULL
 );

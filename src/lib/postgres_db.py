@@ -1,4 +1,4 @@
-"""Functions for dealing with the postgres database."""
+"""Functions for dealing with the postgres database connections."""
 
 import re
 import subprocess
@@ -6,10 +6,11 @@ from os import fspath
 from pathlib import Path
 import psycopg2
 from sqlalchemy import create_engine
+from lib.base_db import BaseDb
 
 
-class Connection:
-    """Postgresql functions."""
+class PostgresDb(BaseDb):
+    """Postgresql connection."""
 
     ENGINE = 'postgresql://{}@localhost:5432/sightings'
     CONNECT = 'dbname=sightings user={}'

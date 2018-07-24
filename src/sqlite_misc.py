@@ -8,31 +8,31 @@ import lib.sqlite as db
 def generate_samples():
     """Generate excel sheets."""
     ecols = [db.EVENT_INDEX]
-    ecols += ['dates.' + c for c in db.EVENT_COLUMNS]
+    ecols += ['events.' + c for c in db.EVENT_COLUMNS]
     ecols += ["'geometry' AS point"]
     ecols = ', '.join(ecols)
 
     limit = 'limit 50'
-    eusing = f'USING (date_id) {limit}'
+    eusing = f'USING (event_id) {limit}'
     cusing = f'USING (count_id) {limit}'
 
     queries = [
         ('Taxons', f'SELECT * FROM taxons {limit}'),
-        ('Events only', f'SELECT {ecols} FROM dates {limit}'),
+        ('Events only', f'SELECT {ecols} FROM events {limit}'),
         ('Counts only', f'SELECT * FROM counts {limit}'),
-        ('BBS dates',
+        ('BBS events',
          (f'SELECT {ecols}, bbs_events.* '
-          f'FROM dates JOIN bbs_events {eusing}')),
-        ('MAPS dates',
+          f'FROM events JOIN bbs_events {eusing}')),
+        ('MAPS events',
          (f'SELECT {ecols}, maps_events.* '
-          f'FROM dates JOIN maps_events {eusing}')),
-        ('eBird dates',
+          f'FROM events JOIN maps_events {eusing}')),
+        ('eBird events',
          (f'SELECT {ecols}, ebird_events.* '
-          f'FROM dates JOIN ebird_events {eusing}')),
+          f'FROM events JOIN ebird_events {eusing}')),
         ('BBS counts', f'SELECT * FROM counts JOIN bbs_counts {cusing}'),
         ('MAPS counts', f'SELECT * FROM counts JOIN maps_counts {cusing}'),
         ('eBird counts', f'SELECT * FROM counts JOIN ebird_counts {cusing}'),
-        ('*', 'You can join event and count records using the date_id.')]
+        ('*', 'You can join event and count records using the event_id.')]
 
     cxn = db.connect()
 

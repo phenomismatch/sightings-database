@@ -26,51 +26,53 @@ CREATE TABLE taxons (
   genus       TEXT,
   synonyms    TEXT,
   common_name TEXT,
-  target      TEXT
+  target      TEXT,
+  FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE
 );
-CREATE INDEX taxons_sci_name   ON taxons (sci_name);
-CREATE INDEX taxons_dataset_id ON taxons (dataset_id);
+CREATE INDEX taxons_sci_name ON taxons (sci_name);
 CREATE INDEX taxons_class  ON taxons (class);
 CREATE INDEX taxons_order  ON taxons (ordr);
 CREATE INDEX taxons_family ON taxons (family);
 CREATE INDEX taxons_genus  ON taxons (genus);
 
 
-DROP TABLE IF EXISTS points;
-CREATE TABLE points (
-  point_id   INTEGER NOT NULL PRIMARY KEY,
+DROP TABLE IF EXISTS places;
+CREATE TABLE places (
+  place_id   INTEGER NOT NULL PRIMARY KEY,
   dataset_id TEXT NOT NULL,
   lng        NUMBER NOT NULL,
   lat        NUMBER NOT NULL,
   geohash    TEXT,
-  radius     NUMBER
+  radius     NUMBER,
+  FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE
 );
-CREATE INDEX points_dataset_id ON points (dataset_id);
-CREATE INDEX points_lng_lat    ON points (lng, lat);
-CREATE INDEX points_geohash    ON points (geohash);
-SELECT AddGeometryColumn('points', 'geopoint', 4326, 'POINT', 'XY', 0);
-SELECT CreateSpatialIndex('points', 'geopoint');
+CREATE INDEX places_lng_lat ON places (lng, lat);
+CREATE INDEX places_geohash ON places (geohash);
+SELECT AddGeometryColumn('places', 'geopoint', 4326, 'POINT', 'XY', 0);
+SELECT CreateSpatialIndex('places', 'geopoint');
 
 
-DROP TABLE IF EXISTS dates;
-CREATE TABLE dates (
-  date_id  INTEGER NOT NULL PRIMARY KEY,
-  point_id INTEGER NOT NULL,
+DROP TABLE IF EXISTS events;
+CREATE TABLE events (
+  event_id INTEGER NOT NULL PRIMARY KEY,
+  place_id INTEGER NOT NULL,
   year     INTEGER NOT NULL,
   day      INTEGER NOT NULL,
   started  TEXT,
-  ended    TEXT
+  ended    TEXT,
+  FOREIGN KEY (place_id) REFERENCES places (place_id) ON DELETE CASCADE
 );
-CREATE INDEX dates_point_id ON dates (point_id);
-CREATE INDEX dates_year_day ON dates (year, day);
+CREATE INDEX events_year_day ON events (year, day);
 
 
 DROP TABLE IF EXISTS counts;
 CREATE TABLE counts (
   count_id INTEGER NOT NULL PRIMARY KEY,
-  date_id  INTEGER NOT NULL,
+  event_id  INTEGER NOT NULL,
   taxon_id INTEGER NOT NULL,
-  count    INTEGER NOT NULL
+  count    INTEGER NOT NULL,
+  FOREIGN KEY (event_id) REFERENCES events  (event_id) ON DELETE CASCADE,
+  FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id) ON DELETE CASCADE
 );
-CREATE INDEX counts_event_id ON counts (date_id);
+CREATE INDEX counts_event_id ON counts (event_id);
 CREATE INDEX counts_taxon_id ON counts (taxon_id);
