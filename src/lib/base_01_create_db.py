@@ -49,16 +49,18 @@ class BaseCreateDb:
 
     def _insert_bird_taxons(self):
         birds = self._get_clem_species()
-        birds['dataset_id'] = self.CLEMENTS_DATASET_ID
+
+        self._set_target_birds(birds)
         birds['genus'] = birds.sci_name.str.split().str[0]
+        birds = self._add_clem_genera(birds)
+
+        birds['dataset_id'] = self.CLEMENTS_DATASET_ID
         birds['class'] = 'aves'
         birds['synonyms'] = ''
 
         taxon_id = self.cxn.next_id('taxons')
         birds['taxon_id'] = range(taxon_id, taxon_id + birds.shape[0])
-
         birds = birds.rename(columns={'order': 'ordr'}).set_index('taxon_id')
-        self._set_target_birds(birds)
         birds.to_sql('taxons', self.cxn.engine, if_exists='append')
 
     def _get_clem_species(self):
@@ -69,6 +71,16 @@ class BaseCreateDb:
         is_species = birds.category == 'species'
         birds = birds.loc[is_species,
                           ['sci_name', 'order', 'family', 'common_name']]
+        return birds
+
+    def _add_clem_genera(self, birds):
+        targets = birds.loc[birds.target == 't']
+        genera = targets.groupby('genus').first().reset_index()
+        genera.sci_name = genera.genus + ' sp.'
+        genera.common_name = ''
+        genera.target = ''
+        print(genera.shape)
+        print(genera.head())
         return birds
 
     def _set_target_birds(self, birds):
