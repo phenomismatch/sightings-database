@@ -73,4 +73,4 @@ regions as (select * from eco3 where pk_uid in (1518, 1519))
 select * from points, regions where contains(geometry, point) = 1;
 ```
 
-![Output image](data/schema/schema_1.png "Database Schema")
+![Output image](docs/schema/schema_1.png "Database Schema")
