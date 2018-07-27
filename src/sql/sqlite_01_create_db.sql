@@ -26,8 +26,8 @@ CREATE TABLE taxons (
   genus       TEXT,
   synonyms    TEXT,
   common_name TEXT,
-  target      TEXT,
-  FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE
+  target      TEXT
+  -- FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE
 );
 CREATE INDEX taxons_sci_name ON taxons (sci_name);
 CREATE INDEX taxons_class  ON taxons (class);
@@ -43,8 +43,8 @@ CREATE TABLE places (
   lng        NUMBER NOT NULL,
   lat        NUMBER NOT NULL,
   geohash    TEXT,
-  radius     NUMBER,
-  FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE
+  radius     NUMBER
+  -- FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE
 );
 CREATE INDEX places_lng_lat ON places (lng, lat);
 CREATE INDEX places_geohash ON places (geohash);
@@ -59,8 +59,8 @@ CREATE TABLE events (
   year     INTEGER NOT NULL,
   day      INTEGER NOT NULL,
   started  TEXT,
-  ended    TEXT,
-  FOREIGN KEY (place_id) REFERENCES places (place_id) ON DELETE CASCADE
+  ended    TEXT
+  -- FOREIGN KEY (place_id) REFERENCES places (place_id) ON DELETE CASCADE
 );
 CREATE INDEX events_year_day ON events (year, day);
 
@@ -70,9 +70,9 @@ CREATE TABLE counts (
   count_id INTEGER NOT NULL PRIMARY KEY,
   event_id  INTEGER NOT NULL,
   taxon_id INTEGER NOT NULL,
-  count    INTEGER NOT NULL,
-  FOREIGN KEY (event_id) REFERENCES events  (event_id) ON DELETE CASCADE,
-  FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id) ON DELETE CASCADE
+  count    INTEGER NOT NULL
+  -- FOREIGN KEY (event_id) REFERENCES events  (event_id) ON DELETE CASCADE,
+  -- FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id) ON DELETE CASCADE
 );
 CREATE INDEX counts_event_id ON counts (event_id);
 CREATE INDEX counts_taxon_id ON counts (taxon_id);

@@ -35,16 +35,17 @@ class SqliteDb(BaseDb):
 
         subprocess.check_call(cls.CREATE_CMD, shell=True)
 
-    def __init__(self, path=SQLITE_DB):
+    def __init__(self, path=SQLITE_DB, dataset_id=None):
         """Connect to the database and initialize parameters."""
         self.cxn = sqlite3.connect(path)
         self.engine = self.cxn
+        self.dataset_id = dataset_id
 
         self.cxn.execute("PRAGMA page_size = {}".format(2**16))
         self.cxn.execute("PRAGMA busy_timeout = 10000")
         self.cxn.execute("PRAGMA synchronous = OFF")
         self.cxn.execute("PRAGMA journal_mode = OFF")
-        self.cxn.execute("PRAGMA foreign_keys = ON")
+        # self.cxn.execute("PRAGMA foreign_keys = ON")
 
         self.cxn.enable_load_extension(True)
         self.cxn.execute(
@@ -75,26 +76,7 @@ class SqliteDb(BaseDb):
         results = self.cxn.execute(sql, (table, ))
         return results.fetchone()[0]
 
-    # def insert_dataset(cxn, rec):
-    #     """Insert a dataset record."""
-    #     sql = """
-    #         INSERT INTO datasets (dataset_id, title, extracted, version, url)
-    #              VALUES (:dataset_id, :title, :extracted, :version, :url)
-    #         """
-    #     cxn.execute(sql, rec)
-    #     cxn.commit()
-    #
-    # def select_dataset_places(cxn, dataset_id):
-    #     """Select all places from a dataset."""
-    #     sql = """
-    #         SELECT event_id, lng, lat
-    #           FROM events
-    #          WHERE dataset_id = ?
-    #         """
-    #     result = cxn.execute(sql, (dataset_id, ))
-    #     return result.fetchall()
-    #
-    # def upevent_place_macro(event):
+    # def update_place_macro(event):
     #     """Return a macro for updating the given point."""
     #     return """
     #         UPDATE events
@@ -102,12 +84,13 @@ class SqliteDb(BaseDb):
     #          WHERE event_id = {};
     #         """.format(event[1], event[2], event[0])
     #
-    # def upevent_places(cxn, dataset_id):
+    # def update_places(cxn, dataset_id):
     #     """Update point records with the point geometry."""
     #     print('Updating places')
     #
     #     places = []
-    #     for i, event in enumerate(self.select_dataset_places(cxn, dataset_id), 1):
+    #     for i, event in enumerate(
+    #           self.select_dataset_places(cxn, dataset_id), 1):
     #         places.append(self.upevent_place_macro(event))
     #         if i % 100_000 == 0:
     #             print(f'Completed {i:,}')

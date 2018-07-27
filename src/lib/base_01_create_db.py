@@ -78,9 +78,8 @@ class BaseCreateDb:
         genera = targets.groupby('genus').first().reset_index()
         genera.sci_name = genera.genus + ' sp.'
         genera.common_name = ''
-        genera.target = ''
-        print(genera.shape)
-        print(genera.head())
+        genera.target = None
+        birds = pd.concat([birds, genera], sort=True)
         return birds
 
     def _set_target_birds(self, birds):

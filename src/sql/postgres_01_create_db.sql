@@ -26,8 +26,8 @@ CREATE TABLE datasets (
 
 
 CREATE TABLE taxons (
-  taxon_id    SERIAL PRIMARY KEY,
-  dataset_id  TEXT REFERENCES datasets (dataset_id) ON DELETE CASCADE,
+  taxon_id    INTEGER PRIMARY KEY,
+  dataset_id  TEXT REFERENCES datasets (dataset_id),
   sci_name    VARCHAR(80) NOT NULL UNIQUE,
   class       VARCHAR(20) NOT NULL,
   ordr        VARCHAR(40),
@@ -37,40 +37,47 @@ CREATE TABLE taxons (
   common_name VARCHAR(40),
   target      BOOLEAN
 );
-CREATE INDEX ON taxons (sci_name);
-CREATE INDEX ON taxons (class);
-CREATE INDEX ON taxons (ordr);
-CREATE INDEX ON taxons (family);
-CREATE INDEX ON taxons (genus);
+CREATE INDEX taxons_sci_name ON taxons (sci_name);
+CREATE INDEX taxons_class    ON taxons (class);
+CREATE INDEX taxons_ordr     ON taxons (ordr);
+CREATE INDEX taxons_family   ON taxons (family);
+CREATE INDEX taxons_genus    ON taxons (genus);
 
 
 CREATE TABLE places (
-  place_id   SERIAL PRIMARY KEY,
-  dataset_id TEXT REFERENCES datasets (dataset_id) ON DELETE CASCADE,
-  lng        NUMERIC(4) NOT NULL,
-  lat        NUMERIC(4) NOT NULL,
-  radius     NUMERIC(4),
-  geohash    VARCHAR(7),
-  geopoint   GEOGRAPHY(POINT, 4326)
+  place_id   INTEGER NOT NULL,
+  dataset_id TEXT    NOT NULL,
+  lng        NUMERIC NOT NULL,
+  lat        NUMERIC NOT NULL,
+  radius     NUMERIC,
+  geohash    VARCHAR(8),
+  geopoint   GEOGRAPHY(POINT, 4326),
+  CONSTRAINT places_place_id PRIMARY KEY (place_id),
+  CONSTRAINT places_dataset_id FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id)
 );
-CREATE INDEX ON places (lng, lat);
-CREATE INDEX ON places (geohash);
+CREATE INDEX places_lng_lat ON places (lng, lat);
+CREATE INDEX places_geohash ON places (geohash);
 
 
 CREATE TABLE events (
-  event_id SERIAL PRIMARY KEY,
-  place_id INTEGER REFERENCES places (place_id) ON DELETE CASCADE,
+  event_id INTEGER NOT NULL,
+  place_id INTEGER NOT NULL,
   year     SMALLINT NOT NULL,
   day      SMALLINT NOT NULL,
   started  TIME,
-  ended    TIME
+  ended    TIME,
+  CONSTRAINT events_event_id PRIMARY KEY (event_id),
+  CONSTRAINT events_place_id FOREIGN KEY (place_id) REFERENCES places (place_id)
 );
-CREATE INDEX ON events (year, day);
+CREATE INDEX events_year_day ON events (year, day);
 
 
 CREATE TABLE counts (
-  count_id SERIAL PRIMARY KEY,
-  event_id  INTEGER REFERENCES events  (event_id) ON DELETE CASCADE,
-  taxon_id INTEGER REFERENCES taxons (taxon_id),
-  count    INTEGER NOT NULL
+  count_id INTEGER NOT NULL,
+  event_id INTEGER NOT NULL,
+  taxon_id INTEGER NOT NULL,
+  count    INTEGER NOT NULL,
+  CONSTRAINT counts_count_id PRIMARY KEY (count_id),
+  CONSTRAINT counts_event_id FOREIGN KEY (event_id) REFERENCES events (event_id),
+  CONSTRAINT counts_taxon_id FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id)
 );

@@ -23,16 +23,22 @@ class PostgresDb(BaseDb):
         print('Creating database')
         subprocess.check_call(cls.CREATE_CMD, shell=True)
 
-    def __init__(self, user='postgres'):
+    def __init__(self, user='postgres', dataset_id=None):
         """Connect to the database and initialize parameters."""
         self.cxn = psycopg2.connect(self.CONNECT.format(user))
         self.engine = create_engine(self.ENGINE.format(user))
+        self.dataset_id = dataset_id
 
     def execute(self, sql, values=None):
         """Execute and commit the given query."""
         sql = re.sub(r'\?', '%s', sql)
         self.cxn.cursor().execute(sql, values)
         self.cxn.commit()
+
+    def insert_sidecar(self, df, sidecar, exclude, index):
+        """Insert the sidecar table into the database."""
+        super().insert_sidecar(df, sidecar, exclude, index)
+        self.execute(f'ALTER TABLE {sidecar} ADD PRIMARY KEY ({index})')
 
     def next_id(self, table):
         """Get the max value from the table's field."""
@@ -42,3 +48,46 @@ class PostgresDb(BaseDb):
             cur.execute(sql)
             max_id = cur.fetchone()[0]
         return max_id + 1
+
+    def bulk_add_setup(self):
+        """Prepare the database for bulk adds."""
+        super().bulk_add_setup()
+        self.drop_constraints()
+
+    def bulk_add_teardown(self):
+        """Prepare the database for use."""
+        super().bulk_add_teardown()
+        self.add_constraints()
+
+    def drop_constraints(self):
+        """Drop constraints to speed up bulk data adds."""
+        self.execute(f'ALTER TABLE counts DROP CONSTRAINT counts_event_id')
+        self.execute(f'ALTER TABLE counts DROP CONSTRAINT counts_taxon_id')
+        self.execute(f'ALTER TABLE events DROP CONSTRAINT events_place_id')
+        self.execute(f'ALTER TABLE places DROP CONSTRAINT places_dataset_id')
+
+    def add_constraints(self):
+        """Add constraints in bulk."""
+        sql = """
+            ALTER TABLE places ADD CONSTRAINT places_dataset_id
+            FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id)
+        """
+        self.execute(sql)
+
+        sql = """
+            ALTER TABLE events ADD CONSTRAINT events_place_id
+            FOREIGN KEY (place_id) REFERENCES places (place_id)
+        """
+        self.execute(sql)
+
+        sql = """
+            ALTER TABLE counts ADD CONSTRAINT counts_event_id
+            FOREIGN KEY (event_id) REFERENCES events (event_id)
+        """
+        self.execute(sql)
+
+        sql = """
+            ALTER TABLE counts ADD CONSTRAINT counts_taxon_id
+            FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id)
+        """
+        self.execute(sql)
