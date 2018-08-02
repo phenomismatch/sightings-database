@@ -19,13 +19,6 @@ class SqliteDb(BaseDb):
     CREATE_CMD = f'spatialite {SQLITE_DB} < {CREATE_SCRIPT}'
     # CREATE_CMD = f'sqlite3 {SQLITE_DB} < {CREATE_SCRIPT}'
 
-    EVENT_INDEX = 'event_id'
-    EVENT_COLUMNS = """dataset_id year day started ended
-                       lat lng radius geohash""".split()
-
-    COUNT_INDEX = 'count_id'
-    COUNT_COLUMNS = 'event_id taxon_id count'.split()
-
     @classmethod
     def create(cls):
         """Create the database."""
@@ -76,29 +69,28 @@ class SqliteDb(BaseDb):
         results = self.cxn.execute(sql, (table, ))
         return results.fetchone()[0]
 
-    # def update_place_macro(event):
-    #     """Return a macro for updating the given point."""
-    #     return """
-    #         UPDATE events
-    #            SET geopoint = GeomFromText('POINT({} {})', 4326)
-    #          WHERE event_id = {};
-    #         """.format(event[1], event[2], event[0])
-    #
-    # def update_places(cxn, dataset_id):
-    #     """Update point records with the point geometry."""
-    #     print('Updating places')
-    #
-    #     places = []
-    #     for i, event in enumerate(
-    #           self.select_dataset_places(cxn, dataset_id), 1):
-    #         places.append(self.upevent_place_macro(event))
-    #         if i % 100_000 == 0:
-    #             print(f'Completed {i:,}')
-    #             script = ''.join(places)
-    #             cxn.executescript(script)
-    #             cxn.commit()
-    #             places = []
-    #
-    #     script = ''.join(places)
-    #     cxn.executescript(script)
-    #     cxn.commit()
+    def upload_table(self, df, table, columns):
+        """Upload the dataframe into the database."""
+        df.loc[:, columns].to_sql(table, self.engine, if_exists='append')
+
+    def upload_sidecar(self, df, table, columns):
+        """Insert the sidecar table into the database."""
+        table = f'{self.dataset_id}_{table}'
+        columns = [c for c in df.columns if c not in columns]
+        df.loc[:, columns].to_sql(table, self.engine, if_exists='append')
+
+    def update_places(self):
+        """Update point records with the point geometry."""
+        print(f'Updating {self.dataset_id} place points')
+
+        sql = """
+            UPDATE places
+               SET geopoint = MakePoint(lng, lat, 4326)
+             WHERE dataset_id = ?"""
+        self.execute(sql, (self.dataset_id, ))
+
+        sql = """
+            UPDATE places
+               SET geohash = GeoHash(geopoint, 7)
+             WHERE dataset_id = ?"""
+        self.execute(sql, (self.dataset_id, ))

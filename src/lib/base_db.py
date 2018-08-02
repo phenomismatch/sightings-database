@@ -60,42 +60,18 @@ class BaseDb:
 
     def insert_places(self, places):
         """Insert the events into the database."""
-        places.loc[:, self.PLACE_COLUMNS].to_sql(
-            'places', self.engine, if_exists='append')
-        sidecar = f'{self.dataset_id}_places'
-        self.insert_sidecar(
-            places, sidecar, self.PLACE_COLUMNS, self.PLACE_INDEX)
+        self.upload_table(places, 'places', self.PLACE_COLUMNS)
+        self.upload_sidecar(places, 'places', self.PLACE_COLUMNS)
 
     def insert_events(self, events):
         """Insert the events into the database."""
-        events.loc[:, self.EVENT_COLUMNS].to_sql(
-            'events', self.engine, if_exists='append')
-        sidecar = f'{self.dataset_id}_events'
-        self.insert_sidecar(
-            events, sidecar, self.EVENT_COLUMNS, self.EVENT_INDEX)
+        self.upload_table(events, 'events', self.EVENT_COLUMNS)
+        self.upload_sidecar(events, 'events', self.EVENT_COLUMNS)
 
     def insert_counts(self, counts):
         """Insert the counts into the database."""
-        counts.loc[:, self.COUNT_COLUMNS].to_sql(
-            'counts', self.engine, if_exists='append')
-        sidecar = f'{self.dataset_id}_counts'
-        self.insert_sidecar(
-            counts, sidecar, self.COUNT_COLUMNS, self.COUNT_INDEX)
-
-    def insert_sidecar(self, df, sidecar, exclude, index):
-        """Insert the sidecar table into the database."""
-        columns = [c for c in df.columns if c not in exclude + ['key']]
-        df.loc[:, columns].to_sql(sidecar, self.engine, if_exists='append')
-
-    def update_places(self):
-        """Update point records with the point geometry."""
-        print(f'Updating {self.dataset_id} place points')
-        sql = """
-            UPDATE places
-               SET geopoint = ST_SetSRID(ST_MakePoint(lng, lat), 4326),
-                   geohash  = ST_GeoHash(ST_MakePoint(lng, lat), 7)
-             WHERE dataset_id = ?"""
-        self.execute(sql, (self.dataset_id, ))
+        self.upload_table(counts, 'counts', self.COUNT_COLUMNS)
+        self.upload_sidecar(counts, 'counts', self.COUNT_COLUMNS)
 
     def bulk_add_setup(self):
         """Prepare the database for bulk adds."""

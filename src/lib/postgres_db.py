@@ -49,21 +49,6 @@ class PostgresDb(BaseDb):
             max_id = cur.fetchone()[0]
         return max_id + 1
 
-    def insert_places(self, places):
-        """Insert the events into the database."""
-        self.upload_table(places, 'places', self.PLACE_COLUMNS)
-        self.upload_sidecar(places, 'places', self.PLACE_COLUMNS)
-
-    def insert_events(self, events):
-        """Insert the events into the database."""
-        self.upload_table(events, 'events', self.EVENT_COLUMNS)
-        self.upload_sidecar(events, 'events', self.EVENT_COLUMNS)
-
-    def insert_counts(self, counts):
-        """Insert the counts into the database."""
-        self.upload_table(counts, 'counts', self.COUNT_COLUMNS)
-        self.upload_sidecar(counts, 'counts', self.COUNT_COLUMNS)
-
     def upload_table(self, df, table, columns):
         """Upload the dataframe into the database."""
         df = df.loc[:, columns]
@@ -101,6 +86,16 @@ class PostgresDb(BaseDb):
         sql += f'{df.index.name} INTEGER PRIMARY KEY, '
         sql += ', '.join([f'{c} TEXT' for c in df.columns]) + ')'
         self.execute(sql)
+
+    def update_places(self):
+        """Update point records with the point geometry."""
+        print(f'Updating {self.dataset_id} place points')
+        sql = """
+            UPDATE places
+               SET geopoint = ST_SetSRID(ST_MakePoint(lng, lat), 4326),
+                   geohash  = ST_GeoHash(ST_MakePoint(lng, lat), 7)
+             WHERE dataset_id = ?"""
+        self.execute(sql, (self.dataset_id, ))
 
     def bulk_add_setup(self):
         """Prepare the database for bulk adds."""

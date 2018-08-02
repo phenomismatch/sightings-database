@@ -42,8 +42,8 @@ CREATE TABLE places (
   dataset_id TEXT NOT NULL,
   lng        NUMBER NOT NULL,
   lat        NUMBER NOT NULL,
-  geohash    TEXT,
-  radius     NUMBER
+  radius     NUMBER,
+  geohash    TEXT
   -- FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE
 );
 CREATE INDEX places_lng_lat ON places (lng, lat);

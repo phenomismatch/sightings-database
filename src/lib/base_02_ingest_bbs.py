@@ -109,8 +109,9 @@ class BaseIngestBbs:
             columns={'starttime': 'started', 'endtime': 'ended'})
         events['day'] = pd.to_datetime(
             events.loc[:, ['year', 'month', 'day']]).dt.strftime('%j')
-        events['place_id'] = events.apply(
-            lambda x: route_to_place_id[(x.statenum, x.route)], axis=1)
+        events['key'] = tuple(zip(events.statenum, events.route))
+        events['place_id'] = events.key.map(route_to_place_id)
+        events = events.drop(['key'], axis=1)
         self._convert_to_time(events, 'started')
         self._convert_to_time(events, 'ended')
         events = self.cxn.add_event_id(events)
@@ -127,7 +128,7 @@ class BaseIngestBbs:
         counts['key'] = tuple(zip(
             counts.statenum, counts.route, counts.rpid, counts.year))
         counts['event_id'] = counts.key.map(weather_to_event_id)
-        counts.drop(['key', 'record_id'], axis=1)
+        counts = counts.drop(['key', 'record_id'], axis=1)
         counts = self.cxn.add_count_id(counts)
         self.cxn.insert_counts(counts)
 
