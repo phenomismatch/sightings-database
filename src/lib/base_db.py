@@ -13,12 +13,12 @@ class BaseDb:
     COUNT_INDEX = 'count_id'
     COUNT_COLUMNS = 'event_id taxon_id count'.split()
 
-    def delete_dataset(self, dataset_id):
+    def delete_dataset(self):
         """Clear dataset from the database."""
-        print(f'Deleting old {dataset_id} records')
+        print(f'Deleting old {self.dataset_id} records')
 
         self.execute(
-            'DELETE FROM datasets WHERE dataset_id = ?', (dataset_id, ))
+            'DELETE FROM datasets WHERE dataset_id = ?', (self.dataset_id, ))
 
         sql = """DELETE FROM places
                 WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""
@@ -33,7 +33,7 @@ class BaseDb:
         self.execute(sql)
 
         for sidecar in ['codes', 'places', 'events', 'counts']:
-            self.execute(f'DROP TABLE IF EXISTS {dataset_id}_{sidecar}')
+            self.execute(f'DROP TABLE IF EXISTS {self.dataset_id}_{sidecar}')
 
     def add_place_id(self, places):
         """Add event IDs to the dataframe."""

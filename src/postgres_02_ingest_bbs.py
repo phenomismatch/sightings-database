@@ -9,7 +9,8 @@ class PostgresIngestBbs(BaseIngestBbs):
 
     def _insert_codes(self):
         super()._insert_codes()
-        self.cxn.execute('ALTER TABLE bbs_codes ADD PRIMARY KEY (code_id)')
+        self.cxn.execute(
+            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
 
 
 if __name__ == '__main__':

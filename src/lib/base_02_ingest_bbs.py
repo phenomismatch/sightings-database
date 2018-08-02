@@ -1,6 +1,5 @@
 """Ingest Breed Bird Survey data."""
 
-import gc
 from os.path import exists
 from datetime import date
 import subprocess
@@ -23,31 +22,26 @@ class BaseIngestBbs:
         self.bbs_cxn = None
 
     def ingest(self):
-        """Ingest the BBS data."""
+        """Ingest the data."""
         self._download_bbs_data()
 
         self.bbs_cxn = bbs_db(path=self.BBS_DB)
 
         self.cxn.bulk_add_setup()
-        self.cxn.delete_dataset(self.DATASET_ID)
+        self.cxn.delete_dataset()
 
-        aou_to_taxon_id = self._select_taxons()
-        routes = self._select_routes()
-        weather = self._select_weather()
-        counts = self._select_counts()
+        to_taxon_id = self._select_raw_taxons()
+        raw_places = self._select_raw_places()
+        raw_events = self._select_raw_events()
+        raw_counts = self._select_raw_counts()
 
         self._insert_dataset()
         self._insert_codes()
-        route_to_place_id = self._insert_places(routes)
-        weather_to_event_id = self._insert_events(weather, route_to_place_id)
-
-        del routes
-        del weather
-        del route_to_place_id
-        gc.collect()
-
-        self._insert_counts(counts, weather_to_event_id, aou_to_taxon_id)
+        to_place_id = self._insert_places(raw_places)
+        to_event_id = self._insert_events(raw_events, to_place_id)
+        self._insert_counts(raw_counts, to_event_id, to_taxon_id)
         self.cxn.update_places()
+
         self.cxn.bulk_add_cleanup()
 
     def _download_bbs_data(self):
@@ -57,43 +51,45 @@ class BaseIngestBbs:
             print('Downloading {self.DATASET_ID} data')
             subprocess.check_call(cmd, shell=True)
 
-    def _select_taxons(self):
-        print(f'Selecting taxons for {self.DATASET_ID} counts')
+    def _select_raw_taxons(self):
+        print(f'Getting {self.DATASET_ID} raw taxon data')
         sql = """SELECT aou, genus, species FROM breed_bird_survey_species"""
-        bbs_df = pd.read_sql(sql, self.bbs_cxn.engine)
-        bbs_df['genus1'] = bbs_df.genus.str.split().str[0]
-        bbs_df['species1'] = bbs_df.species.str.split().str[0]
-        bbs_df['sci_name'] = bbs_df.genus1 + ' ' + bbs_df.species1
-        bbs_df = bbs_df.loc[:, ['sci_name', 'aou']].set_index('sci_name')
+        raw_taxons = pd.read_sql(sql, self.bbs_cxn.engine)
+        raw_taxons['genus1'] = raw_taxons.genus.str.split().str[0]
+        raw_taxons['species1'] = raw_taxons.species.str.split().str[0]
+        raw_taxons['sci_name'] = raw_taxons.genus1 + ' ' + raw_taxons.species1
+        raw_taxons = raw_taxons.loc[:, ['sci_name', 'aou']]
+        raw_taxons = raw_taxons.set_index('sci_name')
 
         sql = """SELECT sci_name, taxon_id FROM taxons"""
-        df = pd.read_sql(sql, self.cxn.engine).set_index('sci_name')
-        df = df.merge(bbs_df, how='inner', left_index=True, right_index=True)
+        taxons = pd.read_sql(sql, self.cxn.engine).set_index('sci_name')
+        taxons = taxons.merge(
+            raw_taxons, how='inner', left_index=True, right_index=True)
 
-        return df.set_index('aou').taxon_id.to_dict()
+        return taxons.set_index('aou').taxon_id.to_dict()
 
-    def _select_routes(self):
-        print(f'Getting {self.DATASET_ID} routes')
+    def _select_raw_places(self):
+        print(f'Getting {self.DATASET_ID} raw place data')
         sql = """SELECT * FROM breed_bird_survey_routes"""
-        routes = pd.read_sql(sql, self.bbs_cxn.engine).set_index(
+        raw_places = pd.read_sql(sql, self.bbs_cxn.engine).set_index(
             ['statenum', 'route'], verify_integrity=True)
-        return routes
+        return raw_places
 
-    def _select_weather(self):
-        print(f'Getting {self.DATASET_ID} weather data')
+    def _select_raw_events(self):
+        print(f'Getting {self.DATASET_ID} raw event data')
         sql = """SELECT * FROM breed_bird_survey_weather"""
-        weather = pd.read_sql(sql, self.bbs_cxn.engine)
-        return weather
+        raw_events = pd.read_sql(sql, self.bbs_cxn.engine)
+        return raw_events
 
-    def _select_counts(self):
-        print(f'Getting {self.DATASET_ID} counts')
+    def _select_raw_counts(self):
+        print(f'Getting {self.DATASET_ID} raw count data')
         sql = """SELECT * FROM breed_bird_survey_counts"""
-        counts = pd.read_sql(sql, self.bbs_cxn.engine)
-        return counts
+        raw_counts = pd.read_sql(sql, self.bbs_cxn.engine)
+        return raw_counts
 
-    def _insert_places(self, places):
+    def _insert_places(self, raw_places):
         print(f'Inserting {self.DATASET_ID} places')
-        places = places.reset_index().rename(
+        places = raw_places.reset_index().rename(
             columns={'latitude': 'lat', 'longitude': 'lng'})
         places['dataset_id'] = self.DATASET_ID
         places['radius'] = 1609.344 * 25  # twenty-five miles in meters
@@ -103,14 +99,14 @@ class BaseIngestBbs:
         return places.reset_index().set_index(
             ['statenum', 'route']).place_id.to_dict()
 
-    def _insert_events(self, events, route_to_place_id):
+    def _insert_events(self, raw_events, to_place_id):
         print(f'Inserting {self.DATASET_ID} events')
-        events = events.rename(
+        events = raw_events.rename(
             columns={'starttime': 'started', 'endtime': 'ended'})
         events['day'] = pd.to_datetime(
             events.loc[:, ['year', 'month', 'day']]).dt.strftime('%j')
         events['key'] = tuple(zip(events.statenum, events.route))
-        events['place_id'] = events.key.map(route_to_place_id)
+        events['place_id'] = events.key.map(to_place_id)
         events = events.drop(['key'], axis=1)
         self._convert_to_time(events, 'started')
         self._convert_to_time(events, 'ended')
@@ -119,15 +115,15 @@ class BaseIngestBbs:
         return events.reset_index().set_index(
             ['statenum', 'route', 'rpid', 'year']).event_id.to_dict()
 
-    def _insert_counts(self, counts, weather_to_event_id, aou_to_taxon_id):
+    def _insert_counts(self, raw_counts, to_event_id, to_taxon_id):
         print(f'Inserting {self.DATASET_ID} counts')
-        counts = counts.rename(columns={'speciestotal': 'count'})
-        counts['taxon_id'] = counts.aou.map(aou_to_taxon_id)
+        counts = raw_counts.rename(columns={'speciestotal': 'count'})
+        counts['taxon_id'] = counts.aou.map(to_taxon_id)
         counts = counts.loc[counts.taxon_id.notna(), :]
         counts.taxon_id = counts.taxon_id.astype(int)
         counts['key'] = tuple(zip(
             counts.statenum, counts.route, counts.rpid, counts.year))
-        counts['event_id'] = counts.key.map(weather_to_event_id)
+        counts['event_id'] = counts.key.map(to_event_id)
         counts = counts.drop(['key', 'record_id'], axis=1)
         counts = self.cxn.add_count_id(counts)
         self.cxn.insert_counts(counts)
@@ -143,7 +139,6 @@ class BaseIngestBbs:
         df.loc[is_na, column] = None
 
     def _insert_dataset(self):
-        """Insert a dataset record."""
         print(f'Inserting {self.DATASET_ID} dataset')
 
         dataset = pd.DataFrame([dict(
@@ -151,12 +146,11 @@ class BaseIngestBbs:
             title='North American Breeding Bird Survey (BBS)',
             extracted=str(date.today()),
             version='2016.0',
-            url='https://www.pwrc.usgs.gov/bbs/')]).set_index('dataset_id')
-        dataset.to_sql(
+            url='https://www.pwrc.usgs.gov/bbs/')])
+        dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')
 
     def _insert_codes(self):
-        """Insert BBS code values into the database."""
         print(f'Inserting {self.DATASET_ID} codes')
 
         bcr = pd.read_fwf(
