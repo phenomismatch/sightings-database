@@ -1,12 +1,16 @@
 """Functions for dealing with the postgres database connections."""
 
+import os
 import re
+import tempfile
 import subprocess
-from os import fspath
 from pathlib import Path
 import psycopg2
 from sqlalchemy import create_engine
+import lib.globals as g
 from lib.base_db import BaseDb
+
+FILE_MODE = 644
 
 
 class PostgresDb(BaseDb):
@@ -14,7 +18,8 @@ class PostgresDb(BaseDb):
 
     ENGINE = 'postgresql://{}@localhost:5432/sightings'
     CONNECT = 'dbname=sightings user={}'
-    CREATE_SCRIPT = fspath(Path('src') / 'sql' / 'postgres_01_create_db.sql')
+    CREATE_SCRIPT = os.fspath(
+        Path('src') / 'sql' / 'postgres_01_create_db.sql')
     CREATE_CMD = f'psql -U postgres -d sightings -a -f {CREATE_SCRIPT}'
 
     @classmethod
@@ -35,11 +40,6 @@ class PostgresDb(BaseDb):
         self.cxn.cursor().execute(sql, values)
         self.cxn.commit()
 
-    def insert_sidecar(self, df, sidecar, exclude, index):
-        """Insert the sidecar table into the database."""
-        super().insert_sidecar(df, sidecar, exclude, index)
-        self.execute(f'ALTER TABLE {sidecar} ADD PRIMARY KEY ({index})')
-
     def next_id(self, table):
         """Get the max value from the table's field."""
         field = table[:-1] + '_id'
@@ -49,22 +49,84 @@ class PostgresDb(BaseDb):
             max_id = cur.fetchone()[0]
         return max_id + 1
 
+    def insert_places(self, places):
+        """Insert the events into the database."""
+        fd, path = self.create_csv(places)
+        self.copy_table(
+            path, 'places', [self.PLACE_INDEX] + self.PLACE_COLUMNS)
+        sidecar = f'{self.dataset_id}_places'
+        self.insert_sidecar(
+            places, sidecar, self.PLACE_COLUMNS, self.PLACE_INDEX)
+        os.close(fd)
+
+    def insert_events(self, events):
+        """Insert the events into the database."""
+        fd, path = self.create_csv(events)
+        self.copy_table(
+            path, 'events', [self.EVENT_INDEX] + self.EVENT_COLUMNS)
+        sidecar = f'{self.dataset_id}_events'
+        self.insert_sidecar(
+            events, sidecar, self.EVENT_COLUMNS, self.EVENT_INDEX)
+        os.close(fd)
+
+    def insert_counts(self, counts):
+        """Insert the counts into the database."""
+        fd, path = self.create_csv(counts)
+        self.copy_table(
+            path, 'counts', [self.COUNT_INDEX] + self.COUNT_COLUMNS)
+        sidecar = f'{self.dataset_id}_counts'
+        self.insert_sidecar(
+            counts, sidecar, self.COUNT_COLUMNS, self.COUNT_INDEX)
+        os.close(fd)
+
+    def insert_sidecar(self, df, sidecar, exclude, index):
+        """Insert the sidecar table into the database."""
+        columns = [index] + [c for c in df.columns if c not in exclude]
+        self.create_sidecar(sidecar, columns, index)
+        self.copy_table(df, sidecar, columns)
+
+    def create_sidecar(self, sidecar, columns, index):
+        """Create the sidecar table if needed."""
+        sql = f'CREATE TABLE IF NOT EXISTS {sidecar} ('
+        sql += f'{index} INTEGER PRIMARY KEY, '
+        sql += ', '.join([f'{c} TEXT' for c in columns if c != index])
+        sql += ')'
+        self.execute(sql)
+
+    def create_csv(self, df):
+        """Create a CSV file for the dataframe that can be loaded with COPY."""
+        fd, path = tempfile.mkstemp(suffix='.csv', dir=g.INTERIM)
+        df.to_csv(path)
+        os.chmod(path, FILE_MODE)
+        return fd, path
+
+    def copy_table(self, path, table, columns):
+        """Copy the table from a temp CSV file into the database."""
+        sql = f"""COPY {table} ({', '.join(columns)})
+                  FROM '{path}' WITH (FORMAT csv, HEADER)"""
+        print(sql)
+        self.execute(sql)
+
     def bulk_add_setup(self):
         """Prepare the database for bulk adds."""
         super().bulk_add_setup()
         self.drop_constraints()
 
-    def bulk_add_teardown(self):
+    def bulk_add_cleanup(self):
         """Prepare the database for use."""
-        super().bulk_add_teardown()
+        super().bulk_add_cleanup()
         self.add_constraints()
 
     def drop_constraints(self):
         """Drop constraints to speed up bulk data adds."""
-        self.execute(f'ALTER TABLE counts DROP CONSTRAINT counts_event_id')
-        self.execute(f'ALTER TABLE counts DROP CONSTRAINT counts_taxon_id')
-        self.execute(f'ALTER TABLE events DROP CONSTRAINT events_place_id')
-        self.execute(f'ALTER TABLE places DROP CONSTRAINT places_dataset_id')
+        self.execute(
+            f'ALTER TABLE counts DROP CONSTRAINT IF EXISTS counts_event_id')
+        self.execute(
+            f'ALTER TABLE counts DROP CONSTRAINT IF EXISTS counts_taxon_id')
+        self.execute(
+            f'ALTER TABLE events DROP CONSTRAINT IF EXISTS events_place_id')
+        self.execute(
+            f'ALTER TABLE places DROP CONSTRAINT IF EXISTS places_dataset_id')
 
     def add_constraints(self):
         """Add constraints in bulk."""

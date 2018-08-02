@@ -1,5 +1,6 @@
 """Ingest Breed Bird Survey data."""
 
+import gc
 from os.path import exists
 from datetime import date
 import subprocess
@@ -39,9 +40,15 @@ class BaseIngestBbs:
         self._insert_codes()
         route_to_place_id = self._insert_places(routes)
         weather_to_event_id = self._insert_events(weather, route_to_place_id)
+
+        del routes
+        del weather
+        del route_to_place_id
+        gc.collect()
+
         self._insert_counts(counts, weather_to_event_id, aou_to_taxon_id)
         self.cxn.update_places()
-        self.cxn.bulk_add_teardown()
+        self.cxn.bulk_add_cleanup()
 
     def _download_bbs_data(self):
         """Run the script to download the BBS data into an SQLite3 database."""
@@ -80,7 +87,7 @@ class BaseIngestBbs:
 
     def _select_counts(self):
         print(f'Getting {self.DATASET_ID} counts')
-        sql = """SELECT * FROM breed_bird_survey_counts"""
+        sql = """SELECT * FROM breed_bird_survey_counts LIMIT 1000"""
         counts = pd.read_sql(sql, self.bbs_cxn.engine)
         return counts
 
@@ -90,6 +97,8 @@ class BaseIngestBbs:
             columns={'latitude': 'lat', 'longitude': 'lng'})
         places['dataset_id'] = self.DATASET_ID
         places['radius'] = 1609.344 * 25  # twenty-five miles in meters
+        # places['geohash'] = None
+        # places['geopoint'] = None
         places = self.cxn.add_place_id(places)
 
         self.cxn.insert_places(places)
@@ -113,14 +122,14 @@ class BaseIngestBbs:
 
     def _insert_counts(self, counts, weather_to_event_id, aou_to_taxon_id):
         print(f'Inserting {self.DATASET_ID} counts')
-        counts = counts.drop(['record_id'], axis=1).rename(
-            columns={'speciestotal': 'count'})
-        counts['taxon_id'] = counts.apply(
-            lambda x: aou_to_taxon_id.get(x.aou), axis=1)
-        counts = counts.loc[counts.taxon_id.notna()]
-        counts['event_id'] = counts.apply(
-            lambda x: weather_to_event_id[
-                (x.statenum, x.route, x.rpid, x.year)], axis=1)
+        counts = counts.rename(columns={'speciestotal': 'count'})
+        counts['taxon_id'] = counts.aou.map(aou_to_taxon_id)
+        counts = counts.loc[counts.taxon_id.notna(), :]
+        counts.taxon_id = counts.taxon_id.astype(int)
+        counts['key'] = tuple(zip(
+            counts.statenum, counts.route, counts.rpid, counts.year))
+        counts['event_id'] = counts.key.map(weather_to_event_id)
+        counts.drop(['key', 'record_id'], axis=1)
         counts = self.cxn.add_count_id(counts)
         self.cxn.insert_counts(counts)
 

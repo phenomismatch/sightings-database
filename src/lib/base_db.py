@@ -20,6 +20,18 @@ class BaseDb:
         self.execute(
             'DELETE FROM datasets WHERE dataset_id = ?', (dataset_id, ))
 
+        sql = """DELETE FROM places
+                WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""
+        self.execute(sql)
+
+        sql = """DELETE FROM events
+                  WHERE place_id NOT IN (SELECT place_id FROM places)"""
+        self.execute(sql)
+
+        sql = """DELETE FROM counts
+                  WHERE event_id NOT IN (SELECT event_id FROM events)"""
+        self.execute(sql)
+
         for sidecar in ['codes', 'places', 'events', 'counts']:
             self.execute(f'DROP TABLE IF EXISTS {dataset_id}_{sidecar}')
 
@@ -90,7 +102,7 @@ class BaseDb:
         print('Dropping indexes and constraints')
         self.drop_indexes()
 
-    def bulk_add_teardown(self):
+    def bulk_add_cleanup(self):
         """Prepare the database for use."""
         print('Adding indexes and constraints')
         self.add_indexes()
