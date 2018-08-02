@@ -10,6 +10,7 @@ __pycache__
 
 # Data
 output/*
+data/temp/*
 data/raw/bbs/*
 data/raw/maps/*
 data/raw/ebird/*

@@ -51,60 +51,55 @@ class PostgresDb(BaseDb):
 
     def insert_places(self, places):
         """Insert the events into the database."""
-        fd, path = self.create_csv(places)
-        self.copy_table(
-            path, 'places', [self.PLACE_INDEX] + self.PLACE_COLUMNS)
-        sidecar = f'{self.dataset_id}_places'
-        self.insert_sidecar(
-            places, sidecar, self.PLACE_COLUMNS, self.PLACE_INDEX)
-        os.close(fd)
+        self.upload_table(places, 'places', self.PLACE_COLUMNS)
+        self.upload_sidecar(places, 'places', self.PLACE_COLUMNS)
 
     def insert_events(self, events):
         """Insert the events into the database."""
-        fd, path = self.create_csv(events)
-        self.copy_table(
-            path, 'events', [self.EVENT_INDEX] + self.EVENT_COLUMNS)
-        sidecar = f'{self.dataset_id}_events'
-        self.insert_sidecar(
-            events, sidecar, self.EVENT_COLUMNS, self.EVENT_INDEX)
-        os.close(fd)
+        self.upload_table(events, 'events', self.EVENT_COLUMNS)
+        self.upload_sidecar(events, 'events', self.EVENT_COLUMNS)
 
     def insert_counts(self, counts):
         """Insert the counts into the database."""
-        fd, path = self.create_csv(counts)
-        self.copy_table(
-            path, 'counts', [self.COUNT_INDEX] + self.COUNT_COLUMNS)
-        sidecar = f'{self.dataset_id}_counts'
-        self.insert_sidecar(
-            counts, sidecar, self.COUNT_COLUMNS, self.COUNT_INDEX)
-        os.close(fd)
+        self.upload_table(counts, 'counts', self.COUNT_COLUMNS)
+        self.upload_sidecar(counts, 'counts', self.COUNT_COLUMNS)
 
-    def insert_sidecar(self, df, sidecar, exclude, index):
-        """Insert the sidecar table into the database."""
-        columns = [index] + [c for c in df.columns if c not in exclude]
-        self.create_sidecar(sidecar, columns, index)
-        self.copy_table(df, sidecar, columns)
-
-    def create_sidecar(self, sidecar, columns, index):
-        """Create the sidecar table if needed."""
-        sql = f'CREATE TABLE IF NOT EXISTS {sidecar} ('
-        sql += f'{index} INTEGER PRIMARY KEY, '
-        sql += ', '.join([f'{c} TEXT' for c in columns if c != index])
-        sql += ')'
-        self.execute(sql)
+    def upload_table(self, df, table, columns):
+        """Upload the dataframe into the database."""
+        df = df.loc[:, columns]
+        fd, path = self.create_csv(df)
+        self.copy_table(df, table, path)
+        os.remove(path)
 
     def create_csv(self, df):
         """Create a CSV file for the dataframe that can be loaded with COPY."""
-        fd, path = tempfile.mkstemp(suffix='.csv', dir=g.INTERIM)
+        fd, path = tempfile.mkstemp(suffix='.csv', dir=g.TEMP)
         df.to_csv(path)
         os.chmod(path, FILE_MODE)
         return fd, path
 
-    def copy_table(self, path, table, columns):
+    def copy_table(self, df, table, path):
         """Copy the table from a temp CSV file into the database."""
+        columns = [df.index.name] + list(df.columns)
         sql = f"""COPY {table} ({', '.join(columns)})
                   FROM '{path}' WITH (FORMAT csv, HEADER)"""
-        print(sql)
+        self.execute(sql)
+
+    def upload_sidecar(self, df, table, columns):
+        """Insert the sidecar table into the database."""
+        table = f'{self.dataset_id}_{table}'
+        columns = [c for c in df.columns if c not in columns]
+        df = df.loc[:, columns]
+        self.create_sidecar(df, table)
+        fd, path = self.create_csv(df)
+        self.copy_table(df, table, path)
+        os.remove(path)
+
+    def create_sidecar(self, df, table):
+        """Create the sidecar table if needed."""
+        sql = f'CREATE TABLE IF NOT EXISTS {table} ('
+        sql += f'{df.index.name} INTEGER PRIMARY KEY, '
+        sql += ', '.join([f'{c} TEXT' for c in df.columns]) + ')'
         self.execute(sql)
 
     def bulk_add_setup(self):

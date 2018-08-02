@@ -87,7 +87,7 @@ class BaseIngestBbs:
 
     def _select_counts(self):
         print(f'Getting {self.DATASET_ID} counts')
-        sql = """SELECT * FROM breed_bird_survey_counts LIMIT 1000"""
+        sql = """SELECT * FROM breed_bird_survey_counts"""
         counts = pd.read_sql(sql, self.bbs_cxn.engine)
         return counts
 
@@ -97,8 +97,6 @@ class BaseIngestBbs:
             columns={'latitude': 'lat', 'longitude': 'lng'})
         places['dataset_id'] = self.DATASET_ID
         places['radius'] = 1609.344 * 25  # twenty-five miles in meters
-        # places['geohash'] = None
-        # places['geopoint'] = None
         places = self.cxn.add_place_id(places)
 
         self.cxn.insert_places(places)
