@@ -102,19 +102,15 @@ class BaseIngestMaps:
     def _get_raw_events(self):
         print(f'Getting {self.DATASET_ID} raw event data')
         csv_file = self.MAPS_PATH / f'{self.EFFORT}.csv'
-        raw_events = pd.read_csv(csv_file, dtype='unicode')
-        df = raw_events.groupby(['STA', 'DATE'])
-        df = df.agg({'START': min, 'END': max})
-        print(df.shape)
-        df = raw_events.groupby(['STA', 'DATE', 'STATION', 'IP', 'LENGTH'])
-        df = df.agg({'START': min, 'END': max})
-        print(df.shape)
-        import sys
-        sys.exit()
-        df = df.rename(columns={'START': 'started', 'END': 'ended'})
-        # raw_events = raw_events.reset_index()
+        raw_events = pd.read_csv(csv_file, dtype='unicode').rename(
+            columns={'START': 'started', 'END': 'ended'})
+
         self._convert_to_time(raw_events, 'started')
         self._convert_to_time(raw_events, 'ended')
+
+        raw_events = raw_events.groupby(['STA', 'DATE', 'STATION'])
+        raw_events = raw_events.agg({'started': min, 'ended': max})
+        raw_events = raw_events.reset_index()
         return raw_events
 
     def _get_raw_counts(self):
@@ -135,35 +131,45 @@ class BaseIngestMaps:
     def _insert_events(self, raw_events, to_place_id):
         print(f'Inserting {self.DATASET_ID} events')
         events = self.cxn.add_event_id(raw_events)
-        print(events.head())
-        print(events.columns)
+
         events['place_id'] = events.STA.map(to_place_id)
+        events = events.loc[events.place_id.notna(), :]
+        events.place_id = events.place_id.astype(int)
+
         events.DATE = pd.to_datetime(events.DATE)
         events['year'] = events.DATE.dt.strftime('%Y')
         events['day'] = events.DATE.dt.strftime('%j')
+
         self.cxn.insert_events(events)
         return events.reset_index().set_index(
-            ['STA', 'DATE']).event_id.to_dict()
+            ['STA', 'DATE'], verify_integrity=True).event_id.to_dict()
 
-    def _insert_counts(self, counts, effort_to_event_id, to_taxon_id):
+    def _insert_counts(self, counts, to_event_id, to_taxon_id):
         print(f'Inserting {self.DATASET_ID} counts')
-#     counts = data.map_keys_to_event_ids(
-#         counts, keys, counts.STA, pd.to_datetime(counts.DATE))
-#
-#     counts = data.add_count_id(counts, cxn)
-#     counts['count'] = 1
-#
-#     data.insert_counts(counts, cxn, 'maps_counts')
+
+        counts['key'] = tuple(zip(counts.STA, pd.to_datetime(counts.DATE)))
+        counts['event_id'] = counts.key.map(to_event_id)
+        counts = counts.drop(['key'], axis=1)
+
+        counts['taxon_id'] = counts.SPEC.map(to_taxon_id)
+
+        counts = counts[counts.event_id.notna() & counts.taxon_id.notna()]
+
+        counts.event_id = counts.event_id.astype(int)
+        counts.taxon_id = counts.taxon_id.astype(int)
+
+        counts['count'] = 1
+        counts = self.cxn.add_count_id(counts)
+        self.cxn.insert_counts(counts)
 
     @staticmethod
     def _convert_to_time(df, column):
         """Convert the time field from string HHm format to HH:MM format."""
-        is_na = df[column].isna()
+        df[column] = pd.to_numeric(df[column], errors='coerce')
         df[column] = df[column].fillna('0').astype(str)
         df[column] = df[column].str.pad(4, fillchar='0', side='right')
-        df[column] = pd.to_datetime(
-            df[column], format='%H%M', errors='coerce').dt.strftime('%H:%M')
-        df.loc[is_na, column] = None
+        df[column] = pd.to_datetime(df[column], format='%H%M', errors='coerce')
+        df.loc[df[column].isna(), column] = None
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')

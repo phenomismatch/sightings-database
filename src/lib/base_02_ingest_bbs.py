@@ -140,7 +140,6 @@ class BaseIngestBbs:
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')
-
         dataset = pd.DataFrame([dict(
             dataset_id=self.DATASET_ID,
             title='North American Breeding Bird Survey (BBS)',
