@@ -4,6 +4,10 @@
 class BaseDb:
     """Common database functions."""
 
+    TAXON_ID = 'taxon_id'
+    TAXON_COLUMNS = """dataset_id sci_name class ordr family genus synonyms
+        common_name target""".split()
+
     PLACE_INDEX = 'place_id'
     PLACE_COLUMNS = """dataset_id lng lat radius""".split()  # geohash geopoint
 
@@ -35,6 +39,12 @@ class BaseDb:
         for sidecar in ['codes', 'places', 'events', 'counts']:
             self.execute(f'DROP TABLE IF EXISTS {self.dataset_id}_{sidecar}')
 
+    def add_taxon_id(self, taxons):
+        """Add event IDs to the dataframe."""
+        taxon_id = self.next_id('taxons')
+        taxons['taxon_id'] = range(taxon_id, taxon_id + taxons.shape[0])
+        return taxons.set_index('taxon_id')
+
     def add_place_id(self, places):
         """Add event IDs to the dataframe."""
         place_id = self.next_id('places')
@@ -57,6 +67,10 @@ class BaseDb:
         """Add count IDs to the dataframe."""
         codes['code_id'] = range(codes.shape[0])
         return codes.set_index('code_id')
+
+    def insert_taxons(self, taxons):
+        """Insert the taxons into the database."""
+        self.upload_table(taxons, 'taxons', self.TAXON_COLUMNS)
 
     def insert_places(self, places):
         """Insert the events into the database."""

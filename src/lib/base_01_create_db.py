@@ -58,10 +58,9 @@ class BaseCreateDb:
         birds['class'] = 'aves'
         birds['synonyms'] = ''
 
-        taxon_id = self.cxn.next_id('taxons')
-        birds['taxon_id'] = range(taxon_id, taxon_id + birds.shape[0])
+        birds = self.cxn.add_taxon_id(birds)
         birds = birds.rename(columns={'order': 'ordr'}).set_index('taxon_id')
-        birds.to_sql('taxons', self.cxn.engine, if_exists='append')
+        self.cxn.insert_taxons(birds)
 
     def _get_clem_species(self):
         path = str(g.TAXONOMY / 'Clements-Checklist-v2017-August-2017_2.csv')
