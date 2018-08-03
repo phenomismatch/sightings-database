@@ -2,32 +2,37 @@
 
 from datetime import date
 import pandas as pd
-import lib.sqlite as db
 import lib.data as data
+import lib.globals as g
 
 
 class BaseIngestEbird:
     """Ingest eBird data."""
 
     DATASET_ID = 'ebird'
-    EBIRD_PATH = db.DATA_DIR / 'raw' / DATASET_ID
+    EBIRD_PATH = g.DATA_DIR / 'raw' / DATASET_ID
     EBIRD_CSV = EBIRD_PATH / 'ebd_relFeb-2018.txt'
 
-    PLACE_KEY_COLUMNS = ['lng', 'lat']
-    PLACE_COLUMNS = db.PLACE_COLUMNS + [
+    PLACE_KEYS = ['lng', 'lat']
+    PLACE_COLUMNS = PLACE_KEYS + [
+        'radius',
         'COUNTRY CODE', 'STATE CODE', 'COUNTY CODE', 'IBA CODE', 'BCR CODE',
         'USFWS CODE', 'ATLAS BLOCK', 'LOCALITY ID', ' LOCALITY TYPE',
         'EFFORT AREA HA']
 
-    EVENT_KEY_COLUMN = 'SAMPLING EVENT IDENTIFIER'
-    EVENT_COLUMNS = db.EVENT_COLUMNS + PLACE_KEY_COLUMNS + [
+    EVENT_KEY = 'SAMPLING EVENT IDENTIFIER'
+    EVENT_COLUMNS = PLACE_KEYS + [EVENT_KEY] + [
+        'started',
         'EFFORT AREA HA', 'APPROVED', 'REVIEWED', 'NUMBER OBSERVERS',
-        'ALL SPECIES REPORTED', 'OBSERVATION DATE', 'GROUP IDENTIFIER']
+        'ALL SPECIES REPORTED', 'OBSERVATION DATE', 'GROUP IDENTIFIER',
+        'DURATION MINUTES']
 
-    COUNT_COLUMNS = db.COUNT_COLUMNS + EVENT_KEY_COLUMN + [
-        'GLOBAL UNIQUE IDENTIFIER', 'LAST EDITED DATE', 'TAXONOMIC ORDER',
-        'CATEGORY', 'SUBSPECIES SCIENTIFIC NAME', 'BREEDING BIRD ATLAS CODE',
-        'BREEDING BIRD ATLAS CATEGORY', 'AGE/SEX', 'OBSERVER ID', 'HAS MEDIA']
+    COUNT_COLUMNS = [EVENT_KEY] + [
+        'count',
+        'SCIENTIFIC NAME', 'GLOBAL UNIQUE IDENTIFIER', 'LAST EDITED DATE',
+        'TAXONOMIC ORDER', 'CATEGORY', 'SUBSPECIES SCIENTIFIC NAME',
+        'BREEDING BIRD ATLAS CODE', 'BREEDING BIRD ATLAS CATEGORY', 'AGE/SEX',
+        'OBSERVER ID', 'HAS MEDIA']
 
     def __init__(self, db):
         """Setup."""
@@ -75,8 +80,7 @@ class BaseIngestEbird:
         """Build a dictionary of scientific names and taxon_ids."""
         print(f'Getting {self.DATASET_ID} raw taxon data')
         sql = """SELECT taxon_id, sci_name FROM taxons WHERE target = 't'"""
-        taxons = pd.read_sql(sql, self.cxn.engine).set_index('sci_name')
-
+        taxons = pd.read_sql(sql, self.cxn.engine)
         return taxons.set_index('sci_name').taxon_id.to_dict()
 
     def _filter_data(self, raw_data, to_taxon_id):
@@ -87,9 +91,10 @@ class BaseIngestEbird:
             'TIME OBSERVATIONS STARTED': 'started',
             'OBSERVATION COUNT': 'count'})
 
-        raw_data['event_date'] = pd.to_datetime(
+        raw_data['OBSERVATION DATE'] = pd.to_datetime(
             raw_data['OBSERVATION DATE'], errors='coerce')
-        has_date = raw_data.event_date.notna()
+
+        has_date = raw_data['OBSERVATION DATE'].notna()
         has_count = pd.to_numeric(raw_data['count'], errors='coerce').notna()
         is_approved = raw_data.APPROVED == '1'
         is_complete = raw_data['ALL SPECIES REPORTED'] == '1'
@@ -102,7 +107,7 @@ class BaseIngestEbird:
 
     def _insert_places(self, raw_data, to_place_id):
         print(f'Inserting {self.DATASET_ID} places')
-        places = raw_data[self.PLACE_COLUMNS]
+        places = raw_data.loc[:, self.PLACE_COLUMNS]
 
         places['place_key'] = self._get_place_keys(places)
         dups = places.place_key.duplicated()
@@ -120,7 +125,8 @@ class BaseIngestEbird:
         places['dataset_id'] = self.DATASET_ID
         places = self.cxn.add_place_id(places)
 
-        new_place_ids = places.set_index('place_key').place_id.to_dict()
+        new_place_ids = places.reset_index().set_index(
+            'place_key').place_id.to_dict()
         to_place_id = {**to_place_id, **new_place_ids}
 
         places = places.drop(['place_key'], axis=1)
@@ -130,19 +136,19 @@ class BaseIngestEbird:
 
     def _insert_events(self, raw_data, to_place_id, to_event_id):
         print(f'Inserting {self.DATASET_ID} events')
-        events = raw_data[self.EVENT_COLUMNS]
+        events = raw_data.loc[:, self.EVENT_COLUMNS]
 
         events['place_key'] = self._get_place_keys(events)
 
-        dups = events[self.EVENT_KEY_COLUMN].duplicated()
+        dups = events[self.EVENT_KEY].duplicated()
         events = events[~dups]
 
-        old_events = events[self.EVENT_KEY_COLUMN].isin(to_event_id)
+        old_events = events[self.EVENT_KEY].isin(to_event_id)
         events = events[~old_events]
 
         events['place_id'] = events.place_key.map(to_place_id)
-        events['year'] = events.event_date.dt.strftime('%Y')
-        events['day'] = events.event_date.dt.strftime('%j')
+        events['year'] = events['OBSERVATION DATE'].dt.strftime('%Y')
+        events['day'] = events['OBSERVATION DATE'].dt.strftime('%j')
 
         events['started'] = pd.to_datetime(
             events['started'], format='%H:%M:%S')
@@ -153,28 +159,30 @@ class BaseIngestEbird:
         self._convert_to_time(events, 'started')
         self._convert_to_time(events, 'ended')
 
-        new_event_ids = events.set_index(
-            self.EVENT_KEY_COLUMN).event_id.to_dict()
+        events = self.cxn.add_event_id(events)
+
+        new_event_ids = events.reset_index().set_index(
+            self.EVENT_KEY).event_id.to_dict()
         to_event_id = {**to_event_id, **new_event_ids}
 
-        events = events.drop(['place_key'] + self.PLACE_KEY_COLUMNS, axis=1)
+        events = events.drop(['place_key'] + self.PLACE_KEYS, axis=1)
         self.cxn.insert_events(events)
 
         return to_event_id
 
     def _insert_counts(self, raw_data, to_event_id, to_taxon_id):
         print(f'Inserting {self.DATASET_ID} counts')
-        counts = raw_data[self.COUNT_COLUMNS]
+        counts = raw_data.loc[:, self.COUNT_COLUMNS]
 
         counts['taxon_id'] = counts['SCIENTIFIC NAME'].map(to_taxon_id)
-        counts['event_id'] = counts[self.EVENT_KEY_COLUMN].map(to_event_id)
+        counts['event_id'] = counts[self.EVENT_KEY].map(to_event_id)
 
-        counts.count = counts.count.apply(int)
+        counts['count'] = counts['count'].apply(int)
         counts.event_id = counts.event_id.astype(int)
         counts.taxon_id = counts.taxon_id.astype(int)
 
         counts = self.cxn.add_count_id(counts)
-        counts = counts.drop([self.EVENT_KEY_COLUMN], axis=1)
+        counts = counts.drop([self.EVENT_KEY], axis=1)
         self.cxn.insert_counts(counts)
 
     def _get_place_keys(self, df):
@@ -217,5 +225,6 @@ class BaseIngestEbird:
 
         codes = pd.read_csv(self.EBIRD_PATH / 'ebird_codes.csv')
         codes = codes.append([bcr, iba, usfws], ignore_index=True, sort=True)
+        codes = self.cxn.add_code_id(codes)
 
-        codes.to_sql('maps_codes', self.cxn.engine, if_exists='replace')
+        codes.to_sql('ebird_codes', self.cxn.engine, if_exists='replace')

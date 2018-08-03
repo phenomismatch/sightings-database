@@ -65,7 +65,7 @@ class PostgresDb(BaseDb):
 
     def copy_table(self, df, table, path):
         """Copy the table from a temp CSV file into the database."""
-        columns = [df.index.name] + list(df.columns)
+        columns = [f'"{c}"' for c in [df.index.name] + list(df.columns)]
         sql = f"""COPY {table} ({', '.join(columns)})
                   FROM '{path}' WITH (FORMAT csv, HEADER)"""
         self.execute(sql)
@@ -84,7 +84,7 @@ class PostgresDb(BaseDb):
         """Create the sidecar table if needed."""
         sql = f'CREATE TABLE IF NOT EXISTS {table} ('
         sql += f'{df.index.name} INTEGER PRIMARY KEY, '
-        sql += ', '.join([f'{c} TEXT' for c in df.columns]) + ')'
+        sql += ', '.join([f'"{c}" TEXT' for c in df.columns]) + ')'
         self.execute(sql)
 
     def update_places(self):
