@@ -43,8 +43,8 @@ class BaseIngestMaps:
         to_place_id = self._insert_places(raw_places)
         to_event_id = self._insert_events(raw_events, to_place_id)
         self._insert_counts(raw_counts, to_event_id, to_taxon_id)
-        self.cxn.update_places()
 
+        self.cxn.update_places()
         self.cxn.bulk_add_cleanup()
 
     def _convert_dbf_to_csv(self, file_name):
@@ -173,7 +173,6 @@ class BaseIngestMaps:
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')
-
         dataset = pd.DataFrame([dict(
             dataset_id=self.DATASET_ID,
             title='MAPS: Monitoring Avian Productivity and Survivorship',
@@ -185,7 +184,6 @@ class BaseIngestMaps:
 
     def _insert_codes(self):
         print(f'Inserting {self.DATASET_ID} codes')
-
         codes = pd.read_csv(self.MAPS_PATH / 'maps_codes.csv')
         codes = self.cxn.add_code_id(codes)
         codes.to_sql('maps_codes', self.cxn.engine, if_exists='replace')
