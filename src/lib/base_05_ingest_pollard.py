@@ -122,7 +122,7 @@ class BaseIngestPollard:
 
 #     pollard['Start time'] = pd.to_datetime(
 #         pollard['Start time'], errors='coerce')
-#     pollard = pollard[pollard['Start time'].notna() & pollard.sci_name.notna()]
+#   pollard = pollard[pollard['Start time'].notna() & pollard.sci_name.notna()]
 #
 #     pollard = pd.merge(pollard, places, on=['Site', 'Route'], how='left')
 #     pollard.lat = pd.to_numeric(pollard.lat, errors='coerce')
