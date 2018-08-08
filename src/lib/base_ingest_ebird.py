@@ -133,6 +133,15 @@ class BaseIngestEbird:
 
         return to_place_id
 
+    def _set_lat(self, places):
+        pass
+
+    def _set_lng(self, places):
+        pass
+
+    def _set_radius(self, places):
+        pass
+
     def _insert_events(self, raw_data, to_place_id, to_event_id):
         print(f'Inserting {self.DATASET_ID} events')
         events = raw_data.loc[:, self.EVENT_COLUMNS]

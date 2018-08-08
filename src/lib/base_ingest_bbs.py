@@ -89,15 +89,26 @@ class BaseIngestBbs:
 
     def _insert_places(self, raw_places):
         print(f'Inserting {self.DATASET_ID} places')
-        places = raw_places.reset_index().rename(
-            columns={'latitude': 'lat', 'longitude': 'lng'})
+        places = raw_places.reset_index()
         places['dataset_id'] = self.DATASET_ID
+        places = self._set_lng(places)
+        places = self._set_lat(places)
         places['radius'] = 1609.344 * 25  # twenty-five miles in meters
         places = self.cxn.add_place_id(places)
 
         self.cxn.insert_places(places)
         return places.reset_index().set_index(
             ['statenum', 'route']).place_id.to_dict()
+
+    def _set_lng(self, places):
+        return places.rename(columns={'longitude': 'lng'})
+
+    def _set_lat(self, places):
+        return places.rename(columns={'latitude': 'lat'})
+
+    def _set_radius(self, places):
+        places['radius'] = 1609.344 * 25  # twenty-five miles in meters
+        return places
 
     def _insert_events(self, raw_events, to_place_id):
         print(f'Inserting {self.DATASET_ID} events')
