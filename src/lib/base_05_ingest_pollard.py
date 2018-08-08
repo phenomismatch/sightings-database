@@ -12,6 +12,7 @@ class BaseIngestPollard:
     DATASET_ID = 'pollard'
     POLLARD_PATH = g.DATA_DIR / 'raw' / DATASET_ID
 
+    PLACE_KEYS = ['Site', 'Route']
     PLACE_COLUMNS = re.split(
         r',\s*',
         '''lat, lng, Site, Route, County, State, Land Owner,
@@ -98,7 +99,7 @@ class BaseIngestPollard:
             + raw_taxons.loc[has_synonym, 'synonym'])
 
         raw_taxons = raw_taxons.drop(
-                ['synonym', 'species', 'combined'], axis=1)
+            ['synonym', 'species', 'combined'], axis=1)
         return raw_taxons
 
     def _insert_taxons(self, raw_taxons):
@@ -119,6 +120,30 @@ class BaseIngestPollard:
         return taxons.reset_index().set_index(
             'sci_name').taxon_id.to_dict()
 
+    def _insert_dataset(self):
+        print(f'Inserting {self.DATASET_ID} dataset')
+        dataset = pd.DataFrame([dict(
+            dataset_id=self.DATASET_ID,
+            title='Pollard lepidoptera observations',
+            extracted=str(date.today()),
+            version='2018-02',
+            url='')])
+        dataset.set_index('dataset_id').to_sql(
+            'datasets', self.cxn.engine, if_exists='append')
+
+    def _insert_places(self, raw_places):
+        print(f'Inserting {self.DATASET_ID} places')
+        places = raw_places.loc[:, self.PLACE_COLUMNS]
+        return []
+
+    def _insert_events(self, raw_data, to_place_id):
+        print(f'Inserting {self.DATASET_ID} events')
+        events = raw_data.loc[:, self.EVENT_COLUMNS]
+        return []
+
+    def _insert_counts(self, raw_data, to_event_id):
+        print(f'Inserting {self.DATASET_ID} counts')
+        counts = raw_data.loc[:, self.COUNT_COLUMNS]
 
 #     pollard['Start time'] = pd.to_datetime(
 #         pollard['Start time'], errors='coerce')
@@ -132,17 +157,6 @@ class BaseIngestPollard:
 #     return pollard
 #
 #
-#
-    def _insert_dataset(self):
-        print(f'Inserting {self.DATASET_ID} dataset')
-        dataset = pd.DataFrame([dict(
-            dataset_id=self.DATASET_ID,
-            title='Pollard lepidoptera observations',
-            extracted=str(date.today()),
-            version='2018-02',
-            url='')])
-        dataset.set_index('dataset_id').to_sql(
-            'datasets', self.cxn.engine, if_exists='append')
 #
 # def _insert_records(cxn, pollard, taxons):
 #     print('Inserting event and count records')
