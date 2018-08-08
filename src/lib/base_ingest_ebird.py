@@ -110,8 +110,7 @@ class BaseIngestEbird:
         places = raw_data.loc[:, self.PLACE_COLUMNS]
 
         places['place_key'] = self._get_place_keys(places)
-        dups = places.place_key.duplicated()
-        places = places[~dups]
+        places = places.drop_duplicates('place_key')
 
         old_places = places.place_key.isin(to_place_id)
         places = places[~old_places]
@@ -139,9 +138,7 @@ class BaseIngestEbird:
         events = raw_data.loc[:, self.EVENT_COLUMNS]
 
         events['place_key'] = self._get_place_keys(events)
-
-        dups = events[self.EVENT_KEY].duplicated()
-        events = events[~dups]
+        events = events.drop_duplicates(self.EVENT_KEY)
 
         old_events = events[self.EVENT_KEY].isin(to_event_id)
         events = events[~old_events]

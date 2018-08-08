@@ -59,7 +59,7 @@ class BaseCreateDb:
         birds['synonyms'] = ''
 
         birds = self.cxn.add_taxon_id(birds)
-        birds = birds.rename(columns={'order': 'ordr'}).set_index('taxon_id')
+        birds = birds.rename(columns={'order': 'ordr'})
         self.cxn.insert_taxons(birds)
 
     def _get_clem_species(self):

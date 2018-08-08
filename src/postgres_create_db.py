@@ -1,6 +1,6 @@
 """Create the Postgres version of the sightings database."""
 
-from lib.base_01_create_db import BaseCreateDb
+from lib.base_create_db import BaseCreateDb
 from lib.postgres_db import PostgresDb
 
 

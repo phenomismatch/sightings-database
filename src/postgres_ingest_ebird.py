@@ -1,6 +1,6 @@
 """Ingest eBird data into the Postgres database."""
 
-from lib.base_04_ingest_ebird import BaseIngestEbird
+from lib.base_ingest_ebird import BaseIngestEbird
 from lib.postgres_db import PostgresDb
 
 

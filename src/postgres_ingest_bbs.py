@@ -1,6 +1,6 @@
 """Ingest Breed Bird Survey data into the Postgres database."""
 
-from lib.base_02_ingest_bbs import BaseIngestBbs
+from lib.base_ingest_bbs import BaseIngestBbs
 from lib.postgres_db import PostgresDb
 
 

@@ -1,6 +1,6 @@
 """Ingest Pollard data into the Postgres database."""
 
-from lib.base_05_ingest_pollard import BaseIngestPollard
+from lib.base_ingest_pollard import BaseIngestPollard
 from lib.postgres_db import PostgresDb
 
 

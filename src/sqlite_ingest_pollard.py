@@ -1,6 +1,6 @@
 """Ingest Pollard data into the sqlite database."""
 
-from lib.base_05_ingest_pollard import BaseIngestPollard
+from lib.base_ingest_pollard import BaseIngestPollard
 from lib.sqlite_db import SqliteDb
 
 

@@ -1,6 +1,6 @@
 """Ingest MAPS data into the sqlite database."""
 
-from lib.base_03_ingest_maps import BaseIngestMaps
+from lib.base_ingest_maps import BaseIngestMaps
 from lib.sqlite_db import SqliteDb
 
 

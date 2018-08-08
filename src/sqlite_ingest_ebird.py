@@ -1,6 +1,6 @@
 """Ingest eBird data into the SQLite3 database."""
 
-from lib.base_04_ingest_ebird import BaseIngestEbird
+from lib.base_ingest_ebird import BaseIngestEbird
 from lib.sqlite_db import SqliteDb
 
 

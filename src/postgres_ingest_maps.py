@@ -1,6 +1,6 @@
 """Ingest MAPS data into the Postgres database."""
 
-from lib.base_03_ingest_maps import BaseIngestMaps
+from lib.base_ingest_maps import BaseIngestMaps
 from lib.postgres_db import PostgresDb
 
 

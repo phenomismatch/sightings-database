@@ -19,7 +19,7 @@ class PostgresDb(BaseDb):
     ENGINE = 'postgresql://{}@localhost:5432/sightings'
     CONNECT = 'dbname=sightings user={}'
     CREATE_SCRIPT = os.fspath(
-        Path('src') / 'sql' / 'postgres_01_create_db.sql')
+        Path('src') / 'sql' / 'postgres_create_db.sql')
     CREATE_CMD = f'psql -U postgres -d sightings -a -f {CREATE_SCRIPT}'
 
     @classmethod
