@@ -5,8 +5,8 @@ class BaseDb:
     """Common database functions."""
 
     TAXON_ID = 'taxon_id'
-    TAXON_COLUMNS = """dataset_id sci_name class ordr family genus synonyms
-        common_name target""".split()
+    TAXON_COLUMNS = """dataset_id sci_name class ordr family genus
+                       common_name target""".split()
 
     PLACE_INDEX = 'place_id'
     PLACE_COLUMNS = """dataset_id lng lat radius""".split()  # geohash geopoint
@@ -23,6 +23,9 @@ class BaseDb:
 
         self.execute(
             'DELETE FROM datasets WHERE dataset_id = ?', (self.dataset_id, ))
+
+        self.execute(
+            'DELETE FROM taxons WHERE dataset_id = ?', (self.dataset_id, ))
 
         sql = """DELETE FROM places
                 WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""

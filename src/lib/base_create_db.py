@@ -2,6 +2,7 @@
 
 from datetime import datetime
 import pandas as pd
+import lib.data as data
 import lib.globals as g
 
 
@@ -52,11 +53,10 @@ class BaseCreateDb:
 
         self._set_target_birds(birds)
         birds['genus'] = birds.sci_name.str.split().str[0]
-        birds = self._add_clem_genera(birds)
+        birds = data.add_taxon_genera_records(birds)
 
         birds['dataset_id'] = self.CLEMENTS_DATASET_ID
         birds['class'] = 'aves'
-        birds['synonyms'] = ''
 
         birds = self.cxn.add_taxon_id(birds)
         birds = birds.rename(columns={'order': 'ordr'})
@@ -70,15 +70,6 @@ class BaseCreateDb:
         is_species = birds.category == 'species'
         birds = birds.loc[is_species,
                           ['sci_name', 'order', 'family', 'common_name']]
-        return birds
-
-    def _add_clem_genera(self, birds):
-        targets = birds.loc[birds.target == 't']
-        genera = targets.groupby('genus').first().reset_index()
-        genera.sci_name = genera.genus + ' sp.'
-        genera.common_name = ''
-        genera.target = None
-        birds = pd.concat([birds, genera], sort=True)
         return birds
 
     def _set_target_birds(self, birds):

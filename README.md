@@ -5,12 +5,13 @@ Causes, consequences, and cross-scale linkages of climate-driven phenological mi
 This repository contains scripts to help research and outreach efforts. There are other GitHub repositories for this project maintained by the various research labs.
 
 ## Database
-Currently, all data is stored in a single SQLite3 (spatialite) database. We have gathered and consolidated the data from these sources:
+Currently, all data is stored in a single SQLite3 (spatialite) or PostgreSQL (PostGIS) database. We have gathered and consolidated the data from these sources:
 
 1. North American Breeding Bird Survey (BBS).
 1. MAPS: Monitoring Avian Productivity and Survivorship.
 1. eBird Basic Dataset. This dataset has been culled to take everything between 20⁰ and 90⁰ latitude and -95⁰ and -50⁰ longitude. We are also only taking "complete" and "approved" checklists. We are also only taking data for 117 migratory bird species.
 1. TBD Pollard dataset.
+1. TBD NABA dataset.
 
 
 ### Tables

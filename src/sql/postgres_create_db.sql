@@ -33,7 +33,6 @@ CREATE TABLE taxons (
   ordr        VARCHAR(40),
   family      VARCHAR(80),
   genus       VARCHAR(20),
-  synonyms    VARCHAR(200),
   common_name VARCHAR(40),
   target      BOOLEAN
 );

@@ -35,7 +35,6 @@ data/external/maps/*
 # Temp files
 temp/
 backup/
-julia/
 junk*
 
 # Test

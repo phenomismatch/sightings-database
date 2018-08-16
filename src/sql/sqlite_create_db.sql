@@ -24,7 +24,6 @@ CREATE TABLE taxons (
   ordr        TEXT,
   family      TEXT,
   genus       TEXT,
-  synonyms    TEXT,
   common_name TEXT,
   target      TEXT
   -- FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id) ON DELETE CASCADE

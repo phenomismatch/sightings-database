@@ -3,6 +3,7 @@
 import re
 from datetime import date
 import pandas as pd
+import lib.data as data
 import lib.globals as g
 
 
@@ -12,25 +13,43 @@ class BaseIngestPollard:
     DATASET_ID = 'pollard'
     POLLARD_PATH = g.DATA_DIR / 'raw' / DATASET_ID
 
+    PLACE_RENAMES = {'long': 'lng', 'Land Owner': 'Land_Owner'}
+    RAW_DATA_RENAMES = {
+        'Scientific Name': 'sci_name',
+        'Species': 'common_name',
+        'Start time': 'Start_time',
+        'End time': 'End_time',
+        'Was the survey completed?': 'Was_the_survey_completed',
+        'Monitoring Program': 'Monitoring_Program',
+        'Temperature (end)': 'Temperature_end',
+        'Sky (end)': 'Sky_end',
+        'Wind (end)': 'Wind_end',
+        'A-key': 'A_key',
+        'B-key': 'B_key',
+        'C-key': 'C_key',
+        'D-key': 'D_key',
+        'E-key': 'E_key',
+        'Observer/Spotter': '',
+        'Other participants': '',
+        'Recorder/Scribe': '',
+        'Taxon as reported': '',
+        'Total': 'count'}
+
     PLACE_KEYS = ['Site', 'Route']
-    PLACE_COLUMNS = re.split(
-        r',\s*',
-        '''lat, lng, Site, Route, County, State, Land Owner,
-           transect_id, Route_Poin, Route_Po_1, Route_Po_2, CLIMDIV_ID,
-           CD_sub, CD_Name, ST, PRE_MEAN, PRE_STD, TMP_MEAN, TMP_STD''')
+    PLACE_COLUMNS = '''
+        lat lng Site Route County State Land_Owner transect_id Route_Poin
+        Route_Po_1 Route_Po_2 CLIMDIV_ID CD_sub CD_Name ST PRE_MEAN PRE_STD
+        TMP_MEAN TMP_STD'''.split()
 
-    EVENT_COLUMNS = re.split(
-        r',\s*',
-        '''Site, Route, County, State, Land Owner, Start time, End time,
-           Duration, Survey, Temp, Sky, Wind, Archived,
-           Was the survey completed?, Monitoring Program, Date,
-           Temperature (end), Sky (end), Wind (end)''')
+    EVENT_COLUMNS = '''
+        Site Route County State Start_time End_time Duration Survey Temp Sky
+        Wind Archived Was_the_survey_completed Monitoring_Program Date
+        Temperature_end Sky_end Wind_end'''.split()
 
-    COUNT_COLUMNS = re.split(
-        r',\s*',
-        '''event_id, sci_name, count, A, B, C, D, E, A-key, B-key, C-key,
-           D-key, E-key, Observer/Spotter, Other participants, Recorder/Scribe,
-           Taxon as reported''')
+    COUNT_COLUMNS = '''
+        event_id sci_name count A B C D E A_key B_key C_key D_key E_key
+        Observer_Spotter Other_participants Recorder_Scribe
+        Taxon_as_reported'''.split()
 
     def __init__(self, db):
         """Setup."""
@@ -43,8 +62,8 @@ class BaseIngestPollard:
         self.cxn.bulk_add_setup()
         self.cxn.delete_dataset()
 
-        raw_data = self._get_raw_data()
         raw_places = self._get_raw_places()
+        raw_data = self._get_raw_data()
 
         self._insert_dataset()
         to_place_id = self._insert_places(raw_places)
@@ -60,7 +79,8 @@ class BaseIngestPollard:
 
         raw_places = pd.read_csv(
             self.POLLARD_PATH / 'Pollard_locations.csv', dtype='unicode')
-        raw_places = raw_places.rename(columns={'long': 'lng'})
+        raw_places = raw_places.rename(columns=self.PLACE_RENAMES)
+        raw_places['radius'] = None
         raw_places = raw_places.drop_duplicates(self.PLACE_KEYS)
 
         return raw_places
@@ -71,48 +91,29 @@ class BaseIngestPollard:
         raw_data = pd.read_csv(
             self.POLLARD_PATH / 'pollardbase_example_201802.csv',
             dtype='unicode')
-        raw_data = raw_data.rename(columns={
-            'Scientific Name': 'sci_name',
-            'Species': 'common_name',
-            'Total': 'count'})
-        raw_data['Start time'] = pd.to_datetime(
-            raw_data['Start time'], errors='coerce')
+        raw_data = raw_data.rename(columns=self.RAW_DATA_RENAMES)
+        raw_data['Start_time'] = pd.to_datetime(
+            raw_data['Start_time'], errors='coerce')
+
         raw_data = raw_data[
-            raw_data['Start time'].notna() & raw_data.sci_name.notna()]
+            raw_data['Start_time'].notna() & raw_data.sci_name.notna()]
 
-        parts = raw_data.sci_name.str.split(
-            expand=True).drop([2], axis=1).rename(
-            columns={0: 'genus', 1: 'combined'})
-        raw_data = raw_data.join(parts)
+        raw_data.sci_name = raw_data.sci_name.str.split().str.join(' ')
+        raw_data['genus'] = raw_data.sci_name.str.split().str[0]
 
-        parts = raw_data.combined.str.split('/', expand=True).rename(
-            columns={0: 'species', 1: 'synonym'})
-        raw_data = raw_data.join(parts)
-
-        raw_data = raw_data[raw_data.species.notna()]
-        raw_data.sci_name = raw_data.genus + ' ' + raw_data.species
-
-        has_synonym = raw_data.synonym.notna()
-        raw_data.loc[has_synonym, 'synonyms'] = (
-            raw_data.loc[has_synonym, 'genus']
-            + ' '
-            + raw_data.loc[has_synonym, 'synonym'])
-
-        raw_data = raw_data.drop(
-            ['synonym', 'species', 'combined'], axis=1)
         return raw_data
 
     def _insert_taxons(self, raw_data):
         print(f'Inserting {self.DATASET_ID} taxons')
-        taxons = raw_data.loc[:, ['sci_name', 'common_name']]
+        taxons = raw_data.loc[:, ['sci_name', 'common_name', 'genus']]
 
-        taxons = taxons.drop_duplicates('sci_name')
         taxons['dataset_id'] = self.DATASET_ID
-        taxons['synonyms'] = ''
         taxons['class'] = 'lepidoptera'
         taxons['ordr'] = ''
         taxons['family'] = ''
-        taxons['target'] = 1
+        taxons['target'] = 't'
+        # taxons = data.add_taxon_genera_records(taxons)
+        taxons = taxons.drop_duplicates('sci_name')
 
         taxons = self.cxn.add_taxon_id(taxons)
         self.cxn.insert_taxons(taxons)
