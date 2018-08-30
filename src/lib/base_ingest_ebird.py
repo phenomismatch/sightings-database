@@ -14,25 +14,7 @@ class BaseIngestEbird:
     EBIRD_CSV = EBIRD_PATH / 'ebd_relFeb-2018.txt'
 
     PLACE_KEYS = ['lng', 'lat']
-    PLACE_COLUMNS = PLACE_KEYS + [
-        'radius',
-        'COUNTRY CODE', 'STATE CODE', 'COUNTY CODE', 'IBA CODE', 'BCR CODE',
-        'USFWS CODE', 'ATLAS BLOCK', 'LOCALITY ID', ' LOCALITY TYPE',
-        'EFFORT AREA HA']
-
     EVENT_KEY = 'SAMPLING EVENT IDENTIFIER'
-    EVENT_COLUMNS = PLACE_KEYS + [EVENT_KEY] + [
-        'started',
-        'EFFORT AREA HA', 'APPROVED', 'REVIEWED', 'NUMBER OBSERVERS',
-        'ALL SPECIES REPORTED', 'OBSERVATION DATE', 'GROUP IDENTIFIER',
-        'DURATION MINUTES']
-
-    COUNT_COLUMNS = [EVENT_KEY] + [
-        'count',
-        'SCIENTIFIC NAME', 'GLOBAL UNIQUE IDENTIFIER', 'LAST EDITED DATE',
-        'TAXONOMIC ORDER', 'CATEGORY', 'SUBSPECIES SCIENTIFIC NAME',
-        'BREEDING BIRD ATLAS CODE', 'BREEDING BIRD ATLAS CATEGORY', 'AGE/SEX',
-        'OBSERVER ID', 'HAS MEDIA']
 
     def __init__(self, db):
         """Setup."""
@@ -107,7 +89,13 @@ class BaseIngestEbird:
 
     def _insert_places(self, raw_data, to_place_id):
         print(f'Inserting {self.DATASET_ID} places')
-        places = raw_data.loc[:, self.PLACE_COLUMNS]
+
+        place_columns = self.PLACE_KEYS + [
+            'radius',
+            'COUNTRY CODE', 'STATE CODE', 'COUNTY CODE', 'IBA CODE',
+            'BCR CODE', 'USFWS CODE', 'ATLAS BLOCK', 'LOCALITY ID',
+            ' LOCALITY TYPE', 'EFFORT AREA HA']
+        places = raw_data.loc[:, place_columns]
 
         places['place_key'] = self._get_place_keys(places)
         places = places.drop_duplicates('place_key')
@@ -144,7 +132,12 @@ class BaseIngestEbird:
 
     def _insert_events(self, raw_data, to_place_id, to_event_id):
         print(f'Inserting {self.DATASET_ID} events')
-        events = raw_data.loc[:, self.EVENT_COLUMNS]
+
+        event_columns = self.PLACE_KEYS + [self.EVENT_KEY] + [
+            'started', 'EFFORT AREA HA', 'APPROVED', 'REVIEWED',
+            'NUMBER OBSERVERS', 'ALL SPECIES REPORTED', 'OBSERVATION DATE',
+            'GROUP IDENTIFIER', 'DURATION MINUTES']
+        events = raw_data.loc[:, event_columns]
 
         events['place_key'] = self._get_place_keys(events)
         events = events.drop_duplicates(self.EVENT_KEY)
@@ -178,7 +171,14 @@ class BaseIngestEbird:
 
     def _insert_counts(self, raw_data, to_event_id, to_taxon_id):
         print(f'Inserting {self.DATASET_ID} counts')
-        counts = raw_data.loc[:, self.COUNT_COLUMNS]
+
+        count_columns = [self.EVENT_KEY] + [
+            'count',
+            'SCIENTIFIC NAME', 'GLOBAL UNIQUE IDENTIFIER', 'LAST EDITED DATE',
+            'TAXONOMIC ORDER', 'CATEGORY', 'SUBSPECIES SCIENTIFIC NAME',
+            'BREEDING BIRD ATLAS CODE', 'BREEDING BIRD ATLAS CATEGORY',
+            'AGE/SEX', 'OBSERVER ID', 'HAS MEDIA']
+        counts = raw_data.loc[:, count_columns]
 
         counts['taxon_id'] = counts['SCIENTIFIC NAME'].map(to_taxon_id)
         counts['event_id'] = counts[self.EVENT_KEY].map(to_event_id)

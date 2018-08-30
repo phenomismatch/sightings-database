@@ -1,55 +1,16 @@
 """Ingest Pollard data."""
 
-import re
 from datetime import date
 import pandas as pd
-import lib.data as data
 import lib.globals as g
 
 
 class BaseIngestPollard:
-    """Ingest the MAPS data."""
+    """Ingest Pollard data."""
 
     DATASET_ID = 'pollard'
     POLLARD_PATH = g.DATA_DIR / 'raw' / DATASET_ID
-
-    PLACE_RENAMES = {'long': 'lng', 'Land Owner': 'Land_Owner'}
-    RAW_DATA_RENAMES = {
-        'Scientific Name': 'sci_name',
-        'Species': 'common_name',
-        'Start time': 'Start_time',
-        'End time': 'End_time',
-        'Was the survey completed?': 'Was_the_survey_completed',
-        'Monitoring Program': 'Monitoring_Program',
-        'Temperature (end)': 'Temperature_end',
-        'Sky (end)': 'Sky_end',
-        'Wind (end)': 'Wind_end',
-        'A-key': 'A_key',
-        'B-key': 'B_key',
-        'C-key': 'C_key',
-        'D-key': 'D_key',
-        'E-key': 'E_key',
-        'Observer/Spotter': '',
-        'Other participants': '',
-        'Recorder/Scribe': '',
-        'Taxon as reported': '',
-        'Total': 'count'}
-
     PLACE_KEYS = ['Site', 'Route']
-    PLACE_COLUMNS = '''
-        lat lng Site Route County State Land_Owner transect_id Route_Poin
-        Route_Po_1 Route_Po_2 CLIMDIV_ID CD_sub CD_Name ST PRE_MEAN PRE_STD
-        TMP_MEAN TMP_STD'''.split()
-
-    EVENT_COLUMNS = '''
-        Site Route County State Start_time End_time Duration Survey Temp Sky
-        Wind Archived Was_the_survey_completed Monitoring_Program Date
-        Temperature_end Sky_end Wind_end'''.split()
-
-    COUNT_COLUMNS = '''
-        event_id sci_name count A B C D E A_key B_key C_key D_key E_key
-        Observer_Spotter Other_participants Recorder_Scribe
-        Taxon_as_reported'''.split()
 
     def __init__(self, db):
         """Setup."""
@@ -77,9 +38,11 @@ class BaseIngestPollard:
     def _get_raw_places(self):
         print(f'Getting {self.DATASET_ID} raw place data')
 
+        place_renames = {'long': 'lng', 'Land Owner': 'Land_Owner'}
         raw_places = pd.read_csv(
             self.POLLARD_PATH / 'Pollard_locations.csv', dtype='unicode')
-        raw_places = raw_places.rename(columns=self.PLACE_RENAMES)
+        raw_places = raw_places.rename(columns=place_renames)
+
         raw_places['radius'] = None
         raw_places = raw_places.drop_duplicates(self.PLACE_KEYS)
 
@@ -91,7 +54,28 @@ class BaseIngestPollard:
         raw_data = pd.read_csv(
             self.POLLARD_PATH / 'pollardbase_example_201802.csv',
             dtype='unicode')
-        raw_data = raw_data.rename(columns=self.RAW_DATA_RENAMES)
+
+        raw_data = raw_data.rename(columns={
+            'Scientific Name': 'sci_name',
+            'Species': 'common_name',
+            'Start time': 'Start_time',
+            'End time': 'End_time',
+            'Was the survey completed?': 'Was_the_survey_completed',
+            'Monitoring Program': 'Monitoring_Program',
+            'Temperature (end)': 'Temperature_end',
+            'Sky (end)': 'Sky_end',
+            'Wind (end)': 'Wind_end',
+            'A-key': 'A_key',
+            'B-key': 'B_key',
+            'C-key': 'C_key',
+            'D-key': 'D_key',
+            'E-key': 'E_key',
+            'Observer/Spotter': '',
+            'Other participants': '',
+            'Recorder/Scribe': '',
+            'Taxon as reported': '',
+            'Total': 'count'})
+
         raw_data['Start_time'] = pd.to_datetime(
             raw_data['Start_time'], errors='coerce')
 
@@ -123,7 +107,12 @@ class BaseIngestPollard:
 
     def _insert_places(self, raw_places):
         print(f'Inserting {self.DATASET_ID} places')
-        places = raw_places.loc[:, self.PLACE_COLUMNS]
+
+        place_columns = '''
+            lat lng Site Route County State Land_Owner transect_id Route_Poin
+            Route_Po_1 Route_Po_2 CLIMDIV_ID CD_sub CD_Name ST PRE_MEAN PRE_STD
+            TMP_MEAN TMP_STD'''.split()
+        places = raw_places.loc[:, place_columns]
 
         places.lat = pd.to_numeric(places.lat, errors='coerce')
         places.lng = pd.to_numeric(places.lng, errors='coerce')
@@ -140,7 +129,12 @@ class BaseIngestPollard:
 
     def _insert_events(self, raw_data, to_place_id):
         print(f'Inserting {self.DATASET_ID} events')
-        events = raw_data.loc[:, self.EVENT_COLUMNS]
+
+        event_columns = '''
+            Site Route County State Start_time End_time Duration Survey Temp
+            Sky Wind Archived Was_the_survey_completed Monitoring_Program Date
+            Temperature_end Sky_end Wind_end'''.split()
+        events = raw_data.loc[:, event_columns]
 
         events['started'] = events['Start time'].dt.strftime('%H:%M:%S')
         events['ended'] = pd.to_datetime(
@@ -166,7 +160,13 @@ class BaseIngestPollard:
 
     def _insert_counts(self, raw_data, to_taxon_id):
         print(f'Inserting {self.DATASET_ID} counts')
-        counts = raw_data.loc[:, self.COUNT_COLUMNS].reset_index()
+
+        count_columns = '''
+            event_id sci_name count A B C D E A_key B_key C_key D_key E_key
+            Observer_Spotter Other_participants Recorder_Scribe
+            Taxon_as_reported'''.split()
+        counts = raw_data.loc[:, count_columns].reset_index()
+
         counts['taxon_id'] = counts.sci_name.map(to_taxon_id)
         counts['count'] = counts['count'].fillna(0)
         counts.taxon_id = counts.taxon_id.astype(int)

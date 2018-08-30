@@ -8,7 +8,7 @@ SQLITE_DB=sightings.sqlite.db
 SQLITE_SRC="$(PROCESSED)/$(SQLITE_DB)"
 SQLITE_DST="$(PROCESSED)/$(basename $(SQLITE_DB))_$(DATE).db"
 
-all_postgres: create_postgres bbs_postgres maps_postgres ebird_postgres pollard_postgres
+all_postgres: create_postgres bbs_postgres maps_postgres ebird_postgres pollard_postgres naba_postgres
 
 create_postgres:
 	$(PYTHON) ./src/postgres_create_db.py
@@ -25,7 +25,10 @@ ebird_postgres:
 pollard_postgres:
 	$(PYTHON) ./src/postgres_ingest_pollard.py
 
-all_sqlite: clean_sqlite create_sqlite bbs_sqlite maps_sqlite ebird_sqlite pollard_sqlite
+naba_postgres:
+	$(PYTHON) ./src/postgres_ingest_naba.py
+
+all_sqlite: clean_sqlite create_sqlite bbs_sqlite maps_sqlite ebird_sqlite pollard_sqlite naba_sqlite
 
 create_sqlite:
 	$(PYTHON) ./src/sqlite_create_db.py
@@ -41,6 +44,9 @@ ebird_sqlite:
 
 pollard_sqlite:
 	$(PYTHON) ./src/sqlite_ingest_pollard.py
+
+naba_sqlite:
+	$(PYTHON) ./src/sqlite_ingest_naba.py
 
 backup_sqlite:
 	cp $(SQLITE_SRC) $(SQLITE_DST)

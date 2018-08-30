@@ -9,7 +9,7 @@ import lib.globals as g
 
 
 class BaseIngestBbs:
-    """Ingest the BBS data."""
+    """Ingest BBS data."""
 
     DATASET_ID = 'bbs'
     BBS_PATH = g.DATA_DIR / 'raw' / DATASET_ID

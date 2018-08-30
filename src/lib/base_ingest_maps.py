@@ -9,7 +9,7 @@ import lib.data as data
 
 
 class BaseIngestMaps:
-    """Ingest the MAPS data."""
+    """Ingest MAPS data."""
 
     DATASET_ID = 'maps'
     MAPS_PATH = g.DATA_DIR / 'raw' / DATASET_ID
