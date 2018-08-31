@@ -27,7 +27,7 @@ class BaseIngestPollard:
         raw_data = self._get_raw_data()
 
         self._insert_dataset()
-        to_place_id = self._insert_places(raw_places)
+        to_place_id = self._insert_places(raw_places, raw_data)
         to_taxon_id = self._insert_taxons(raw_data)
         raw_data = self._insert_events(raw_data, to_place_id)
         self._insert_counts(raw_data, to_taxon_id)
@@ -70,10 +70,10 @@ class BaseIngestPollard:
             'C-key': 'C_key',
             'D-key': 'D_key',
             'E-key': 'E_key',
-            'Observer/Spotter': '',
-            'Other participants': '',
-            'Recorder/Scribe': '',
-            'Taxon as reported': '',
+            'Observer/Spotter': 'Observer_Spotter',
+            'Other participants': 'Other_participants',
+            'Recorder/Scribe': 'Recorder_Scribe',
+            'Taxon as reported': 'Taxon_as_reported',
             'Total': 'count'})
 
         raw_data['Start_time'] = pd.to_datetime(
@@ -89,7 +89,7 @@ class BaseIngestPollard:
 
     def _insert_taxons(self, raw_data):
         print(f'Inserting {self.DATASET_ID} taxons')
-        taxons = raw_data.loc[:, ['sci_name', 'common_name', 'genus']]
+        taxons = raw_data.loc[:, ['sci_name', 'common_name', 'genus']].copy()
 
         taxons['dataset_id'] = self.DATASET_ID
         taxons['class'] = 'lepidoptera'
@@ -105,14 +105,20 @@ class BaseIngestPollard:
         return taxons.reset_index().set_index(
             'sci_name').taxon_id.to_dict()
 
-    def _insert_places(self, raw_places):
+    def _insert_places(self, raw_places, raw_data):
         print(f'Inserting {self.DATASET_ID} places')
 
         place_columns = '''
             lat lng Site Route County State Land_Owner transect_id Route_Poin
             Route_Po_1 Route_Po_2 CLIMDIV_ID CD_sub CD_Name ST PRE_MEAN PRE_STD
             TMP_MEAN TMP_STD'''.split()
-        places = raw_places.loc[:, place_columns]
+
+        place_df = raw_data.drop_duplicates(['Site', 'Route'])
+        columns = [c for c in place_columns if c in place_df.columns]
+        place_df = place_df.loc[:, columns].copy()
+
+        places = pd.merge(
+                raw_places, place_df, how='left', on=['Site', 'Route'])
 
         places.lat = pd.to_numeric(places.lat, errors='coerce')
         places.lng = pd.to_numeric(places.lng, errors='coerce')
@@ -134,13 +140,13 @@ class BaseIngestPollard:
             Site Route County State Start_time End_time Duration Survey Temp
             Sky Wind Archived Was_the_survey_completed Monitoring_Program Date
             Temperature_end Sky_end Wind_end'''.split()
-        events = raw_data.loc[:, event_columns]
+        events = raw_data.loc[:, event_columns].copy()
 
-        events['started'] = events['Start time'].dt.strftime('%H:%M:%S')
+        events['started'] = events['Start_time'].dt.strftime('%H:%M:%S')
         events['ended'] = pd.to_datetime(
-            events['End time'], format='%H:%M:%S', errors='coerce')
-        events['year'] = events['Start time'].dt.strftime('%Y')
-        events['day'] = events['Start time'].dt.strftime('%j')
+            events['End_time'], format='%H:%M:%S', errors='coerce')
+        events['year'] = events['Start_time'].dt.strftime('%Y')
+        events['day'] = events['Start_time'].dt.strftime('%j')
 
         events['place_key'] = self._get_place_keys(events)
         events['place_id'] = events.place_key.map(to_place_id)
@@ -165,7 +171,7 @@ class BaseIngestPollard:
             event_id sci_name count A B C D E A_key B_key C_key D_key E_key
             Observer_Spotter Other_participants Recorder_Scribe
             Taxon_as_reported'''.split()
-        counts = raw_data.loc[:, count_columns].reset_index()
+        counts = raw_data.loc[:, count_columns].copy().reset_index()
 
         counts['taxon_id'] = counts.sci_name.map(to_taxon_id)
         counts['count'] = counts['count'].fillna(0)
