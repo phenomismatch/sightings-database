@@ -73,12 +73,6 @@ class SqliteDb(BaseDb):
         """Upload the dataframe into the database."""
         df.loc[:, columns].to_sql(table, self.engine, if_exists='append')
 
-    def upload_sidecar(self, df, table, columns):
-        """Insert the sidecar table into the database."""
-        table = f'{self.dataset_id}_{table}'
-        columns = [c for c in df.columns if c not in columns]
-        df.loc[:, columns].to_sql(table, self.engine, if_exists='append')
-
     def update_places(self):
         """Update point records with the point geometry."""
         print(f'Updating {self.dataset_id} place points')

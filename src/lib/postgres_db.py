@@ -70,23 +70,6 @@ class PostgresDb(BaseDb):
                   FROM '{path}' WITH (FORMAT csv, HEADER)"""
         self.execute(sql)
 
-    def upload_sidecar(self, df, table, columns):
-        """Insert the sidecar table into the database."""
-        table = f'{self.dataset_id}_{table}'
-        columns = [c for c in df.columns if c not in columns]
-        df = df.loc[:, columns]
-        self.create_sidecar(df, table)
-        fd, path = self.create_csv(df)
-        self.copy_table(df, table, path)
-        os.remove(path)
-
-    def create_sidecar(self, df, table):
-        """Create the sidecar table if needed."""
-        sql = f'CREATE TABLE IF NOT EXISTS {table} ('
-        sql += f'{df.index.name} INTEGER PRIMARY KEY, '
-        sql += ', '.join([f'"{c}" TEXT' for c in df.columns]) + ')'
-        self.execute(sql)
-
     def update_places(self):
         """Update point records with the point geometry."""
         print(f'Updating {self.dataset_id} place points')

@@ -90,14 +90,22 @@ class BaseIngestPollard:
     def _insert_taxons(self, raw_data):
         print(f'Inserting {self.DATASET_ID} taxons')
         taxons = raw_data.loc[:, ['sci_name', 'common_name', 'genus']].copy()
+        taxons = taxons.drop_duplicates('sci_name')
+
+        sql = """
+            SELECT sci_name, taxon_id FROM taxons WHERE class = 'lepidoptera'
+            """
+        old_taxons = pd.read_sql(sql, self.cxn.engine)
+        old_taxons = old_taxons.set_index('sci_name').taxon_id.to_dict()
+
+        already_exists = taxons.sci_name.isin(old_taxons)
+        taxons = taxons.loc[~already_exists, :]
 
         taxons['dataset_id'] = self.DATASET_ID
         taxons['class'] = 'lepidoptera'
         taxons['ordr'] = ''
         taxons['family'] = ''
         taxons['target'] = 't'
-        # taxons = data.add_taxon_genera_records(taxons)
-        taxons = taxons.drop_duplicates('sci_name')
 
         taxons = self.cxn.add_taxon_id(taxons)
         self.cxn.insert_taxons(taxons)
@@ -177,6 +185,7 @@ class BaseIngestPollard:
         counts['count'] = counts['count'].fillna(0)
         counts.taxon_id = counts.taxon_id.astype(int)
         counts = self.cxn.add_count_id(counts)
+        counts = counts.drop(['sci_name'], axis='columns')
         self.cxn.insert_counts(counts)
 
     def _get_place_keys(self, df):

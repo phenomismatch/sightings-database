@@ -9,10 +9,10 @@ class BaseDb:
                        common_name target""".split()
 
     PLACE_INDEX = 'place_id'
-    PLACE_COLUMNS = """dataset_id lng lat radius""".split()  # geohash geopoint
+    PLACE_COLUMNS = 'dataset_id lng lat radius'.split()  # geohash geopoint
 
     EVENT_INDEX = 'event_id'
-    EVENT_COLUMNS = """place_id year day started ended""".split()
+    EVENT_COLUMNS = 'place_id year day started ended'.split()
 
     COUNT_INDEX = 'count_id'
     COUNT_COLUMNS = 'event_id taxon_id count'.split()
@@ -24,8 +24,8 @@ class BaseDb:
         self.execute(
             'DELETE FROM datasets WHERE dataset_id = ?', (self.dataset_id, ))
 
-        self.execute(
-            'DELETE FROM taxons WHERE dataset_id = ?', (self.dataset_id, ))
+        # self.execute(
+        #     'DELETE FROM taxons WHERE dataset_id = ?', (self.dataset_id, ))
 
         sql = """DELETE FROM places
                 WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""
@@ -39,8 +39,9 @@ class BaseDb:
                   WHERE event_id NOT IN (SELECT event_id FROM events)"""
         self.execute(sql)
 
-        for sidecar in ['codes', 'places', 'events', 'counts']:
-            self.execute(f'DROP TABLE IF EXISTS {self.dataset_id}_{sidecar}')
+        sql = """DELETE FROM counts
+                  WHERE taxon_id NOT IN (SELECT taxon_id FROM taxons)"""
+        self.execute(sql)
 
     def add_taxon_id(self, taxons):
         """Add event IDs to the dataframe."""
@@ -77,18 +78,29 @@ class BaseDb:
 
     def insert_places(self, places):
         """Insert the events into the database."""
-        self.upload_table(places, 'places', self.PLACE_COLUMNS)
-        self.upload_sidecar(places, 'places', self.PLACE_COLUMNS)
+        self.add_json_data(places, 'place_json', self.PLACE_COLUMNS)
+        columns = self.PLACE_COLUMNS + ['place_json']
+        self.upload_table(places, 'places', columns)
 
     def insert_events(self, events):
         """Insert the events into the database."""
-        self.upload_table(events, 'events', self.EVENT_COLUMNS)
-        self.upload_sidecar(events, 'events', self.EVENT_COLUMNS)
+        self.add_json_data(events, 'event_json', self.EVENT_COLUMNS)
+        columns = self.EVENT_COLUMNS + ['event_json']
+        self.upload_table(events, 'events', columns)
 
     def insert_counts(self, counts):
         """Insert the counts into the database."""
-        self.upload_table(counts, 'counts', self.COUNT_COLUMNS)
-        self.upload_sidecar(counts, 'counts', self.COUNT_COLUMNS)
+        self.add_json_data(counts, 'count_json', self.COUNT_COLUMNS)
+        columns = self.COUNT_COLUMNS + ['count_json']
+        self.upload_table(counts, 'counts', columns)
+
+    def add_json_data(self, df, json_column, columns):
+        """Insert the sidecar table into the database."""
+        df['dataset_id'] = self.dataset_id
+        columns = [c for c in df.columns
+                   if c not in columns or c == 'dataset_id']
+        df[json_column] = df.loc[:, columns].apply(
+            lambda x: x.to_json(), axis='columns')
 
     def bulk_add_setup(self):
         """Prepare the database for bulk adds."""
