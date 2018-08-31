@@ -186,4 +186,5 @@ class BaseIngestMaps:
         print(f'Inserting {self.DATASET_ID} codes')
         codes = pd.read_csv(self.MAPS_PATH / 'maps_codes.csv')
         codes = self.cxn.add_code_id(codes)
+        codes['dataset_id'] = self.DATASET_ID
         self.cxn.insert_codes(codes)

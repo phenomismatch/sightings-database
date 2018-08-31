@@ -232,5 +232,6 @@ class BaseIngestEbird:
         codes = pd.read_csv(self.EBIRD_PATH / 'ebird_codes.csv')
         codes = codes.append([bcr, iba, usfws], ignore_index=True, sort=True)
         codes = self.cxn.add_code_id(codes)
+        codes['dataset_id'] = self.DATASET_ID
 
         self.cxn.insert_codes(codes)

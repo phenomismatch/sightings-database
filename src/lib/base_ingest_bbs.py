@@ -249,4 +249,5 @@ class BaseIngestBbs:
             [strata, protocols, descrs, wind, sky, states, types, details],
             ignore_index=True)
         codes = self.cxn.add_code_id(codes)
+        codes['dataset_id'] = self.DATASET_ID
         self.cxn.insert_codes(codes)
