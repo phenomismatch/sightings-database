@@ -15,6 +15,16 @@ CREATE TABLE datasets (
 );
 
 
+CREATE TABLE codes (
+  dataset_id TEXT NOT NULL,
+  field      TEXT NOT NULL,
+  code       TEXT NOT NULL,
+  value      TEXT
+);
+CREATE INDEX codes_field ON codes (dataset_id, field);
+CREATE INDEX codes_code  ON codes (dataset_id, code);
+
+
 DROP TABLE IF EXISTS taxons;
 CREATE TABLE taxons (
   taxon_id    INTEGER NOT NULL PRIMARY KEY,

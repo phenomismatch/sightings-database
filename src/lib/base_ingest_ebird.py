@@ -233,4 +233,4 @@ class BaseIngestEbird:
         codes = codes.append([bcr, iba, usfws], ignore_index=True, sort=True)
         codes = self.cxn.add_code_id(codes)
 
-        codes.to_sql('ebird_codes', self.cxn.engine, if_exists='replace')
+        self.cxn.insert_codes(codes)

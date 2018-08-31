@@ -8,6 +8,8 @@ class BaseDb:
     TAXON_COLUMNS = """dataset_id sci_name class ordr family genus
                        common_name target""".split()
 
+    CODE_COLUMNS = 'dataset_id field code value'.split()
+
     PLACE_INDEX = 'place_id'
     PLACE_COLUMNS = 'dataset_id lng lat radius'.split()  # geohash geopoint
 
@@ -43,6 +45,10 @@ class BaseDb:
                   WHERE taxon_id NOT IN (SELECT taxon_id FROM taxons)"""
         self.execute(sql)
 
+        sql = """DELETE FROM codes
+                  WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)"""
+        self.execute(sql)
+
     def add_taxon_id(self, taxons):
         """Add event IDs to the dataframe."""
         taxon_id = self.next_id('taxons')
@@ -73,29 +79,33 @@ class BaseDb:
         return codes.set_index('code_id')
 
     def insert_taxons(self, taxons):
-        """Insert the taxons into the database."""
+        """Insert taxons into the database."""
         self.upload_table(taxons, 'taxons', self.TAXON_COLUMNS)
 
+    def insert_codes(self, codes):
+        """Insert codes into the database."""
+        self.upload_table(codes, 'codes', self.CODE_COLUMNS)
+
     def insert_places(self, places):
-        """Insert the events into the database."""
+        """Insert places into the database."""
         self.add_json_data(places, 'place_json', self.PLACE_COLUMNS)
         columns = self.PLACE_COLUMNS + ['place_json']
         self.upload_table(places, 'places', columns)
 
     def insert_events(self, events):
-        """Insert the events into the database."""
+        """Insert events into the database."""
         self.add_json_data(events, 'event_json', self.EVENT_COLUMNS)
         columns = self.EVENT_COLUMNS + ['event_json']
         self.upload_table(events, 'events', columns)
 
     def insert_counts(self, counts):
-        """Insert the counts into the database."""
+        """Insert counts into the database."""
         self.add_json_data(counts, 'count_json', self.COUNT_COLUMNS)
         columns = self.COUNT_COLUMNS + ['count_json']
         self.upload_table(counts, 'counts', columns)
 
     def add_json_data(self, df, json_column, columns):
-        """Insert the sidecar table into the database."""
+        """Create a json field for all of the extra columns."""
         df['dataset_id'] = self.dataset_id
         columns = [c for c in df.columns
                    if c not in columns or c == 'dataset_id']

@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS datasets CASCADE;
 DROP TABLE IF EXISTS taxons   CASCADE;
 DROP TABLE IF EXISTS places   CASCADE;
 DROP TABLE IF EXISTS events   CASCADE;
+DROP TABLE IF EXISTS codes;
 DROP TABLE IF EXISTS counts;
 
 
@@ -23,6 +24,16 @@ CREATE TABLE datasets (
   url        VARCHAR(120),
   extracted  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+
+CREATE TABLE codes (
+  dataset_id VARCHAR(10) REFERENCES datasets (dataset_id),
+  field      VARCHAR(50) NOT NULL,
+  code       VARCHAR(50) NOT NULL,
+  value      VARCHAR
+);
+CREATE INDEX codes_field ON codes (dataset_id, field);
+CREATE INDEX codes_code  ON codes (dataset_id, code);
 
 
 CREATE TABLE taxons (
