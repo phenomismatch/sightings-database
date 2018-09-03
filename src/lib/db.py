@@ -5,7 +5,7 @@ class Db:
     """Common database functions."""
 
     TAXON_ID = 'taxon_id'
-    TAXON_COLUMNS = """dataset_id sci_name class order family genus
+    TAXON_COLUMNS = """taxon_dataset_id sci_name class order family genus
                        common_name target""".split()
 
     CODE_COLUMNS = 'dataset_id field code value'.split()
@@ -14,10 +14,10 @@ class Db:
     PLACE_COLUMNS = 'dataset_id lng lat radius'.split()  # geohash geopoint
 
     EVENT_INDEX = 'event_id'
-    EVENT_COLUMNS = 'place_id dataset_id year day started ended'.split()
+    EVENT_COLUMNS = 'place_id year day started ended'.split()
 
     COUNT_INDEX = 'count_id'
-    COUNT_COLUMNS = 'event_id taxon_id dataset_id count'.split()
+    COUNT_COLUMNS = 'event_id taxon_id count'.split()
 
     def delete_dataset(self):
         """Clear dataset from the database."""
@@ -26,17 +26,30 @@ class Db:
         self.execute(
             'DELETE FROM datasets WHERE dataset_id = ?', (self.dataset_id, ))
 
-        self.execute(
-            'DELETE FROM places WHERE dataset_id = ?', (self.dataset_id, ))
+        self.execute("""DELETE
+                         FROM places
+                        WHERE dataset_id NOT IN (SELECT dataset_id
+                                                   FROM datasets)""")
 
-        self.execute(
-            'DELETE FROM "events" WHERE dataset_id = ?', (self.dataset_id, ))
+        self.execute("""DELETE
+                          FROM "events"
+                         WHERE place_id NOT IN (SELECT place_id
+                                                  FROM places)""")
 
-        self.execute(
-            'DELETE FROM counts WHERE dataset_id = ?', (self.dataset_id, ))
+        self.execute("""DELETE
+                          FROM counts
+                         WHERE event_id NOT IN (SELECT event_id
+                                                  FROM "events")""")
 
-        self.execute(
-            'DELETE FROM codes WHERE dataset_id = ?', (self.dataset_id, ))
+        self.execute("""DELETE
+                          FROM counts
+                         WHERE taxon_id NOT IN (SELECT taxon_id
+                                                  FROM taxons)""")
+
+        self.execute("""DELETE
+                          FROM codes
+                         WHERE dataset_id NOT IN (SELECT dataset_id
+                                                    FROM datasets)""")
 
     def add_taxon_id(self, taxons):
         """Add event IDs to the dataframe."""
