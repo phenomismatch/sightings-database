@@ -15,7 +15,7 @@ class DbSqlite(Db):
     SQLITE_DB = os.fspath(DATA_DIR / 'processed' / 'sightings.sqlite.db')
     SPATIALITE_MODULE = '/usr/local/lib/mod_spatialite.so'
 
-    CREATE_SCRIPT = os.fspath(Path('src') / 'sql' / 'sqlite_create_db.sql')
+    CREATE_SCRIPT = os.fspath(Path('src') / 'sql' / 'create_db_sqlite.sql')
     CREATE_CMD = f'spatialite {SQLITE_DB} < {CREATE_SCRIPT}'
     # CREATE_CMD = f'sqlite3 {SQLITE_DB} < {CREATE_SCRIPT}'
 
