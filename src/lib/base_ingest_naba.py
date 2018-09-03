@@ -8,8 +8,6 @@ import lib.globals as g
 class BaseIngestNaba:
     """Ingest NABA data."""
 
-    DATASET_ID = 'naba'
-    NABA_PATH = g.DATA_DIR / 'raw' / DATASET_ID
     PLACE_KEYS = ['lng', 'lat']
 
     def __init__(self, db):
@@ -58,40 +56,6 @@ class BaseIngestNaba:
                 'count'].fillna(0).astype(float).astype(int)
 
         return raw_data
-
-    def _insert_taxons(self, raw_data):
-        print(f'Inserting {self.DATASET_ID} taxons')
-
-        raw_data['sci_name'] = raw_data.apply(
-            lambda x: f'{x.genus} {x.species}', axis='columns')
-        raw_data.sci_name = raw_data.sci_name.str.split().str.join(' ')
-
-        taxons = raw_data.loc[:, ['sci_name', 'genus']]
-        taxons = taxons.drop_duplicates('sci_name')
-
-        sql = """
-            SELECT sci_name, taxon_id FROM taxons WHERE class = 'lepidoptera'
-            """
-        old_taxons = pd.read_sql(sql, self.cxn.engine)
-        old_taxons = old_taxons.set_index('sci_name').taxon_id.to_dict()
-
-        already_exists = taxons.sci_name.isin(old_taxons)
-        taxons = taxons.loc[~already_exists, :]
-
-        taxons['dataset_id'] = self.DATASET_ID
-        taxons['class'] = 'lepidoptera'
-        taxons['ordr'] = ''
-        taxons['family'] = ''
-        taxons['target'] = 't'
-        taxons['common_name'] = ''
-
-        taxons = self.cxn.add_taxon_id(taxons)
-        self.cxn.insert_taxons(taxons)
-
-        taxons = pd.read_sql(sql, self.cxn.engine)
-
-        return taxons.reset_index().set_index(
-            'sci_name').taxon_id.to_dict()
 
     def _insert_places(self, raw_data):
         print(f'Inserting {self.DATASET_ID} places')

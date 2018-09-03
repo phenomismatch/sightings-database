@@ -30,16 +30,17 @@ CREATE TABLE taxons (
   taxon_id    INTEGER NOT NULL PRIMARY KEY,
   dataset_id  TEXT NOT NULL,
   sci_name    TEXT NOT NULL UNIQUE,
-  class       TEXT NOT NULL,
-  ordr        TEXT,
+  "class"     TEXT NOT NULL,
+  "order"     TEXT,
   family      TEXT,
   genus       TEXT,
   common_name TEXT,
   target      TEXT
 );
-CREATE INDEX taxons_sci_name ON taxons (sci_name);
-CREATE INDEX taxons_class  ON taxons (class);
-CREATE INDEX taxons_order  ON taxons (ordr);
+CREATE INDEX taxons_dataset_id ON taxons (dataset_id);
+CREATE INDEX taxons_sci_name   ON taxons (sci_name);
+CREATE INDEX taxons_class  ON taxons ("class");
+CREATE INDEX taxons_order  ON taxons ("order");
 CREATE INDEX taxons_family ON taxons (family);
 CREATE INDEX taxons_genus  ON taxons (genus);
 
@@ -54,8 +55,9 @@ CREATE TABLE places (
   geohash    TEXT,
   place_json TEXT
 );
-CREATE INDEX places_lng_lat ON places (lng, lat);
-CREATE INDEX places_geohash ON places (geohash);
+CREATE INDEX places_dataset_id ON places (dataset_id);
+CREATE INDEX places_lng_lat    ON places (lng, lat);
+CREATE INDEX places_geohash    ON places (geohash);
 SELECT AddGeometryColumn('places', 'geopoint', 4326, 'POINT', 'XY', 0);
 SELECT CreateSpatialIndex('places', 'geopoint');
 
@@ -64,13 +66,15 @@ DROP TABLE IF EXISTS events;
 CREATE TABLE events (
   event_id   INTEGER NOT NULL PRIMARY KEY,
   place_id   INTEGER NOT NULL,
+  dataset_id TEXT NOT NULL,
   year       INTEGER NOT NULL,
   day        INTEGER NOT NULL,
   started    TEXT,
   ended      TEXT,
   event_json TEXT
 );
-CREATE INDEX events_year_day ON events (year, day);
+CREATE INDEX events_dataset_id ON events (dataset_id);
+CREATE INDEX events_year_day   ON events (year, day);
 
 
 DROP TABLE IF EXISTS counts;
@@ -78,8 +82,10 @@ CREATE TABLE counts (
   count_id   INTEGER NOT NULL PRIMARY KEY,
   event_id   INTEGER NOT NULL,
   taxon_id   INTEGER NOT NULL,
+  dataset_id TEXT NOT NULL,
   count      INTEGER NOT NULL,
   count_json TEXT
 );
-CREATE INDEX counts_event_id ON counts (event_id);
-CREATE INDEX counts_taxon_id ON counts (taxon_id);
+CREATE INDEX counts_dataset_id ON counts (dataset_id);
+CREATE INDEX counts_event_id   ON counts (event_id);
+CREATE INDEX counts_taxon_id   ON counts (taxon_id);

@@ -4,7 +4,7 @@ from os.path import exists
 from datetime import date
 import subprocess
 import pandas as pd
-from lib.sqlite_db import SqliteDb as bbs_db
+from lib.sqlite_db import SqliteDb as bbsDb
 import lib.globals as g
 
 
@@ -25,7 +25,7 @@ class BaseIngestBbs:
         """Ingest the data."""
         self._download_bbs_data()
 
-        self.bbs_cxn = bbs_db(path=self.BBS_DB)
+        self.bbs_cxn = bbsDb(path=self.BBS_DB)
 
         self.cxn.bulk_add_setup()
         self.cxn.delete_dataset()

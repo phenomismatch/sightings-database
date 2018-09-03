@@ -9,7 +9,6 @@ class BaseIngestPollard:
     """Ingest Pollard data."""
 
     DATASET_ID = 'pollard'
-    POLLARD_PATH = g.DATA_DIR / 'raw' / DATASET_ID
     PLACE_KEYS = ['Site', 'Route']
 
     def __init__(self, db):
@@ -76,14 +75,16 @@ class BaseIngestPollard:
             'Taxon as reported': 'Taxon_as_reported',
             'Total': 'count'})
 
-        raw_data['Start_time'] = pd.to_datetime(
+        raw_data['started'] = pd.to_datetime(
             raw_data['Start_time'], errors='coerce')
-
-        raw_data = raw_data[
-            raw_data['Start_time'].notna() & raw_data.sci_name.notna()]
+        raw_data['ended'] = pd.to_datetime(
+            raw_data['End_time'], errors='coerce')
 
         raw_data.sci_name = raw_data.sci_name.str.split().str.join(' ')
         raw_data['genus'] = raw_data.sci_name.str.split().str[0]
+
+        raw_data = raw_data[
+            raw_data.started.notna() & raw_data.sci_name.notna()]
 
         return raw_data
 
@@ -93,7 +94,9 @@ class BaseIngestPollard:
         taxons = taxons.drop_duplicates('sci_name')
 
         sql = """
-            SELECT sci_name, taxon_id FROM taxons WHERE class = 'lepidoptera'
+            SELECT sci_name, taxon_id
+              FROM taxons
+             WHERE "class" = 'lepidoptera'
             """
         old_taxons = pd.read_sql(sql, self.cxn.engine)
         old_taxons = old_taxons.set_index('sci_name').taxon_id.to_dict()
@@ -147,14 +150,13 @@ class BaseIngestPollard:
         event_columns = '''
             Site Route County State Start_time End_time Duration Survey Temp
             Sky Wind Archived Was_the_survey_completed Monitoring_Program Date
-            Temperature_end Sky_end Wind_end'''.split()
+            Temperature_end Sky_end Wind_end started ended'''.split()
         events = raw_data.loc[:, event_columns].copy()
 
-        events['started'] = events['Start_time'].dt.strftime('%H:%M:%S')
-        events['ended'] = pd.to_datetime(
-            events['End_time'], format='%H:%M:%S', errors='coerce')
-        events['year'] = events['Start_time'].dt.strftime('%Y')
-        events['day'] = events['Start_time'].dt.strftime('%j')
+        events['year'] = events['started'].dt.strftime('%Y')
+        events['day'] = events['started'].dt.strftime('%j')
+        events['started'] = events['started'].dt.strftime('%H:%M:%S')
+        events['ended'] = events['ended'].dt.strftime('%H:%M:%S')
 
         events['place_key'] = self._get_place_keys(events)
         events['place_id'] = events.place_key.map(to_place_id)
@@ -193,11 +195,11 @@ class BaseIngestPollard:
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')
-        dataset = pd.DataFrame([dict(
-            dataset_id=self.DATASET_ID,
-            title='Pollard lepidoptera observations',
-            extracted=str(date.today()),
-            version='2018-02',
-            url='')])
+        dataset = pd.DataFrame([{
+            'dataset_id': self.DATASET_ID,
+            'title': 'Pollard lepidoptera observations',
+            'extracted': str(date.today()),
+            'version': '2018-02',
+            'url': ''}])
         dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')

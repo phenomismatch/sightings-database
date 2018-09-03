@@ -40,16 +40,16 @@ CREATE TABLE taxons (
   taxon_id    INTEGER PRIMARY KEY,
   dataset_id  TEXT REFERENCES datasets (dataset_id),
   sci_name    VARCHAR(80) NOT NULL UNIQUE,
-  class       VARCHAR(20) NOT NULL,
-  ordr        VARCHAR(40),
+  "class"     VARCHAR(20) NOT NULL,
+  "order"     VARCHAR(40),
   family      VARCHAR(80),
   genus       VARCHAR(20),
   common_name VARCHAR(40),
   target      BOOLEAN
 );
 CREATE INDEX taxons_sci_name ON taxons (sci_name);
-CREATE INDEX taxons_class    ON taxons (class);
-CREATE INDEX taxons_ordr     ON taxons (ordr);
+CREATE INDEX taxons_class    ON taxons ("class");
+CREATE INDEX taxons_order    ON taxons ("order");
 CREATE INDEX taxons_family   ON taxons (family);
 CREATE INDEX taxons_genus    ON taxons (genus);
 
@@ -73,13 +73,15 @@ CREATE INDEX places_geohash ON places (geohash);
 CREATE TABLE events (
   event_id   INTEGER NOT NULL,
   place_id   INTEGER NOT NULL,
+  dataset_id TEXT    NOT NULL,
   year       SMALLINT NOT NULL,
   day        SMALLINT NOT NULL,
   started    TIME,
   ended      TIME,
   event_json JSON,
   CONSTRAINT events_event_id PRIMARY KEY (event_id),
-  CONSTRAINT events_place_id FOREIGN KEY (place_id) REFERENCES places (place_id)
+  CONSTRAINT events_place_id FOREIGN KEY (place_id) REFERENCES places (place_id),
+  CONSTRAINT events_dataset_id FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id)
 );
 CREATE INDEX events_year_day ON events (year, day);
 
@@ -88,9 +90,11 @@ CREATE TABLE counts (
   count_id   INTEGER NOT NULL,
   event_id   INTEGER NOT NULL,
   taxon_id   INTEGER NOT NULL,
+  dataset_id TEXT    NOT NULL,
   count      INTEGER NOT NULL,
   count_json JSON,
   CONSTRAINT counts_count_id PRIMARY KEY (count_id),
   CONSTRAINT counts_event_id FOREIGN KEY (event_id) REFERENCES events (event_id),
-  CONSTRAINT counts_taxon_id FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id)
+  CONSTRAINT counts_taxon_id FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id),
+  CONSTRAINT counts_dataset_id FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id)
 );

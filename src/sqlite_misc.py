@@ -18,7 +18,7 @@ def generate_samples():
 
     queries = [
         ('Taxons', f'SELECT * FROM taxons {limit}'),
-        ('Events only', f'SELECT {ecols} FROM events {limit}'),
+        ('Events only', f'SELECT {ecols} FROM "events" {limit}'),
         ('Counts only', f'SELECT * FROM counts {limit}'),
         ('BBS events',
          (f'SELECT {ecols}, bbs_events.* '

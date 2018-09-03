@@ -63,9 +63,10 @@ class SqliteDb(BaseDb):
     def exists(self, table):
         """Check if a table exists."""
         sql = """
-            SELECT COUNT(*) AS count
+            SELECT COUNT(*) AS n
               FROM sqlite_master
-             WHERE type='table' AND name = ?"""
+             WHERE "type" = 'table'
+               AND name = ?"""
         results = self.cxn.execute(sql, (table, ))
         return results.fetchone()[0]
 
