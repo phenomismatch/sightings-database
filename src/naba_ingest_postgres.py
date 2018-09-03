@@ -1,10 +1,10 @@
 """Ingest NABA data into the Postgres database."""
 
-from lib.base_ingest_naba import BaseIngestNaba
-from lib.postgres_db import PostgresDb
+from lib.naba_ingest import NabaIngest
+from lib.db_postgres import DbPostgres
 
 
-class PostgresIngestNaba(BaseIngestNaba):
+class NabaIngestPostgres(NabaIngest):
     """Ingest NABA data."""
 
     def _insert_codes(self):
@@ -14,4 +14,4 @@ class PostgresIngestNaba(BaseIngestNaba):
 
 
 if __name__ == '__main__':
-    PostgresIngestNaba(PostgresDb).ingest()
+    NabaIngestPostgres(DbPostgres).ingest()

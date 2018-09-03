@@ -8,12 +8,12 @@ from pathlib import Path
 import psycopg2
 from sqlalchemy import create_engine
 import lib.globals as g
-from lib.base_db import BaseDb
+from lib.db import Db
 
 FILE_MODE = 644
 
 
-class PostgresDb(BaseDb):
+class DbPostgres(Db):
     """Postgresql connection."""
 
     ENGINE = 'postgresql://{}@localhost:5432/sightings'

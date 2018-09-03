@@ -1,10 +1,10 @@
 """Ingest Pollard data into the Postgres database."""
 
-from lib.base_ingest_pollard import BaseIngestPollard
-from lib.postgres_db import PostgresDb
+from lib.pollard_ingest import PollardIngest
+from lib.db_postgres import DbPostgres
 
 
-class PostgresIngestPollard(BaseIngestPollard):
+class PollardIngestPostgres(PollardIngest):
     """Ingest Pollard data into the Postgres database."""
 
     def _insert_codes(self):
@@ -14,4 +14,4 @@ class PostgresIngestPollard(BaseIngestPollard):
 
 
 if __name__ == '__main__':
-    PostgresIngestPollard(PostgresDb).ingest()
+    PollardIngestPostgres(DbPostgres).ingest()

@@ -6,7 +6,7 @@ import lib.data as data
 import lib.globals as g
 
 
-class BaseCreateDb:
+class CreateDb:
     """Create a sightings database and input constant data."""
 
     def __init__(self, db):

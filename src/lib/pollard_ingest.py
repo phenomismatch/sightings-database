@@ -5,7 +5,7 @@ import pandas as pd
 import lib.globals as g
 
 
-class BaseIngestPollard:
+class PollardIngest:
     """Ingest Pollard data."""
 
     DATASET_ID = 'pollard'

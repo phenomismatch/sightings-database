@@ -6,7 +6,7 @@ import lib.data as data
 import lib.globals as g
 
 
-class BaseIngestEbird:
+class EbirdIngest:
     """Ingest eBird data."""
 
     DATASET_ID = 'ebird'

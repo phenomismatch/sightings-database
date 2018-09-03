@@ -8,7 +8,7 @@ from lib.sqlite_db import SqliteDb as bbsDb
 import lib.globals as g
 
 
-class BaseIngestBbs:
+class BbsIngest:
     """Ingest BBS data."""
 
     DATASET_ID = 'bbs'

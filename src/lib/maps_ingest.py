@@ -8,7 +8,7 @@ import lib.globals as g
 import lib.data as data
 
 
-class BaseIngestMaps:
+class MapsIngest:
     """Ingest MAPS data."""
 
     DATASET_ID = 'maps'

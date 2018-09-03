@@ -5,7 +5,7 @@ import pandas as pd
 import lib.globals as g
 
 
-class BaseIngestNaba:
+class NabaIngest:
     """Ingest NABA data."""
 
     PLACE_KEYS = ['lng', 'lat']

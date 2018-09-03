@@ -1,7 +1,7 @@
 """Common functions for dealing with database connections."""
 
 
-class BaseDb:
+class Db:
     """Common database functions."""
 
     TAXON_ID = 'taxon_id'

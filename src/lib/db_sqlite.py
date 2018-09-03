@@ -4,10 +4,10 @@ import os
 import subprocess
 from pathlib import Path
 import sqlite3
-from lib.base_db import BaseDb
+from lib.db import Db
 
 
-class SqliteDb(BaseDb):
+class DbSqlite(Db):
     """sqlite functions."""
 
     DATA_DIR = Path('data')

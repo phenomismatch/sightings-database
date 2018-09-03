@@ -1,10 +1,10 @@
 """Ingest Breed Bird Survey data into the Postgres database."""
 
-from lib.base_ingest_bbs import BaseIngestBbs
-from lib.postgres_db import PostgresDb
+from lib.ingest_bbs import BbsIngest
+from lib.db_postgres import DbPostgres
 
 
-class PostgresIngestBbs(BaseIngestBbs):
+class BbsIngestPostgres(BbsIngest):
     """Ingest Breed Bird Survey data into the Postgres database."""
 
     def _insert_codes(self):
@@ -14,4 +14,4 @@ class PostgresIngestBbs(BaseIngestBbs):
 
 
 if __name__ == '__main__':
-    PostgresIngestBbs(PostgresDb).ingest()
+    BbsIngestPostgres(DbPostgres).ingest()

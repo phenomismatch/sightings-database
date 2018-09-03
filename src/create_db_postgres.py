@@ -1,10 +1,10 @@
 """Create the Postgres version of the sightings database."""
 
-from lib.base_create_db import BaseCreateDb
-from lib.postgres_db import PostgresDb
+from lib.create_db import CreateDb
+from lib.db_postgres import DbPostgres
 
 
-class PostgresCreateDb(BaseCreateDb):
+class CreateDbPostgres(CreateDb):
     """Create a sightings database and input constant data."""
 
     def _insert_countries(self):
@@ -13,4 +13,4 @@ class PostgresCreateDb(BaseCreateDb):
 
 
 if __name__ == '__main__':
-    PostgresCreateDb(PostgresDb).create_database()
+    CreateDbPostgres(DbPostgres).create_database()

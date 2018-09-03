@@ -1,10 +1,10 @@
 """Ingest eBird data into the Postgres database."""
 
-from lib.base_ingest_ebird import BaseIngestEbird
-from lib.postgres_db import PostgresDb
+from lib.ebird_ingest import EbirdIngest
+from lib.db_postgres import DbPostgres
 
 
-class PostgresIngestEbird(BaseIngestEbird):
+class EbirdIngestPostgres(EbirdIngest):
     """Ingest eBird data into the Postgres database."""
 
     def _insert_codes(self):
@@ -14,4 +14,4 @@ class PostgresIngestEbird(BaseIngestEbird):
 
 
 if __name__ == '__main__':
-    PostgresIngestEbird(PostgresDb).ingest()
+    EbirdIngestPostgres(DbPostgres).ingest()

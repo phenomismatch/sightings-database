@@ -1,10 +1,10 @@
 """Ingest MAPS data into the Postgres database."""
 
-from lib.base_ingest_maps import BaseIngestMaps
-from lib.postgres_db import PostgresDb
+from lib.maps_ingest import MapsIngest
+from lib.db_postgres import DbPostgres
 
 
-class PostgresIngestMaps(BaseIngestMaps):
+class MapsIngestPostgres(MapsIngest):
     """Ingest MAPS data into the Postgres database."""
 
     def _insert_codes(self):
@@ -14,4 +14,4 @@ class PostgresIngestMaps(BaseIngestMaps):
 
 
 if __name__ == '__main__':
-    PostgresIngestMaps(PostgresDb).ingest()
+    MapsIngestPostgres(DbPostgres).ingest()

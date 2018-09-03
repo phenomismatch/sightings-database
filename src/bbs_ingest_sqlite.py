@@ -1,12 +1,12 @@
 """Ingest Breed Bird Survey data into the SQLite3 database."""
 
-from lib.base_ingest_bbs import BaseIngestBbs
-from lib.sqlite_db import SqliteDb
+from lib.bbs_ingest import BbsIngest
+from lib.db_sqlite import DbSqlite
 
 
-class SqliteIngestBbs(BaseIngestBbs):
+class BbsIngestSqlite(BbsIngest):
     """Ingest Breed Bird Survey data into the SQLite3 database."""
 
 
 if __name__ == '__main__':
-    SqliteIngestBbs(SqliteDb).ingest()
+    BbsIngestSqlite(DbSqlite).ingest()

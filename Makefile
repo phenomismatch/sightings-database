@@ -11,42 +11,42 @@ SQLITE_DST="$(PROCESSED)/$(basename $(SQLITE_DB))_$(DATE).db"
 all_postgres: create_postgres bbs_postgres maps_postgres ebird_postgres pollard_postgres naba_postgres
 
 create_postgres:
-	$(PYTHON) ./src/postgres_create_db.py
+	$(PYTHON) ./src/create_db_postgres.py
 
 bbs_postgres:
-	$(PYTHON) ./src/postgres_ingest_bbs.py
+	$(PYTHON) ./src/bbs_ingest_postgres.py
 
 maps_postgres:
-	$(PYTHON) ./src/postgres_ingest_maps.py
+	$(PYTHON) ./src/maps_ingest_postgres.py
 
 ebird_postgres:
-	$(PYTHON) ./src/postgres_ingest_ebird.py
+	$(PYTHON) ./src/ebird_ingest_postgres.py
 
 pollard_postgres:
-	$(PYTHON) ./src/postgres_ingest_pollard.py
+	$(PYTHON) ./src/pollard_ingest_postgresrd.py
 
 naba_postgres:
-	$(PYTHON) ./src/postgres_ingest_naba.py
+	$(PYTHON) ./src/naba_ingest_postgrespy
 
 all_sqlite: clean_sqlite create_sqlite bbs_sqlite maps_sqlite ebird_sqlite pollard_sqlite naba_sqlite
 
 create_sqlite:
-	$(PYTHON) ./src/sqlite_create_db.py
+	$(PYTHON) ./src/create_db_sqlite.py
 
 bbs_sqlite:
-	$(PYTHON) ./src/sqlite_ingest_bbs.py
+	$(PYTHON) ./src/bbs_ingest_sqlite.py
 
 maps_sqlite:
-	$(PYTHON) ./src/sqlite_ingest_maps.py
+	$(PYTHON) ./src/maps_ingest_sqlite.py
 
 ebird_sqlite:
-	$(PYTHON) ./src/sqlite_ingest_ebird.py
+	$(PYTHON) ./src/ebird_ingest_sqlited.py
 
 pollard_sqlite:
-	$(PYTHON) ./src/sqlite_ingest_pollard.py
+	$(PYTHON) ./src/pollard_ingest_sqliteard.py
 
 naba_sqlite:
-	$(PYTHON) ./src/sqlite_ingest_naba.py
+	$(PYTHON) ./src/naba_ingest_sqlite.py
 
 backup_sqlite:
 	cp $(SQLITE_SRC) $(SQLITE_DST)
