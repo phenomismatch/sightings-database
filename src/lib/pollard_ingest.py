@@ -8,7 +8,7 @@ import lib.globals as g
 class PollardIngest:
     """Ingest Pollard data."""
 
-    DATASET_ID = 'pollard'
+    DATASET_ID = g.POLLARD_DATASET_ID
     PLACE_KEYS = ['Site', 'Route']
 
     def __init__(self, db):
@@ -24,10 +24,10 @@ class PollardIngest:
 
         raw_places = self._get_raw_places()
         raw_data = self._get_raw_data()
+        to_taxon_id = self._select_taxons()
 
         self._insert_dataset()
         to_place_id = self._insert_places(raw_places, raw_data)
-        to_taxon_id = self._insert_taxons(raw_data)
         raw_data = self._insert_events(raw_data, to_place_id)
         self._insert_counts(raw_data, to_taxon_id)
 
@@ -39,7 +39,7 @@ class PollardIngest:
 
         place_renames = {'long': 'lng', 'Land Owner': 'Land_Owner'}
         raw_places = pd.read_csv(
-            self.POLLARD_PATH / 'Pollard_locations.csv', dtype='unicode')
+            g.POLLARD_PATH / 'Pollard_locations.csv', dtype='unicode')
         raw_places = raw_places.rename(columns=place_renames)
 
         raw_places['radius'] = None
@@ -51,7 +51,7 @@ class PollardIngest:
         print(f'Getting {self.DATASET_ID} raw event and count data')
 
         raw_data = pd.read_csv(
-            self.POLLARD_PATH / 'pollardbase_example_201802.csv',
+            g.POLLARD_PATH / 'pollardbase_example_201802.csv',
             dtype='unicode')
 
         raw_data = raw_data.rename(columns={
@@ -88,33 +88,15 @@ class PollardIngest:
 
         return raw_data
 
-    def _insert_taxons(self, raw_data):
-        print(f'Inserting {self.DATASET_ID} taxons')
-        taxons = raw_data.loc[:, ['sci_name', 'common_name', 'genus']].copy()
-        taxons = taxons.drop_duplicates('sci_name')
-
+    def _select_taxons(self):
         sql = """
             SELECT sci_name, taxon_id
               FROM taxons
              WHERE "class" = 'lepidoptera'
+               AND target = 't'
             """
-        old_taxons = pd.read_sql(sql, self.cxn.engine)
-        old_taxons = old_taxons.set_index('sci_name').taxon_id.to_dict()
-
-        already_exists = taxons.sci_name.isin(old_taxons)
-        taxons = taxons.loc[~already_exists, :]
-
-        taxons['dataset_id'] = self.DATASET_ID
-        taxons['class'] = 'lepidoptera'
-        taxons['ordr'] = ''
-        taxons['family'] = ''
-        taxons['target'] = 't'
-
-        taxons = self.cxn.add_taxon_id(taxons)
-        self.cxn.insert_taxons(taxons)
-
-        return taxons.reset_index().set_index(
-            'sci_name').taxon_id.to_dict()
+        taxons = pd.read_sql(sql, self.cxn.engine)
+        return taxons.set_index('sci_name').taxon_id.to_dict()
 
     def _insert_places(self, raw_places, raw_data):
         print(f'Inserting {self.DATASET_ID} places')

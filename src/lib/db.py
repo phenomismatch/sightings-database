@@ -26,30 +26,25 @@ class Db:
         self.execute(
             'DELETE FROM datasets WHERE dataset_id = ?', (self.dataset_id, ))
 
-        self.execute("""DELETE
-                         FROM places
-                        WHERE dataset_id NOT IN (SELECT dataset_id
-                                                   FROM datasets)""")
+        self.execute(
+            """DELETE FROM places
+                WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)""")
 
-        self.execute("""DELETE
-                          FROM "events"
-                         WHERE place_id NOT IN (SELECT place_id
-                                                  FROM places)""")
+        self.execute(
+            """DELETE FROM events
+                WHERE place_id NOT IN (SELECT place_id FROM places)""")
 
-        self.execute("""DELETE
-                          FROM counts
-                         WHERE event_id NOT IN (SELECT event_id
-                                                  FROM "events")""")
+        self.execute(
+            """DELETE FROM counts
+                WHERE event_id NOT IN (SELECT event_id FROM "events")""")
 
-        self.execute("""DELETE
-                          FROM counts
-                         WHERE taxon_id NOT IN (SELECT taxon_id
-                                                  FROM taxons)""")
+        self.execute(
+            """DELETE FROM counts
+                WHERE taxon_id NOT IN (SELECT taxon_id FROM taxons)""")
 
-        self.execute("""DELETE
-                          FROM codes
-                         WHERE dataset_id NOT IN (SELECT dataset_id
-                                                    FROM datasets)""")
+        self.execute(
+            """DELETE FROM codes
+                WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)""")
 
     def add_taxon_id(self, taxons):
         """Add event IDs to the dataframe."""

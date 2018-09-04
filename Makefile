@@ -23,7 +23,7 @@ ebird_postgres:
 	$(PYTHON) ./src/ebird_ingest_postgres.py
 
 pollard_postgres:
-	$(PYTHON) ./src/pollard_ingest_postgresrd.py
+	$(PYTHON) ./src/pollard_ingest_postgres.py
 
 naba_postgres:
 	$(PYTHON) ./src/naba_ingest_postgrespy
@@ -40,10 +40,10 @@ maps_sqlite:
 	$(PYTHON) ./src/maps_ingest_sqlite.py
 
 ebird_sqlite:
-	$(PYTHON) ./src/ebird_ingest_sqlited.py
+	$(PYTHON) ./src/ebird_ingest_sqlite.py
 
 pollard_sqlite:
-	$(PYTHON) ./src/pollard_ingest_sqliteard.py
+	$(PYTHON) ./src/pollard_ingest_sqlite.py
 
 naba_sqlite:
 	$(PYTHON) ./src/naba_ingest_sqlite.py

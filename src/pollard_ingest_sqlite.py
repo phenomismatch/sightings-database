@@ -1,7 +1,7 @@
 """Ingest Pollard data into the sqlite database."""
 
 from lib.pollard_ingest import PollardIngest
-from lib.sqlite_db import SqliteDb
+from lib.db_sqlite import DbSqlite
 
 
 class PollardIngestSqlite(PollardIngest):
@@ -9,4 +9,4 @@ class PollardIngestSqlite(PollardIngest):
 
 
 if __name__ == '__main__':
-    PollardIngestSqlite(SqliteDb).ingest()
+    PollardIngestSqlite(DbSqlite).ingest()

@@ -71,7 +71,7 @@ class CreateDb:
             'Species': 'common_name'})
         taxons = taxons.loc[taxons.sci_name.notna(),
                             ['sci_name', 'common_name']].copy()
-        taxons['dataset_id'] = g.POLLARD_DATASET_ID
+        taxons['taxon_dataset_id'] = g.POLLARD_DATASET_ID
         taxons['genus'] = taxons.sci_name.str.split().str[0]
         return taxons
 
@@ -84,7 +84,7 @@ class CreateDb:
         taxons['sci_name'] = taxons.apply(
             lambda x: f'{x.genus} {x.species}', axis='columns')
         taxons = taxons.loc[:, ['sci_name', 'genus']].copy()
-        taxons['dataset_id'] = g.NABA_DATSET_ID
+        taxons['taxon_dataset_id'] = g.NABA_DATSET_ID
         taxons['common_name'] = ''
         return taxons
 
@@ -95,12 +95,9 @@ class CreateDb:
         taxons['genus'] = taxons.sci_name.str.split().str[0]
         taxons = data.add_taxon_genera_records(taxons)
 
-        taxons['dataset_id'] = g.CLEMENTS_DATASET_ID
         taxons['class'] = 'aves'
 
         taxons = self.cxn.add_taxon_id(taxons)
-        taxons = taxons.rename(columns={'order': 'order'})
-        taxons['dataset_id'] = g.POLLARD_DATASET_ID
         self.cxn.insert_taxons(taxons)
 
     def _get_clem_species(self):
@@ -111,6 +108,7 @@ class CreateDb:
         is_species = taxons.category == 'species'
         taxons = taxons.loc[is_species,
                             ['sci_name', 'order', 'family', 'common_name']]
+        taxons['taxon_dataset_id'] = g.CLEMENTS_DATASET_ID
         return taxons
 
     def _set_target_birds(self, taxons):

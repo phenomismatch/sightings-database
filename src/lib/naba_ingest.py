@@ -9,6 +9,7 @@ class NabaIngest:
     """Ingest NABA data."""
 
     PLACE_KEYS = ['lng', 'lat']
+    DATASET_ID = g.NABA_DATSET_ID
 
     def __init__(self, db):
         """Setup."""
@@ -22,9 +23,9 @@ class NabaIngest:
         self.cxn.delete_dataset()
 
         raw_data = self._get_raw_data()
+        to_taxon_id = self._select_taxons()
 
         self._insert_dataset()
-        to_taxon_id = self._insert_taxons(raw_data)
         to_place_id = self._insert_places(raw_data)
         to_event_id = self._insert_events(raw_data, to_place_id)
         self._insert_counts(raw_data, to_event_id, to_taxon_id)
@@ -36,7 +37,7 @@ class NabaIngest:
         print(f'Getting {self.DATASET_ID} raw data')
 
         raw_data = pd.read_csv(
-            self.NABA_PATH / 'NABA_JULY4.csv', dtype='unicode')
+            g.NABA_PATH / 'NABA_JULY4.csv', dtype='unicode')
 
         raw_data = raw_data.rename(columns={
             'Year': 'year',
@@ -54,8 +55,20 @@ class NabaIngest:
         raw_data.Day = raw_data.Day.astype(float).astype(int)
         raw_data['count'] = raw_data[
                 'count'].fillna(0).astype(float).astype(int)
+        raw_data['sci_name'] = raw_data.apply(
+            lambda x: f'{x.genus} {x.species}', axis='columns')
 
         return raw_data
+
+    def _select_taxons(self):
+        sql = """
+            SELECT sci_name, taxon_id
+              FROM taxons
+             WHERE "class" = 'lepidoptera'
+               AND target = 't'
+            """
+        taxons = pd.read_sql(sql, self.cxn.engine)
+        return taxons.set_index('sci_name').taxon_id.to_dict()
 
     def _insert_places(self, raw_data):
         print(f'Inserting {self.DATASET_ID} places')
@@ -109,9 +122,9 @@ class NabaIngest:
         raw_data['key'] = tuple(zip(
                 raw_data.year, raw_data.Month, raw_data.Day))
 
-        count_columns = [
-                'MASTER_ID', 'UMD_Species_Code', 'count', 'key', 'sci_name']
-        counts = raw_data.loc[:, count_columns]
+        count_columns = '''
+                MASTER_ID UMD_Species_Code count key sci_name'''.split()
+        counts = raw_data.loc[:, count_columns].copy()
 
         counts['taxon_id'] = counts.sci_name.map(to_taxon_id)
         counts['event_id'] = counts.key.map(to_event_id)
@@ -122,11 +135,11 @@ class NabaIngest:
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')
-        dataset = pd.DataFrame([dict(
-            dataset_id=self.DATASET_ID,
-            title='NABA',
-            extracted=str(date.today()),
-            version='2018-07-04',
-            url='')])
+        dataset = pd.DataFrame([{
+            'dataset_id': self.DATASET_ID,
+            'title': 'NABA',
+            'extracted': str(date.today()),
+            'version': '2018-07-04',
+            'url': ''}])
         dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')
