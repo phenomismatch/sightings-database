@@ -235,3 +235,16 @@ class EbirdIngest:
         codes['dataset_id'] = self.DATASET_ID
 
         self.cxn.insert_codes(codes)
+
+
+class EbirdIngestPostgres(EbirdIngest):
+    """Ingest eBird data into the Postgres database."""
+
+    def _insert_codes(self):
+        super()._insert_codes()
+        self.cxn.execute(
+            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+
+
+class EbirdIngestSqlite(EbirdIngest):
+    """Ingest eBird data into the SQLite3 database."""

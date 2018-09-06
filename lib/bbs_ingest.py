@@ -251,3 +251,16 @@ class BbsIngest:
         codes = self.cxn.add_code_id(codes)
         codes['dataset_id'] = self.DATASET_ID
         self.cxn.insert_codes(codes)
+
+
+class BbsIngestPostgres(BbsIngest):
+    """Ingest Breed Bird Survey data into the Postgres database."""
+
+    def _insert_codes(self):
+        super()._insert_codes()
+        self.cxn.execute(
+            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+
+
+class BbsIngestSqlite(BbsIngest):
+    """Ingest Breed Bird Survey data into the SQLite3 database."""

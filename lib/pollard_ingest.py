@@ -111,7 +111,7 @@ class PollardIngest:
         place_df = place_df.loc[:, columns].copy()
 
         places = pd.merge(
-                raw_places, place_df, how='left', on=['Site', 'Route'])
+            raw_places, place_df, how='left', on=['Site', 'Route'])
 
         places.lat = pd.to_numeric(places.lat, errors='coerce')
         places.lng = pd.to_numeric(places.lng, errors='coerce')
@@ -185,3 +185,16 @@ class PollardIngest:
             'url': ''}])
         dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')
+
+
+class PollardIngestPostgres(PollardIngest):
+    """Ingest Pollard data into the Postgres database."""
+
+    def _insert_codes(self):
+        super()._insert_codes()
+        self.cxn.execute(
+            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+
+
+class PollardIngestSqlite(PollardIngest):
+    """Ingest Pollard data into the SQLite3 database."""

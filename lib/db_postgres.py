@@ -11,27 +11,25 @@ import lib.globals as g
 from lib.db import Db
 
 FILE_MODE = 644
+ENGINE = 'postgresql://{}@localhost:5432/sightings'
+CONNECT = 'dbname=sightings user={}'
+CREATE_SCRIPT = os.fspath(Path('lib') / 'sql' / 'create_db_postgres.sql')
+CREATE_CMD = f'psql -U postgres -d sightings -a -f {CREATE_SCRIPT}'
 
 
 class DbPostgres(Db):
     """Postgresql connection."""
 
-    ENGINE = 'postgresql://{}@localhost:5432/sightings'
-    CONNECT = 'dbname=sightings user={}'
-    CREATE_SCRIPT = os.fspath(
-        Path('src') / 'sql' / 'create_db_postgres.sql')
-    CREATE_CMD = f'psql -U postgres -d sightings -a -f {CREATE_SCRIPT}'
-
     @classmethod
     def create(cls):
         """Create the database."""
         print('Creating database')
-        subprocess.check_call(cls.CREATE_CMD, shell=True)
+        subprocess.check_call(CREATE_CMD, shell=True)
 
     def __init__(self, user='postgres', dataset_id=None):
         """Connect to the database and initialize parameters."""
-        self.cxn = psycopg2.connect(self.CONNECT.format(user))
-        self.engine = create_engine(self.ENGINE.format(user))
+        self.cxn = psycopg2.connect(CONNECT.format(user))
+        self.engine = create_engine(ENGINE.format(user))
         self.dataset_id = dataset_id
 
     def execute(self, sql, values=None):

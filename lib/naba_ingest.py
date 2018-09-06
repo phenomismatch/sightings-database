@@ -54,7 +54,7 @@ class NabaIngest:
         raw_data.Month = raw_data.Month.astype(float).astype(int)
         raw_data.Day = raw_data.Day.astype(float).astype(int)
         raw_data['count'] = raw_data[
-                'count'].fillna(0).astype(float).astype(int)
+            'count'].fillna(0).astype(float).astype(int)
         raw_data['sci_name'] = raw_data.apply(
             lambda x: f'{x.genus} {x.species}', axis='columns')
 
@@ -120,7 +120,7 @@ class NabaIngest:
         print(f'Inserting {self.DATASET_ID} counts')
 
         raw_data['key'] = tuple(zip(
-                raw_data.year, raw_data.Month, raw_data.Day))
+            raw_data.year, raw_data.Month, raw_data.Day))
 
         count_columns = '''
                 MASTER_ID UMD_Species_Code count key sci_name'''.split()
@@ -143,3 +143,16 @@ class NabaIngest:
             'url': ''}])
         dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')
+
+
+class NabaIngestPostgres(NabaIngest):
+    """Ingest NABA data."""
+
+    def _insert_codes(self):
+        super()._insert_codes()
+        self.cxn.execute(
+            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+
+
+class NabaIngestSqlite(NabaIngest):
+    """Ingest Pollard data into the SQLite3 database."""

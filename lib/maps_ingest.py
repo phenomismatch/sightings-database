@@ -188,3 +188,16 @@ class MapsIngest:
         codes = self.cxn.add_code_id(codes)
         codes['dataset_id'] = self.DATASET_ID
         self.cxn.insert_codes(codes)
+
+
+class MapsIngestPostgres(MapsIngest):
+    """Ingest MAPS data into the Postgres database."""
+
+    def _insert_codes(self):
+        super()._insert_codes()
+        self.cxn.execute(
+            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+
+
+class MapsIngestSqlite(MapsIngest):
+    """Ingest MAPS data into the SQLite3 database."""
