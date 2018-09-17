@@ -160,7 +160,7 @@ class BbsIngest:
         print(f'Inserting {Bbs.dataset_id} codes')
 
         bcr = pd.read_fwf(
-            self.Bbs.path / 'BCR.txt',
+            Bbs.path / 'BCR.txt',
             skiprows=7,
             encoding='ISO-8859-1',
             usecols=[0, 1],
@@ -169,7 +169,7 @@ class BbsIngest:
         bcr['field'] = 'bcr'
 
         strata = pd.read_fwf(
-            self.Bbs.path / 'BBSStrata.txt',
+            Bbs.path / 'BBSStrata.txt',
             skiprows=16,
             encoding='ISO-8859-1',
             usecols=[0, 1],
@@ -178,7 +178,7 @@ class BbsIngest:
         strata['field'] = 'strata'
 
         protocols = pd.read_fwf(
-            self.Bbs.path / 'RunProtocolID.txt',
+            Bbs.path / 'RunProtocolID.txt',
             skiprows=4,
             encoding='ISO-8859-1',
             colspecs=[(0, 3), (5, 55)],
@@ -186,7 +186,7 @@ class BbsIngest:
         protocols['field'] = 'runprotocol'
 
         descrs = pd.read_fwf(
-            self.Bbs.path / 'RunProtocolID.txt',
+            Bbs.path / 'RunProtocolID.txt',
             skiprows=4,
             encoding='ISO-8859-1',
             colspecs=[(0, 3), (56, 141)],
@@ -194,7 +194,7 @@ class BbsIngest:
         descrs['field'] = 'runprotocoldesc'
 
         wind = pd.read_fwf(
-            self.Bbs.path / 'weathercodes.txt',
+            Bbs.path / 'weathercodes.txt',
             skiprows=8,
             skipfooter=13,
             encoding='ISO-8859-1',
@@ -204,7 +204,7 @@ class BbsIngest:
         wind['field'] = 'wind'
 
         sky = pd.read_fwf(
-            self.Bbs.path / 'weathercodes.txt',
+            Bbs.path / 'weathercodes.txt',
             skiprows=23,
             encoding='ISO-8859-1',
             colspecs=[(0, 1), (6, 56)],
@@ -213,7 +213,7 @@ class BbsIngest:
         sky['field'] = 'sky'
 
         states = pd.read_fwf(
-            self.Bbs.path / 'RegionCodes.txt',
+            Bbs.path / 'RegionCodes.txt',
             skiprows=11,
             usecols=[1, 2],
             encoding='ISO-8859-1',
@@ -222,7 +222,7 @@ class BbsIngest:
         states['field'] = 'state'
 
         types = pd.read_fwf(
-            self.Bbs.path / 'RouteInf.txt',
+            Bbs.path / 'RouteInf.txt',
             skiprows=28,
             skipfooter=13,
             colspecs=[(3, 4), (7, 18)],
@@ -232,7 +232,7 @@ class BbsIngest:
         types['field'] = 'routetype'
 
         details = pd.read_fwf(
-            self.Bbs.path / 'RouteInf.txt',
+            Bbs.path / 'RouteInf.txt',
             skiprows=33,
             skipfooter=5,
             colspecs=[(3, 4), (7, 45)],

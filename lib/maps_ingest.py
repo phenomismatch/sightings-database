@@ -4,31 +4,23 @@ import os
 from datetime import date
 import pandas as pd
 from simpledbf import Dbf5
-import lib.util as util
+from lib.util import Maps
 import lib.data as data
 
 
 class MapsIngest:
     """Ingest MAPS data."""
 
-    DATASET_ID = 'maps'
-    MAPS_PATH = util.Dir.data / 'raw' / DATASET_ID
-    LIST = 'LIST17'
-    BANDS = '1117BAND'
-    EFFORT = '1117EF'
-    STATIONS = 'STATIONS'
-
     def __init__(self, db):
         """Setup."""
         self.db = db
-        self.cxn = self.db(dataset_id=self.DATASET_ID)
-        self.bbs_cxn = None
+        self.cxn = self.db(dataset_id=Maps.dataset_id)
 
     def ingest(self):
         """Ingest the data."""
-        self._convert_dbf_to_csv(self.LIST)
-        self._convert_dbf_to_csv(self.BANDS)
-        self._convert_dbf_to_csv(self.EFFORT)
+        self._convert_dbf_to_csv(Maps.list_)
+        self._convert_dbf_to_csv(Maps.bands)
+        self._convert_dbf_to_csv(Maps.effort)
 
         self.cxn.bulk_add_setup()
         self.cxn.delete_dataset()
@@ -57,8 +49,8 @@ class MapsIngest:
             df.to_csv(csv_file, index=False)
 
     def _get_raw_taxons(self):
-        print(f'Getting {self.DATASET_ID} raw taxon data')
-        raw_taxons = pd.read_csv(self.MAPS_PATH / f'{self.LIST}.csv')
+        print(f'Getting {Maps.dataset_id} raw taxon data')
+        raw_taxons = pd.read_csv(self.MAPS_PATH / f'{Maps.list_}.csv')
         raw_taxons = raw_taxons.loc[:, ['SCINAME', 'SPEC']]
         raw_taxons = raw_taxons.set_index('SCINAME')
         sql = """SELECT sci_name, taxon_id FROM taxons"""
@@ -68,13 +60,13 @@ class MapsIngest:
         return taxons.set_index('SPEC').taxon_id.to_dict()
 
     def _get_raw_places(self):
-        print(f'Getting {self.DATASET_ID} raw place data')
+        print(f'Getting {Maps.dataset_id} raw place data')
 
         keep = """STATION LOC STA STA2 NAME LHOLD HOLDCERT O NEARTOWN COUNTY
             STATE US REGION BLOCK LATITUDE LONGITUDE PRECISION SOURCE DATUM
             DECLAT DECLNG NAD83 ELEV STRATUM BCR HABITAT REG PASSED""".split()
 
-        csv_file = self.MAPS_PATH / f'{self.STATIONS}.csv'
+        csv_file = self.MAPS_PATH / f'{Maps.stations}.csv'
         raw_places = pd.read_csv(csv_file, dtype='unicode')
         raw_places = raw_places.drop(columns=[
             c for c in raw_places.columns if c not in keep], axis=1)
@@ -100,8 +92,8 @@ class MapsIngest:
         return raw_places
 
     def _get_raw_events(self):
-        print(f'Getting {self.DATASET_ID} raw event data')
-        csv_file = self.MAPS_PATH / f'{self.EFFORT}.csv'
+        print(f'Getting {Maps.dataset_id} raw event data')
+        csv_file = self.MAPS_PATH / f'{Maps.effort}.csv'
         raw_events = pd.read_csv(csv_file, dtype='unicode').rename(
             columns={'START': 'started', 'END': 'ended'})
 
@@ -114,22 +106,22 @@ class MapsIngest:
         return raw_events
 
     def _get_raw_counts(self):
-        print(f'Getting {self.DATASET_ID} raw count data')
-        csv_file = self.MAPS_PATH / f'{self.BANDS}.csv'
+        print(f'Getting {Maps.dataset_id} raw count data')
+        csv_file = self.MAPS_PATH / f'{Maps.bands}.csv'
         raw_counts = pd.read_csv(csv_file, dtype='unicode')
         return raw_counts
 
     def _insert_places(self, raw_places):
-        print(f'Inserting {self.DATASET_ID} places')
+        print(f'Inserting {Maps.dataset_id} places')
         places = raw_places.reset_index()
-        places['dataset_id'] = self.DATASET_ID
+        places['dataset_id'] = Maps.dataset_id
         places = self.cxn.add_place_id(places)
         self.cxn.insert_places(places)
         return places.reset_index().set_index(
             'STA', verify_integrity=True).place_id.to_dict()
 
     def _insert_events(self, raw_events, to_place_id):
-        print(f'Inserting {self.DATASET_ID} events')
+        print(f'Inserting {Maps.dataset_id} events')
         events = self.cxn.add_event_id(raw_events)
 
         events['place_id'] = events.STA.map(to_place_id)
@@ -145,7 +137,7 @@ class MapsIngest:
             ['STA', 'DATE'], verify_integrity=True).event_id.to_dict()
 
     def _insert_counts(self, counts, to_event_id, to_taxon_id):
-        print(f'Inserting {self.DATASET_ID} counts')
+        print(f'Inserting {Maps.dataset_id} counts')
 
         counts['key'] = tuple(zip(counts.STA, pd.to_datetime(counts.DATE)))
         counts['event_id'] = counts.key.map(to_event_id)
@@ -172,9 +164,9 @@ class MapsIngest:
         df.loc[df[column].isna(), column] = None
 
     def _insert_dataset(self):
-        print(f'Inserting {self.DATASET_ID} dataset')
+        print(f'Inserting {Maps.dataset_id} dataset')
         dataset = pd.DataFrame([{
-            'dataset_id': self.DATASET_ID,
+            'dataset_id': Maps.dataset_id,
             'title': 'MAPS: Monitoring Avian Productivity and Survivorship',
             'extracted': str(date.today()),
             'version': '2017.0',
@@ -183,10 +175,10 @@ class MapsIngest:
             'datasets', self.cxn.engine, if_exists='append')
 
     def _insert_codes(self):
-        print(f'Inserting {self.DATASET_ID} codes')
+        print(f'Inserting {Maps.dataset_id} codes')
         codes = pd.read_csv(self.MAPS_PATH / 'maps_codes.csv')
         codes = self.cxn.add_code_id(codes)
-        codes['dataset_id'] = self.DATASET_ID
+        codes['dataset_id'] = Maps.dataset_id
         self.cxn.insert_codes(codes)
 
 
@@ -196,7 +188,7 @@ class MapsIngestPostgres(MapsIngest):
     def _insert_codes(self):
         super()._insert_codes()
         self.cxn.execute(
-            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+            f'ALTER TABLE {Maps.dataset_id}_codes ADD PRIMARY KEY (code_id)')
 
 
 class MapsIngestSqlite(MapsIngest):

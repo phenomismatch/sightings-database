@@ -4,6 +4,7 @@ from datetime import datetime
 import pandas as pd
 import lib.data as data
 from lib.util import Clements, Pollard, Naba, Countries, TargetBirds
+from lib.util import Caterpillar
 
 
 class CreateDb:
@@ -40,6 +41,7 @@ class CreateDb:
         print('Inserting taxons')
         self._insert_bird_taxons()
         self._insert_lep_taxons()
+        self._insert_caterpillar_taxons()
 
     def _insert_lep_taxons(self):
         pollard = self._get_pollard_taxons()
@@ -51,6 +53,7 @@ class CreateDb:
 
         taxons['class'] = 'lepidoptera'
         taxons['order'] = ''
+        taxons['group'] = None
         taxons['family'] = ''
         taxons['target'] = 't'
 
@@ -89,14 +92,13 @@ class CreateDb:
         taxons = data.add_taxon_genera_records(taxons)
 
         taxons['class'] = 'aves'
+        taxons['group'] = None
 
         taxons = self.cxn.add_taxon_id(taxons)
         self.cxn.insert_taxons(taxons)
 
     def _get_clem_species(self):
-        path = str(Clements.csv)
-
-        taxons = pd.read_csv(path).rename(columns={
+        taxons = pd.read_csv(Clements.csv, dtype='unicode').rename(columns={
             'scientific name': 'sci_name', 'English name': 'common_name'})
         is_species = taxons.category == 'species'
         taxons = taxons.loc[is_species,
@@ -108,6 +110,21 @@ class CreateDb:
         targets = pd.read_csv(TargetBirds.csv).sci_name.tolist()
         target = taxons.sci_name.isin(targets)
         taxons.loc[target, 'target'] = 't'
+
+    def _insert_caterpillar_taxons(self):
+        taxons = pd.read_csv(Caterpillar.sightings_csv, dtype='unicode')
+        taxons = taxons.rename(columns={'Group': 'group'})
+        taxons = taxons.drop_duplicates('group')
+        taxons['taxon_dataset_id'] = Caterpillar.dataset_id
+        taxons['class'] = None
+        taxons['order'] = None
+        taxons['genus'] = None
+        taxons['family'] = None
+        taxons['target'] = None
+        taxons['sci_name'] = None
+        taxons['common_name'] = None
+        taxons = self.cxn.add_taxon_id(taxons)
+        self.cxn.insert_taxons(taxons)
 
     def _insert_datasets(self):
         print('Inserting datasets')

@@ -15,7 +15,6 @@ class NabaIngest:
         """Setup."""
         self.db = db
         self.cxn = self.db(dataset_id=self.DATASET_ID)
-        self.bbs_cxn = None
 
     def ingest(self):
         """Ingest the data."""

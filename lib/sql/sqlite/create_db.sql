@@ -41,8 +41,9 @@ DROP TABLE IF EXISTS taxons;
 CREATE TABLE taxons (
   taxon_id         INTEGER NOT NULL PRIMARY KEY,
   taxon_dataset_id TEXT NOT NULL,
-  sci_name         TEXT NOT NULL UNIQUE,
-  "class"          TEXT NOT NULL,
+  sci_name         TEXT UNIQUE,
+  "group"          TEXT,
+  "class"          TEXT,
   "order"          TEXT,
   family           TEXT,
   genus            TEXT,
@@ -53,6 +54,7 @@ CREATE INDEX taxons_dataset_id ON taxons (taxon_dataset_id);
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
 CREATE INDEX taxons_class  ON taxons ("class");
 CREATE INDEX taxons_order  ON taxons ("order");
+CREATE INDEX taxons_group  ON taxons ("group");
 CREATE INDEX taxons_family ON taxons (family);
 CREATE INDEX taxons_genus  ON taxons (genus);
 
@@ -70,8 +72,6 @@ CREATE TABLE places (
 CREATE INDEX places_dataset_id ON places (dataset_id);
 CREATE INDEX places_lng_lat    ON places (lng, lat);
 CREATE INDEX places_geohash    ON places (geohash);
--- SELECT AddGeometryColumn('places', 'geopoint', 4326, 'POINT', 'XY', 0);
--- SELECT CreateSpatialIndex('places', 'geopoint');
 
 
 DROP TABLE IF EXISTS events;

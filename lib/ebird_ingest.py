@@ -3,15 +3,11 @@
 from datetime import date
 import pandas as pd
 import lib.data as data
-import lib.util as util
+from lib.util import Ebird
 
 
 class EbirdIngest:
     """Ingest eBird data."""
-
-    DATASET_ID = 'ebird'
-    EBIRD_PATH = util.Dir.data / 'raw' / DATASET_ID
-    EBIRD_CSV = EBIRD_PATH / 'ebd_relFeb-2018.txt'
 
     PLACE_KEYS = ['lng', 'lat']
     EVENT_KEY = 'SAMPLING EVENT IDENTIFIER'
@@ -19,8 +15,7 @@ class EbirdIngest:
     def __init__(self, db):
         """Setup."""
         self.db = db
-        self.cxn = self.db(dataset_id=self.DATASET_ID)
-        self.bbs_cxn = None
+        self.cxn = self.db(dataset_id=Ebird.dataset_id)
 
     def ingest(self):
         """Ingest the data."""
@@ -33,7 +28,7 @@ class EbirdIngest:
 
         chunk = 1_000_000
         reader = pd.read_csv(
-            self.EBIRD_CSV,
+            Ebird.csv,
             delimiter='\t',
             quoting=3,
             chunksize=chunk,
@@ -43,7 +38,7 @@ class EbirdIngest:
         to_event_id = {}
 
         for i, raw_data in enumerate(reader, 1):
-            print(f'Processing {self.DATASET_ID} chunk {i * chunk:,}')
+            print(f'Processing {Ebird.dataset_id} chunk {i * chunk:,}')
 
             raw_data = self._filter_data(raw_data, to_taxon_id)
 
@@ -60,7 +55,7 @@ class EbirdIngest:
 
     def _get_raw_taxons(self):
         """Build a dictionary of scientific names and taxon_ids."""
-        print(f'Getting {self.DATASET_ID} raw taxon data')
+        print(f'Getting {Ebird.dataset_id} raw taxon data')
         sql = """SELECT taxon_id, sci_name FROM taxons WHERE target = 't'"""
         taxons = pd.read_sql(sql, self.cxn.engine)
         return taxons.set_index('sci_name').taxon_id.to_dict()
@@ -88,7 +83,7 @@ class EbirdIngest:
         return raw_data
 
     def _insert_places(self, raw_data, to_place_id):
-        print(f'Inserting {self.DATASET_ID} places')
+        print(f'Inserting {Ebird.dataset_id} places')
 
         place_columns = self.PLACE_KEYS + [
             'radius',
@@ -109,7 +104,7 @@ class EbirdIngest:
         places.radius *= 1000.0
         places.loc[is_na, 'radius'] = None
 
-        places['dataset_id'] = self.DATASET_ID
+        places['dataset_id'] = Ebird.dataset_id
         places = self.cxn.add_place_id(places)
 
         new_place_ids = places.reset_index().set_index(
@@ -131,7 +126,7 @@ class EbirdIngest:
         pass
 
     def _insert_events(self, raw_data, to_place_id, to_event_id):
-        print(f'Inserting {self.DATASET_ID} events')
+        print(f'Inserting {Ebird.dataset_id} events')
 
         event_columns = self.PLACE_KEYS + [self.EVENT_KEY] + [
             'started', 'EFFORT AREA HA', 'APPROVED', 'REVIEWED',
@@ -170,7 +165,7 @@ class EbirdIngest:
         return to_event_id
 
     def _insert_counts(self, raw_data, to_event_id, to_taxon_id):
-        print(f'Inserting {self.DATASET_ID} counts')
+        print(f'Inserting {Ebird.dataset_id} counts')
 
         count_columns = [self.EVENT_KEY] + [
             'count',
@@ -202,9 +197,9 @@ class EbirdIngest:
         df.loc[is_na, column] = None
 
     def _insert_dataset(self):
-        print(f'Inserting {self.DATASET_ID} dataset')
+        print(f'Inserting {Ebird.dataset_id} dataset')
         dataset = pd.DataFrame([{
-            'dataset_id': self.DATASET_ID,
+            'dataset_id': Ebird.dataset_id,
             'title': 'eBird Basic Dataset',
             'extracted': str(date.today()),
             'version': 'relFeb-2018',
@@ -213,26 +208,26 @@ class EbirdIngest:
             'datasets', self.cxn.engine, if_exists='append')
 
     def _insert_codes(self):
-        print(f'Inserting {self.DATASET_ID} codes')
+        print(f'Inserting {Ebird.dataset_id} codes')
 
         bcr = pd.read_csv(
-            self.EBIRD_PATH / 'BCRCodes.txt', sep='\t', encoding='ISO-8859-1')
+            Ebird.path / 'BCRCodes.txt', sep='\t', encoding='ISO-8859-1')
         bcr['field'] = 'BCR CODE'
 
         iba = pd.read_csv(
-            self.EBIRD_PATH / 'IBACodes.txt', sep='\t', encoding='ISO-8859-1')
+            Ebird.path / 'IBACodes.txt', sep='\t', encoding='ISO-8859-1')
         iba['field'] = 'IBA CODE'
 
         usfws = pd.read_csv(
-            self.EBIRD_PATH / 'USFWSCodes.txt',
+            Ebird.path / 'USFWSCodes.txt',
             sep='\t',
             encoding='ISO-8859-1')
         usfws['field'] = 'USFWS CODE'
 
-        codes = pd.read_csv(self.EBIRD_PATH / 'ebird_codes.csv')
+        codes = pd.read_csv(Ebird.path / 'ebird_codes.csv')
         codes = codes.append([bcr, iba, usfws], ignore_index=True, sort=True)
         codes = self.cxn.add_code_id(codes)
-        codes['dataset_id'] = self.DATASET_ID
+        codes['dataset_id'] = Ebird.dataset_id
 
         self.cxn.insert_codes(codes)
 
@@ -243,7 +238,7 @@ class EbirdIngestPostgres(EbirdIngest):
     def _insert_codes(self):
         super()._insert_codes()
         self.cxn.execute(
-            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+            f'ALTER TABLE {Ebird.dataset_id}_codes ADD PRIMARY KEY (code_id)')
 
 
 class EbirdIngestSqlite(EbirdIngest):

@@ -70,10 +70,3 @@ class DbSqlite(Db):
 
     def update_places(self):
         """Update point records with the point geometry."""
-        print(f'Updating {self.dataset_id} place points')
-
-        # sql = """
-        #     UPDATE places
-        #        SET geopoint = MakePoint(lng, lat, 4326)
-        #      WHERE dataset_id = ?"""
-        # self.execute(sql, (self.dataset_id, ))

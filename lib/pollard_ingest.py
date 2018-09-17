@@ -2,20 +2,18 @@
 
 from datetime import date
 import pandas as pd
-import lib.util as util
+from lib.util import Pollard
 
 
 class PollardIngest:
     """Ingest Pollard data."""
 
-    DATASET_ID = util.Pollard.dataset_id
     PLACE_KEYS = ['Site', 'Route']
 
     def __init__(self, db):
         """Setup."""
         self.db = db
-        self.cxn = self.db(dataset_id=self.DATASET_ID)
-        self.bbs_cxn = None
+        self.cxn = self.db(dataset_id=Pollard.dataset_id)
 
     def ingest(self):
         """Ingest the data."""
@@ -35,10 +33,10 @@ class PollardIngest:
         self.cxn.bulk_add_cleanup()
 
     def _get_raw_places(self):
-        print(f'Getting {self.DATASET_ID} raw place data')
+        print(f'Getting {Pollard.dataset_id} raw place data')
 
         place_renames = {'long': 'lng', 'Land Owner': 'Land_Owner'}
-        raw_places = pd.read_csv(util.Pollard.place_csv, dtype='unicode')
+        raw_places = pd.read_csv(Pollard.place_csv, dtype='unicode')
         raw_places = raw_places.rename(columns=place_renames)
 
         raw_places['radius'] = None
@@ -47,9 +45,9 @@ class PollardIngest:
         return raw_places
 
     def _get_raw_data(self):
-        print(f'Getting {self.DATASET_ID} raw event and count data')
+        print(f'Getting {Pollard.dataset_id} raw event and count data')
 
-        raw_data = pd.read_csv(util.Pollard.data_csv, dtype='unicode')
+        raw_data = pd.read_csv(Pollard.data_csv, dtype='unicode')
 
         raw_data = raw_data.rename(columns={
             'Scientific Name': 'sci_name',
@@ -96,7 +94,7 @@ class PollardIngest:
         return taxons.set_index('sci_name').taxon_id.to_dict()
 
     def _insert_places(self, raw_places, raw_data):
-        print(f'Inserting {self.DATASET_ID} places')
+        print(f'Inserting {Pollard.dataset_id} places')
 
         place_columns = '''
             lat lng Site Route County State Land_Owner transect_id Route_Poin
@@ -114,7 +112,7 @@ class PollardIngest:
         places.lng = pd.to_numeric(places.lng, errors='coerce')
         places = places[places.lat.notna() & places.lng.notna()]
 
-        places['dataset_id'] = self.DATASET_ID
+        places['dataset_id'] = Pollard.dataset_id
         places['radius'] = None
 
         places = self.cxn.add_place_id(places)
@@ -124,7 +122,7 @@ class PollardIngest:
             self.PLACE_KEYS, verify_integrity=True).place_id.to_dict()
 
     def _insert_events(self, raw_data, to_place_id):
-        print(f'Inserting {self.DATASET_ID} events')
+        print(f'Inserting {Pollard.dataset_id} events')
 
         event_columns = '''
             Site Route County State Start_time End_time Duration Survey Temp
@@ -154,7 +152,7 @@ class PollardIngest:
         return raw_data
 
     def _insert_counts(self, raw_data, to_taxon_id):
-        print(f'Inserting {self.DATASET_ID} counts')
+        print(f'Inserting {Pollard.dataset_id} counts')
 
         count_columns = '''
             event_id sci_name count A B C D E A_key B_key C_key D_key E_key
@@ -173,9 +171,9 @@ class PollardIngest:
         return tuple(zip(df.Site, df.Route))
 
     def _insert_dataset(self):
-        print(f'Inserting {self.DATASET_ID} dataset')
+        print(f'Inserting {Pollard.dataset_id} dataset')
         dataset = pd.DataFrame([{
-            'dataset_id': self.DATASET_ID,
+            'dataset_id': Pollard.dataset_id,
             'title': 'Pollard lepidoptera observations',
             'extracted': str(date.today()),
             'version': '2018-02',
@@ -189,8 +187,9 @@ class PollardIngestPostgres(PollardIngest):
 
     def _insert_codes(self):
         super()._insert_codes()
-        self.cxn.execute(
-            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+        sql = f'''ALTER TABLE {Pollard.dataset_id}_codes
+                  ADD PRIMARY KEY (code_id)'''
+        self.cxn.execute(sql)
 
 
 class PollardIngestSqlite(PollardIngest):

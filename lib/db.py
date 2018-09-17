@@ -4,8 +4,8 @@
 class Db:
     """Common database functions."""
 
-    TAXON_ID = 'taxon_id'
-    TAXON_COLUMNS = """taxon_dataset_id sci_name class order family genus
+    TAXON_INDEX = 'taxon_id'
+    TAXON_COLUMNS = """taxon_dataset_id sci_name group class order family genus
                        common_name target""".split()
 
     CODE_COLUMNS = 'dataset_id field code value'.split()

@@ -51,8 +51,9 @@ CREATE INDEX codes_code  ON codes (dataset_id, code);
 CREATE TABLE taxons (
   taxon_id         INTEGER PRIMARY KEY,
   taxon_dataset_id TEXT REFERENCES datasets (dataset_id),
-  sci_name         VARCHAR(80) NOT NULL UNIQUE,
-  "class"          VARCHAR(20) NOT NULL,
+  sci_name         VARCHAR(80) UNIQUE,
+  "group"          VARCHAR(40),
+  "class"          VARCHAR(20),
   "order"          VARCHAR(40),
   family           VARCHAR(80),
   genus            VARCHAR(20),
@@ -62,6 +63,7 @@ CREATE TABLE taxons (
 CREATE INDEX taxons_sci_name ON taxons (sci_name);
 CREATE INDEX taxons_class    ON taxons ("class");
 CREATE INDEX taxons_order    ON taxons ("order");
+CREATE INDEX taxons_group    ON taxons ("group");
 CREATE INDEX taxons_family   ON taxons (family);
 CREATE INDEX taxons_genus    ON taxons (genus);
 
