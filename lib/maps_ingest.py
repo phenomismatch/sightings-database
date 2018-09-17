@@ -4,7 +4,7 @@ import os
 from datetime import date
 import pandas as pd
 from simpledbf import Dbf5
-import lib.globals as g
+import lib.util as util
 import lib.data as data
 
 
@@ -12,7 +12,7 @@ class MapsIngest:
     """Ingest MAPS data."""
 
     DATASET_ID = 'maps'
-    MAPS_PATH = g.DATA_DIR / 'raw' / DATASET_ID
+    MAPS_PATH = util.DATA_DIR / 'raw' / DATASET_ID
     LIST = 'LIST17'
     BANDS = '1117BAND'
     EFFORT = '1117EF'
@@ -173,12 +173,12 @@ class MapsIngest:
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')
-        dataset = pd.DataFrame([dict(
-            dataset_id=self.DATASET_ID,
-            title='MAPS: Monitoring Avian Productivity and Survivorship',
-            extracted=str(date.today()),
-            version='2017.0',
-            url='https://www.birdpop.org/pages/maps.php')])
+        dataset = pd.DataFrame([{
+            'dataset_id': self.DATASET_ID,
+            'title': 'MAPS: Monitoring Avian Productivity and Survivorship',
+            'extracted': str(date.today()),
+            'version': '2017.0',
+            'url': 'https://www.birdpop.org/pages/maps.php'}])
         dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')
 

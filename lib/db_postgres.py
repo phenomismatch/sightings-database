@@ -7,7 +7,7 @@ import subprocess
 from pathlib import Path
 import psycopg2
 from sqlalchemy import create_engine
-import lib.globals as g
+import lib.util as util
 from lib.db import Db
 
 FILE_MODE = 644
@@ -56,7 +56,7 @@ class DbPostgres(Db):
 
     def create_csv(self, df):
         """Create a CSV file for the dataframe that can be loaded with COPY."""
-        fd, path = tempfile.mkstemp(suffix='.csv', dir=g.TEMP)
+        fd, path = tempfile.mkstemp(suffix='.csv', dir=util.TEMP)
         df.to_csv(path)
         os.chmod(path, FILE_MODE)
         return fd, path

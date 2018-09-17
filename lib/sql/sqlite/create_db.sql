@@ -15,6 +15,18 @@ CREATE TABLE datasets (
 );
 
 
+DROP TABLE IF EXISTS countries;
+CREATE TABLE countries (
+  code       INTEGER NOT NULL PRIMARY KEY,
+  short_name TEXT NOT NULL,
+  alpha2     TEXT NOT NULL,
+  alpha3     TEXT NOT NULL
+);
+CREATE INDEX countries_code ON countries(code);
+CREATE INDEX countries_alpha2 ON countries(alpha2);
+CREATE INDEX countries_alpha3 ON countries(alpha3);
+
+
 CREATE TABLE codes (
   dataset_id TEXT NOT NULL,
   field      TEXT NOT NULL,
@@ -34,8 +46,7 @@ CREATE TABLE taxons (
   "order"          TEXT,
   family           TEXT,
   genus            TEXT,
-  common_name      TEXT,
-  target           TEXT
+  common_name      TEXT
 );
 CREATE INDEX taxons_dataset_id ON taxons (taxon_dataset_id);
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
@@ -58,8 +69,8 @@ CREATE TABLE places (
 CREATE INDEX places_dataset_id ON places (dataset_id);
 CREATE INDEX places_lng_lat    ON places (lng, lat);
 CREATE INDEX places_geohash    ON places (geohash);
-SELECT AddGeometryColumn('places', 'geopoint', 4326, 'POINT', 'XY', 0);
-SELECT CreateSpatialIndex('places', 'geopoint');
+-- SELECT AddGeometryColumn('places', 'geopoint', 4326, 'POINT', 'XY', 0);
+-- SELECT CreateSpatialIndex('places', 'geopoint');
 
 
 DROP TABLE IF EXISTS events;

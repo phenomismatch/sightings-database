@@ -21,6 +21,8 @@ MODULE = {
     'ebird': (EbirdIngestPostgres, EbirdIngestSqlite),
     'pollard': (PollardIngestPostgres, PollardIngestSqlite)}
 
+INGESTS = ['bbs', 'maps', 'ebird', 'pollard', 'naba', 'catcounts']
+
 
 def parse_args():
     """Get user input."""
@@ -35,10 +37,11 @@ def parse_args():
     parser.add_argument('-B', '--backup-db', action='store_true',
                         help='''Backup the database?''')
     parser.add_argument('-b', '--build-db', action='store_true',
-                        help='''Rebuild the database?''')
-    parser.add_argument('-i', '--ingest',
-                        choices=['bbs', 'maps', 'ebird', 'pollard', 'naba'],
-                        help='''Ingest a dataset?''')
+                        help='''Build the database?''')
+    parser.add_argument('-i', '--ingest', nargs='*',
+                        choices=INGESTS,
+                        help='''Ingest datasets? Options="{}"'''.format(
+                            ', '.join(INGESTS)))
 
     return parser.parse_args()
 
@@ -52,12 +55,12 @@ def main():
 
     if args.backup_db and which_db:
         now = datetime.now()
-        backup = f'{DbSqlite.SQLITE_DB}_{now.strftime("%Y-%m-%d")}.sql'
-        cmd = f'cp {DbSqlite.SQLITE_DB} {backup}'
+        backup = f'{DbSqlite.DB_PATH}_{now.strftime("%Y-%m-%d")}.sql'
+        cmd = f'cp {DbSqlite.DB_PATH} {backup}'
         subprocess.check_call(cmd, shell=True)
 
     if args.clean_db and which_db:
-        cmd = f'rm -f {DbSqlite.SQLITE_DB}'
+        cmd = f'rm -f {DbSqlite.DB_PATH}'
         subprocess.check_call(cmd, shell=True)
 
     if args.build_db:
@@ -65,8 +68,9 @@ def main():
         module(db).create_database()
 
     if args.ingest:
-        module = MODULE[args.ingest][which_db]
-        module(db).ingest()
+        for ingest in args.ingest:
+            module = MODULE[ingest][which_db]
+            module(db).ingest()
 
 
 if __name__ == "__main__":

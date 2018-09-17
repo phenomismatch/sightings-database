@@ -5,31 +5,30 @@ import subprocess
 from pathlib import Path
 import sqlite3
 from lib.db import Db
-import lib.globals as g
-
-
-SQLITE_DB = os.fspath(g.DATA_DIR / 'processed' / 'sightings.sqlite.db')
-SPATIALITE_MODULE = '/usr/local/lib/mod_spatialite.so'
-
-CREATE_SCRIPT = os.fspath(Path('lib') / 'sql' / 'create_db_sqlite.sql')
-CREATE_CMD = f'spatialite {SQLITE_DB} < {CREATE_SCRIPT}'
-# CREATE_CMD = f'sqlite3 {SQLITE_DB} < {CREATE_SCRIPT}'
+import lib.util as util
 
 
 class DbSqlite(Db):
     """sqlite functions."""
 
+    DB_PATH = os.fspath(util.DATA_DIR / 'processed' / 'sightings.sqlite.db')
+    SCRIPT_PATH = Path('lib') / 'sql' / 'sqlite'
+
+    CREATE_SCRIPT = os.fspath(SCRIPT_PATH / 'create_db.sql')
+    CREATE_CMD = f'sqlite3 {DB_PATH} < {CREATE_SCRIPT}'
+
     @classmethod
     def create(cls):
         """Create the database."""
         print('Creating database')
-        if os.path.exists(SQLITE_DB):
-            os.remove(SQLITE_DB)
+        if os.path.exists(cls.DB_PATH):
+            os.remove(cls.DB_PATH)
 
-        subprocess.check_call(CREATE_CMD, shell=True)
+        subprocess.check_call(cls.CREATE_CMD, shell=True)
 
-    def __init__(self, path=SQLITE_DB, dataset_id=None):
+    def __init__(self, path=None, dataset_id=None):
         """Connect to the database and initialize parameters."""
+        path = path if path else self.DB_PATH
         self.cxn = sqlite3.connect(path)
         self.engine = self.cxn
         self.dataset_id = dataset_id
@@ -38,11 +37,6 @@ class DbSqlite(Db):
         self.cxn.execute("PRAGMA busy_timeout = 10000")
         self.cxn.execute("PRAGMA synchronous = OFF")
         self.cxn.execute("PRAGMA journal_mode = OFF")
-        # self.cxn.execute("PRAGMA foreign_keys = ON")
-
-        self.cxn.enable_load_extension(True)
-        self.cxn.execute(
-            "SELECT load_extension('{}')".format(SPATIALITE_MODULE))
 
     def execute(self, sql, values=None):
         """Execute and commit the given query."""

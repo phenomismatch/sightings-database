@@ -4,15 +4,15 @@ from os.path import exists
 from datetime import date
 import subprocess
 import pandas as pd
-from lib.sqlite_db import SqliteDb as bbsDb
-import lib.globals as g
+from lib.db_sqlite import DbSqlite
+import lib.util as util
 
 
 class BbsIngest:
     """Ingest BBS data."""
 
     DATASET_ID = 'bbs'
-    BBS_PATH = g.DATA_DIR / 'raw' / DATASET_ID
+    BBS_PATH = util.DATA_DIR / 'raw' / DATASET_ID
     BBS_DB = str(BBS_PATH / 'breed-bird-survey.sqlite.db')
 
     def __init__(self, db):
@@ -25,7 +25,7 @@ class BbsIngest:
         """Ingest the data."""
         self._download_bbs_data()
 
-        self.bbs_cxn = bbsDb(path=self.BBS_DB)
+        self.bbs_cxn = DbSqlite(path=self.BBS_DB)
 
         self.cxn.bulk_add_setup()
         self.cxn.delete_dataset()
@@ -151,12 +151,12 @@ class BbsIngest:
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')
-        dataset = pd.DataFrame([dict(
-            dataset_id=self.DATASET_ID,
-            title='North American Breeding Bird Survey (BBS)',
-            extracted=str(date.today()),
-            version='2016.0',
-            url='https://www.pwrc.usgs.gov/bbs/')])
+        dataset = pd.DataFrame([{
+            'dataset_id': self.DATASET_ID,
+            'title': 'North American Breeding Bird Survey (BBS)',
+            'extracted': str(date.today()),
+            'version': '2016.0',
+            'url': 'https://www.pwrc.usgs.gov/bbs/'}])
         dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')
 

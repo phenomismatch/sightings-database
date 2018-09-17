@@ -3,14 +3,14 @@
 from datetime import date
 import pandas as pd
 import lib.data as data
-import lib.globals as g
+import lib.util as util
 
 
 class EbirdIngest:
     """Ingest eBird data."""
 
     DATASET_ID = 'ebird'
-    EBIRD_PATH = g.DATA_DIR / 'raw' / DATASET_ID
+    EBIRD_PATH = util.DATA_DIR / 'raw' / DATASET_ID
     EBIRD_CSV = EBIRD_PATH / 'ebd_relFeb-2018.txt'
 
     PLACE_KEYS = ['lng', 'lat']
@@ -203,12 +203,12 @@ class EbirdIngest:
 
     def _insert_dataset(self):
         print(f'Inserting {self.DATASET_ID} dataset')
-        dataset = pd.DataFrame([dict(
-            dataset_id=self.DATASET_ID,
-            title='eBird Basic Dataset',
-            extracted=str(date.today()),
-            version='relFeb-2018',
-            url='https://ebird.org/home')])
+        dataset = pd.DataFrame([{
+            'dataset_id': self.DATASET_ID,
+            'title': 'eBird Basic Dataset',
+            'extracted': str(date.today()),
+            'version': 'relFeb-2018',
+            'url': 'https://ebird.org/home'}])
         dataset.set_index('dataset_id').to_sql(
             'datasets', self.cxn.engine, if_exists='append')
 

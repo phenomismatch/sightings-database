@@ -17,10 +17,8 @@ def filter_lat_lng(df, lat=(-90.0, 90.0), lng=(-180.0, 180.0)):
 
 def add_taxon_genera_records(taxons):
     """Create genera records."""
-    targets = taxons.loc[taxons.target == 't']
-    genera = targets.groupby('genus').first().reset_index()
+    genera = taxons.groupby('genus').first().reset_index()
     genera.sci_name = genera.genus + ' sp.'
     genera.common_name = ''
-    genera.target = 't'
     taxons = pd.concat([taxons, genera], sort=True)
     return taxons

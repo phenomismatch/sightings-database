@@ -2,14 +2,14 @@
 
 from datetime import date
 import pandas as pd
-import lib.globals as g
+import lib.util as util
 
 
 class NabaIngest:
     """Ingest NABA data."""
 
     PLACE_KEYS = ['lng', 'lat']
-    DATASET_ID = g.NABA_DATSET_ID
+    DATASET_ID = util.NABA_DATSET_ID
 
     def __init__(self, db):
         """Setup."""
@@ -37,7 +37,7 @@ class NabaIngest:
         print(f'Getting {self.DATASET_ID} raw data')
 
         raw_data = pd.read_csv(
-            g.NABA_PATH / 'NABA_JULY4.csv', dtype='unicode')
+            util.NABA_PATH / 'NABA_JULY4.csv', dtype='unicode')
 
         raw_data = raw_data.rename(columns={
             'Year': 'year',

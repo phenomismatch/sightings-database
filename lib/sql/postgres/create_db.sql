@@ -3,6 +3,7 @@
 
 
 DROP TABLE IF EXISTS version;
+DROP TABLE IF EXISTS countries;
 DROP TABLE IF EXISTS datasets CASCADE;
 DROP TABLE IF EXISTS taxons   CASCADE;
 DROP TABLE IF EXISTS places   CASCADE;
@@ -26,6 +27,17 @@ CREATE TABLE datasets (
 );
 
 
+CREATE TABLE countries (
+  code       INTEGER PRIMARY KEY,
+  short_name VARCHAR(80),
+  alpha2     VARCHAR(2),
+  alpha3     VARCHAR(3)
+);
+CREATE INDEX countries_code ON countries(code);
+CREATE INDEX countries_alpha2 ON countries(alpha2);
+CREATE INDEX countries_alpha3 ON countries(alpha3);
+
+
 CREATE TABLE codes (
   dataset_id VARCHAR(10) REFERENCES datasets (dataset_id),
   field      VARCHAR(50) NOT NULL,
@@ -44,8 +56,7 @@ CREATE TABLE taxons (
   "order"          VARCHAR(40),
   family           VARCHAR(80),
   genus            VARCHAR(20),
-  common_name      VARCHAR(40),
-  target           BOOLEAN
+  common_name      VARCHAR(40)
 );
 CREATE INDEX taxons_sci_name ON taxons (sci_name);
 CREATE INDEX taxons_class    ON taxons ("class");

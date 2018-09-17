@@ -15,3 +15,5 @@ TAXONOMY = EXTERNAL / 'taxonomy'
 
 NABA_PATH = DATA_DIR / 'raw' / NABA_DATSET_ID
 POLLARD_PATH = DATA_DIR / 'raw' / POLLARD_DATASET_ID
+
+SQL_PATH = Path('lib') / 'sql'
