@@ -10,7 +10,7 @@ class EbirdIngest:
     """Ingest eBird data."""
 
     DATASET_ID = 'ebird'
-    EBIRD_PATH = util.DATA_DIR / 'raw' / DATASET_ID
+    EBIRD_PATH = util.Dir.data / 'raw' / DATASET_ID
     EBIRD_CSV = EBIRD_PATH / 'ebd_relFeb-2018.txt'
 
     PLACE_KEYS = ['lng', 'lat']

@@ -56,7 +56,8 @@ CREATE TABLE taxons (
   "order"          VARCHAR(40),
   family           VARCHAR(80),
   genus            VARCHAR(20),
-  common_name      VARCHAR(40)
+  common_name      VARCHAR(40),
+  target           BOOLEAN
 );
 CREATE INDEX taxons_sci_name ON taxons (sci_name);
 CREATE INDEX taxons_class    ON taxons ("class");

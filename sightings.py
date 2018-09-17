@@ -11,6 +11,8 @@ from lib.maps_ingest import MapsIngestPostgres, MapsIngestSqlite
 from lib.naba_ingest import NabaIngestPostgres, NabaIngestSqlite
 from lib.ebird_ingest import EbirdIngestPostgres, EbirdIngestSqlite
 from lib.pollard_ingest import PollardIngestPostgres, PollardIngestSqlite
+from lib.caterpillar_ingest import CaterpillarCountsIngestPostgres
+from lib.caterpillar_ingest import CaterpillarCountsIngestSqlite
 
 
 MODULE = {
@@ -19,9 +21,11 @@ MODULE = {
     'maps': (MapsIngestPostgres, MapsIngestSqlite),
     'naba': (NabaIngestPostgres, NabaIngestSqlite),
     'ebird': (EbirdIngestPostgres, EbirdIngestSqlite),
-    'pollard': (PollardIngestPostgres, PollardIngestSqlite)}
+    'pollard': (PollardIngestPostgres, PollardIngestSqlite),
+    'caterpillar': (CaterpillarCountsIngestPostgres,
+                    CaterpillarCountsIngestSqlite)}
 
-INGESTS = ['bbs', 'maps', 'ebird', 'pollard', 'naba', 'catcounts']
+INGESTS = [k for k in MODULE.keys() if k != 'create']
 
 
 def parse_args():
@@ -29,7 +33,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Build the sightings database.')
 
-    parser.add_argument('-d', '--db', default="sqlite",
+    parser.add_argument('-d', '--db', default="sqlite", required=True,
                         choices=['sqlite', 'postgres'],
                         help='''Which database?''')
     parser.add_argument('-c', '--clean-db', action='store_true',
@@ -38,10 +42,10 @@ def parse_args():
                         help='''Backup the database?''')
     parser.add_argument('-b', '--build-db', action='store_true',
                         help='''Build the database?''')
-    parser.add_argument('-i', '--ingest', nargs='*',
-                        choices=INGESTS,
-                        help='''Ingest datasets? Options="{}"'''.format(
-                            ', '.join(INGESTS)))
+    parser.add_argument('-i', '--ingest', nargs='+', metavar='DATASETS',
+                        choices=INGESTS, required=False,
+                        help=f'''Ingest datasets? Datasets:
+                            {", ".join(INGESTS)}''')
 
     return parser.parse_args()
 
@@ -68,7 +72,7 @@ def main():
         module(db).create_database()
 
     if args.ingest:
-        for ingest in args.ingest:
+        for ingest in set(args.ingest):
             module = MODULE[ingest][which_db]
             module(db).ingest()
 

@@ -5,6 +5,7 @@ numpy==1.15.1
 openpyxl==2.5.7
 pandas==0.23.4
 psycopg2==2.7.5
+psycopg2-binary==2.7.5
 python-dateutil==2.7.3
 pytz==2018.5
 simpledbf==0.2.6

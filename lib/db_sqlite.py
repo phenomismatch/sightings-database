@@ -11,7 +11,7 @@ import lib.util as util
 class DbSqlite(Db):
     """sqlite functions."""
 
-    DB_PATH = os.fspath(util.DATA_DIR / 'processed' / 'sightings.sqlite.db')
+    DB_PATH = os.fspath(util.Dir.data / 'processed' / 'sightings.sqlite.db')
     SCRIPT_PATH = Path('lib') / 'sql' / 'sqlite'
 
     CREATE_SCRIPT = os.fspath(SCRIPT_PATH / 'create_db.sql')
@@ -72,14 +72,8 @@ class DbSqlite(Db):
         """Update point records with the point geometry."""
         print(f'Updating {self.dataset_id} place points')
 
-        sql = """
-            UPDATE places
-               SET geopoint = MakePoint(lng, lat, 4326)
-             WHERE dataset_id = ?"""
-        self.execute(sql, (self.dataset_id, ))
-
-        sql = """
-            UPDATE places
-               SET geohash = GeoHash(geopoint, 7)
-             WHERE dataset_id = ?"""
-        self.execute(sql, (self.dataset_id, ))
+        # sql = """
+        #     UPDATE places
+        #        SET geopoint = MakePoint(lng, lat, 4326)
+        #      WHERE dataset_id = ?"""
+        # self.execute(sql, (self.dataset_id, ))

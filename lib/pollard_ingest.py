@@ -8,7 +8,7 @@ import lib.util as util
 class PollardIngest:
     """Ingest Pollard data."""
 
-    DATASET_ID = util.POLLARD_DATASET_ID
+    DATASET_ID = util.Pollard.dataset_id
     PLACE_KEYS = ['Site', 'Route']
 
     def __init__(self, db):
@@ -38,8 +38,7 @@ class PollardIngest:
         print(f'Getting {self.DATASET_ID} raw place data')
 
         place_renames = {'long': 'lng', 'Land Owner': 'Land_Owner'}
-        raw_places = pd.read_csv(
-            util.POLLARD_PATH / 'Pollard_locations.csv', dtype='unicode')
+        raw_places = pd.read_csv(util.Pollard.place_csv, dtype='unicode')
         raw_places = raw_places.rename(columns=place_renames)
 
         raw_places['radius'] = None
@@ -50,9 +49,7 @@ class PollardIngest:
     def _get_raw_data(self):
         print(f'Getting {self.DATASET_ID} raw event and count data')
 
-        raw_data = pd.read_csv(
-            util.POLLARD_PATH / 'pollardbase_example_201802.csv',
-            dtype='unicode')
+        raw_data = pd.read_csv(util.Pollard.data_csv, dtype='unicode')
 
         raw_data = raw_data.rename(columns={
             'Scientific Name': 'sci_name',

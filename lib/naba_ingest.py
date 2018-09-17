@@ -9,7 +9,7 @@ class NabaIngest:
     """Ingest NABA data."""
 
     PLACE_KEYS = ['lng', 'lat']
-    DATASET_ID = util.NABA_DATSET_ID
+    DATASET_ID = util.Naba.dataset_id
 
     def __init__(self, db):
         """Setup."""
@@ -36,17 +36,15 @@ class NabaIngest:
     def _get_raw_data(self):
         print(f'Getting {self.DATASET_ID} raw data')
 
-        raw_data = pd.read_csv(
-            util.NABA_PATH / 'NABA_JULY4.csv', dtype='unicode')
+        raw_data = pd.read_csv(util.Naba.csv, dtype='unicode')
 
         raw_data = raw_data.rename(columns={
-            'Year': 'year',
-            'Longitude': 'lng',
-            'Latitude': 'lat',
-            'Total_Count': 'count',
+            'iYear': 'year',
+            'LONGITUDE': 'lng',
+            'LATITUDE': 'lat',
+            'SumOfBFLY_COUNT': 'count',
             'Gen/Tribe/Fam': 'genus',
-            'Species_Epithet': 'species',
-            'Lat_Long_Precision': 'radius'})
+            'Species': 'species'})
 
         raw_data.lat = pd.to_numeric(raw_data.lat, errors='coerce')
         raw_data.lng = pd.to_numeric(raw_data.lng, errors='coerce')
@@ -57,6 +55,14 @@ class NabaIngest:
             'count'].fillna(0).astype(float).astype(int)
         raw_data['sci_name'] = raw_data.apply(
             lambda x: f'{x.genus} {x.species}', axis='columns')
+
+        has_lng = raw_data.lng.notna()
+        has_lat = raw_data.lat.notna()
+        has_year = raw_data.year.notna()
+        has_month = raw_data.Month.notna()
+        has_day = raw_data.Day.notna()
+        raw_data = raw_data.loc[
+            has_lng & has_lat & has_year & has_month & has_day].copy()
 
         return raw_data
 
@@ -73,14 +79,12 @@ class NabaIngest:
     def _insert_places(self, raw_data):
         print(f'Inserting {self.DATASET_ID} places')
 
-        place_columns = [
-            '1D_Lat', '1D_Long', 'lat', 'lng', 'Lat_Long_Type', 'radius']
+        place_columns = ['SITE_ID', 'lat', 'lng']
         places = raw_data.loc[:, place_columns]
 
-        places = places[places.lat.notna() & places.lng.notna()]
         places = places.drop_duplicates(['lng', 'lat'])
 
-        places.radius = pd.to_numeric(places.lat, errors='coerce')
+        places['radius'] = None
         places['dataset_id'] = self.DATASET_ID
 
         places = self.cxn.add_place_id(places)
@@ -92,7 +96,7 @@ class NabaIngest:
     def _insert_events(self, raw_data, to_place_id):
         print(f'Inserting {self.DATASET_ID} events')
 
-        event_columns = ['Program', 'year', 'Month', 'Day'] + self.PLACE_KEYS
+        event_columns = 'year Month Day PARTY_HOURS'.split() + self.PLACE_KEYS
         events = raw_data.loc[:, event_columns]
         events = events.drop_duplicates(['year', 'Month', 'Day'])
 
@@ -122,8 +126,7 @@ class NabaIngest:
         raw_data['key'] = tuple(zip(
             raw_data.year, raw_data.Month, raw_data.Day))
 
-        count_columns = '''
-                MASTER_ID UMD_Species_Code count key sci_name'''.split()
+        count_columns = '''SPECIES_CODE count key sci_name'''.split()
         counts = raw_data.loc[:, count_columns].copy()
 
         counts['taxon_id'] = counts.sci_name.map(to_taxon_id)

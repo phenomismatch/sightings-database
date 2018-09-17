@@ -5,27 +5,23 @@ from datetime import date
 import subprocess
 import pandas as pd
 from lib.db_sqlite import DbSqlite
-import lib.util as util
+from lib.util import Bbs
 
 
 class BbsIngest:
     """Ingest BBS data."""
 
-    DATASET_ID = 'bbs'
-    BBS_PATH = util.DATA_DIR / 'raw' / DATASET_ID
-    BBS_DB = str(BBS_PATH / 'breed-bird-survey.sqlite.db')
-
     def __init__(self, db):
         """Setup."""
         self.db = db
-        self.cxn = self.db(dataset_id=self.DATASET_ID)
+        self.cxn = self.db(dataset_id=Bbs.dataset_id)
         self.bbs_cxn = None
 
     def ingest(self):
         """Ingest the data."""
         self._download_bbs_data()
 
-        self.bbs_cxn = DbSqlite(path=self.BBS_DB)
+        self.bbs_cxn = DbSqlite(path=Bbs.db)
 
         self.cxn.bulk_add_setup()
         self.cxn.delete_dataset()
@@ -46,13 +42,13 @@ class BbsIngest:
 
     def _download_bbs_data(self):
         """Run the script to download the BBS data into an SQLite3 database."""
-        cmd = f'retriever install sqlite breed-bird-survey -f {self.BBS_DB}'
-        if not exists(self.BBS_DB):
-            print('Downloading {self.DATASET_ID} data')
+        cmd = f'retriever install sqlite breed-bird-survey -f {Bbs.db}'
+        if not exists(Bbs.db):
+            print('Downloading {Bbs.dataset_id} data')
             subprocess.check_call(cmd, shell=True)
 
     def _select_raw_taxons(self):
-        print(f'Getting {self.DATASET_ID} raw taxon data')
+        print(f'Getting {Bbs.dataset_id} raw taxon data')
         sql = """SELECT aou, genus, species FROM breed_bird_survey_species"""
         raw_taxons = pd.read_sql(sql, self.bbs_cxn.engine)
         raw_taxons['genus1'] = raw_taxons.genus.str.split().str[0]
@@ -69,28 +65,28 @@ class BbsIngest:
         return taxons.set_index('aou').taxon_id.to_dict()
 
     def _select_raw_places(self):
-        print(f'Getting {self.DATASET_ID} raw place data')
+        print(f'Getting {Bbs.dataset_id} raw place data')
         sql = """SELECT * FROM breed_bird_survey_routes"""
         raw_places = pd.read_sql(sql, self.bbs_cxn.engine).set_index(
             ['statenum', 'route'], verify_integrity=True)
         return raw_places
 
     def _select_raw_events(self):
-        print(f'Getting {self.DATASET_ID} raw event data')
+        print(f'Getting {Bbs.dataset_id} raw event data')
         sql = """SELECT * FROM breed_bird_survey_weather"""
         raw_events = pd.read_sql(sql, self.bbs_cxn.engine)
         return raw_events
 
     def _select_raw_counts(self):
-        print(f'Getting {self.DATASET_ID} raw count data')
+        print(f'Getting {Bbs.dataset_id} raw count data')
         sql = """SELECT * FROM breed_bird_survey_counts"""
         raw_counts = pd.read_sql(sql, self.bbs_cxn.engine)
         return raw_counts
 
     def _insert_places(self, raw_places):
-        print(f'Inserting {self.DATASET_ID} places')
+        print(f'Inserting {Bbs.dataset_id} places')
         places = raw_places.reset_index()
-        places['dataset_id'] = self.DATASET_ID
+        places['dataset_id'] = Bbs.dataset_id
         places = self._set_lng(places)
         places = self._set_lat(places)
         places['radius'] = 1609.344 * 25  # twenty-five miles in meters
@@ -111,7 +107,7 @@ class BbsIngest:
         return places
 
     def _insert_events(self, raw_events, to_place_id):
-        print(f'Inserting {self.DATASET_ID} events')
+        print(f'Inserting {Bbs.dataset_id} events')
         events = raw_events.rename(
             columns={'starttime': 'started', 'endtime': 'ended'})
         events['day'] = pd.to_datetime(
@@ -127,7 +123,7 @@ class BbsIngest:
             ['statenum', 'route', 'rpid', 'year']).event_id.to_dict()
 
     def _insert_counts(self, raw_counts, to_event_id, to_taxon_id):
-        print(f'Inserting {self.DATASET_ID} counts')
+        print(f'Inserting {Bbs.dataset_id} counts')
         counts = raw_counts.rename(columns={'speciestotal': 'count'})
         counts['taxon_id'] = counts.aou.map(to_taxon_id)
         counts = counts.loc[counts.taxon_id.notna(), :]
@@ -150,9 +146,9 @@ class BbsIngest:
         df.loc[is_na, column] = None
 
     def _insert_dataset(self):
-        print(f'Inserting {self.DATASET_ID} dataset')
+        print(f'Inserting {Bbs.dataset_id} dataset')
         dataset = pd.DataFrame([{
-            'dataset_id': self.DATASET_ID,
+            'dataset_id': Bbs.dataset_id,
             'title': 'North American Breeding Bird Survey (BBS)',
             'extracted': str(date.today()),
             'version': '2016.0',
@@ -161,10 +157,10 @@ class BbsIngest:
             'datasets', self.cxn.engine, if_exists='append')
 
     def _insert_codes(self):
-        print(f'Inserting {self.DATASET_ID} codes')
+        print(f'Inserting {Bbs.dataset_id} codes')
 
         bcr = pd.read_fwf(
-            self.BBS_PATH / 'BCR.txt',
+            self.Bbs.path / 'BCR.txt',
             skiprows=7,
             encoding='ISO-8859-1',
             usecols=[0, 1],
@@ -173,7 +169,7 @@ class BbsIngest:
         bcr['field'] = 'bcr'
 
         strata = pd.read_fwf(
-            self.BBS_PATH / 'BBSStrata.txt',
+            self.Bbs.path / 'BBSStrata.txt',
             skiprows=16,
             encoding='ISO-8859-1',
             usecols=[0, 1],
@@ -182,7 +178,7 @@ class BbsIngest:
         strata['field'] = 'strata'
 
         protocols = pd.read_fwf(
-            self.BBS_PATH / 'RunProtocolID.txt',
+            self.Bbs.path / 'RunProtocolID.txt',
             skiprows=4,
             encoding='ISO-8859-1',
             colspecs=[(0, 3), (5, 55)],
@@ -190,7 +186,7 @@ class BbsIngest:
         protocols['field'] = 'runprotocol'
 
         descrs = pd.read_fwf(
-            self.BBS_PATH / 'RunProtocolID.txt',
+            self.Bbs.path / 'RunProtocolID.txt',
             skiprows=4,
             encoding='ISO-8859-1',
             colspecs=[(0, 3), (56, 141)],
@@ -198,7 +194,7 @@ class BbsIngest:
         descrs['field'] = 'runprotocoldesc'
 
         wind = pd.read_fwf(
-            self.BBS_PATH / 'weathercodes.txt',
+            self.Bbs.path / 'weathercodes.txt',
             skiprows=8,
             skipfooter=13,
             encoding='ISO-8859-1',
@@ -208,7 +204,7 @@ class BbsIngest:
         wind['field'] = 'wind'
 
         sky = pd.read_fwf(
-            self.BBS_PATH / 'weathercodes.txt',
+            self.Bbs.path / 'weathercodes.txt',
             skiprows=23,
             encoding='ISO-8859-1',
             colspecs=[(0, 1), (6, 56)],
@@ -217,7 +213,7 @@ class BbsIngest:
         sky['field'] = 'sky'
 
         states = pd.read_fwf(
-            self.BBS_PATH / 'RegionCodes.txt',
+            self.Bbs.path / 'RegionCodes.txt',
             skiprows=11,
             usecols=[1, 2],
             encoding='ISO-8859-1',
@@ -226,7 +222,7 @@ class BbsIngest:
         states['field'] = 'state'
 
         types = pd.read_fwf(
-            self.BBS_PATH / 'RouteInf.txt',
+            self.Bbs.path / 'RouteInf.txt',
             skiprows=28,
             skipfooter=13,
             colspecs=[(3, 4), (7, 18)],
@@ -236,7 +232,7 @@ class BbsIngest:
         types['field'] = 'routetype'
 
         details = pd.read_fwf(
-            self.BBS_PATH / 'RouteInf.txt',
+            self.Bbs.path / 'RouteInf.txt',
             skiprows=33,
             skipfooter=5,
             colspecs=[(3, 4), (7, 45)],
@@ -249,7 +245,7 @@ class BbsIngest:
             [strata, protocols, descrs, wind, sky, states, types, details],
             ignore_index=True)
         codes = self.cxn.add_code_id(codes)
-        codes['dataset_id'] = self.DATASET_ID
+        codes['dataset_id'] = Bbs.dataset_id
         self.cxn.insert_codes(codes)
 
 
@@ -259,7 +255,7 @@ class BbsIngestPostgres(BbsIngest):
     def _insert_codes(self):
         super()._insert_codes()
         self.cxn.execute(
-            f'ALTER TABLE {self.DATASET_ID}_codes ADD PRIMARY KEY (code_id)')
+            f'ALTER TABLE {Bbs.dataset_id}_codes ADD PRIMARY KEY (code_id)')
 
 
 class BbsIngestSqlite(BbsIngest):

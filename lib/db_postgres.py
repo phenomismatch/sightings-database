@@ -56,7 +56,7 @@ class DbPostgres(Db):
 
     def create_csv(self, df):
         """Create a CSV file for the dataframe that can be loaded with COPY."""
-        fd, path = tempfile.mkstemp(suffix='.csv', dir=util.TEMP)
+        fd, path = tempfile.mkstemp(suffix='.csv', dir=util.Dir.temp)
         df.to_csv(path)
         os.chmod(path, FILE_MODE)
         return fd, path

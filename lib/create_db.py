@@ -3,7 +3,7 @@
 from datetime import datetime
 import pandas as pd
 import lib.data as data
-import lib.util as util
+from lib.util import Clements, Pollard, Naba, Countries, TargetBirds
 
 
 class CreateDb:
@@ -32,7 +32,7 @@ class CreateDb:
 
     def _insert_countries(self):
         print('Inserting countries')
-        path = str(util.EXTERNAL / 'misc' / 'ISO_3166-1_country_codes.csv')
+        path = str(Countries.csv)
         df = pd.read_csv(path).set_index('code')
         df.to_sql('countries', self.cxn.engine, if_exists='replace')
 
@@ -52,33 +52,32 @@ class CreateDb:
         taxons['class'] = 'lepidoptera'
         taxons['order'] = ''
         taxons['family'] = ''
+        taxons['target'] = 't'
 
         taxons = self.cxn.add_taxon_id(taxons)
         self.cxn.insert_taxons(taxons)
 
     def _get_pollard_taxons(self):
-        taxons = pd.read_csv(
-            util.POLLARD_PATH / 'pollardbase_example_201802.csv',
-            dtype='unicode')
+        taxons = pd.read_csv(Pollard.data_csv, dtype='unicode')
         taxons = taxons.rename(columns={
             'Scientific Name': 'sci_name',
             'Species': 'common_name'})
         taxons = taxons.loc[taxons.sci_name.notna(),
-                            ['sci_name', 'common_name']].copy()
-        taxons['taxon_dataset_id'] = util.POLLARD_DATASET_ID
+                            ['sci_name', 'common_name']]
+        taxons = taxons.drop_duplicates('sci_name')
+        taxons['taxon_dataset_id'] = Pollard.dataset_id
         taxons['genus'] = taxons.sci_name.str.split().str[0]
         return taxons
 
     def _get_naba_taxons(self):
-        taxons = pd.read_csv(
-            util.NABA_PATH / 'NABA_JULY4.csv', dtype='unicode')
+        taxons = pd.read_csv(Naba.csv, dtype='unicode')
         taxons = taxons.rename(columns={
-            'Gen/Tribe/Fam': 'genus',
-            'Species_Epithet': 'species'})
+            'Gen/Tribe/Fam': 'genus', 'Species': 'species'})
         taxons['sci_name'] = taxons.apply(
             lambda x: f'{x.genus} {x.species}', axis='columns')
+        taxons = taxons.drop_duplicates('sci_name')
         taxons = taxons.loc[:, ['sci_name', 'genus']].copy()
-        taxons['taxon_dataset_id'] = util.NABA_DATSET_ID
+        taxons['taxon_dataset_id'] = Naba.dataset_id
         taxons['common_name'] = ''
         return taxons
 
@@ -95,20 +94,18 @@ class CreateDb:
         self.cxn.insert_taxons(taxons)
 
     def _get_clem_species(self):
-        path = str(
-            util.TAXONOMY / 'Clements-Checklist-v2017-August-2017_2.csv')
+        path = str(Clements.csv)
 
         taxons = pd.read_csv(path).rename(columns={
             'scientific name': 'sci_name', 'English name': 'common_name'})
         is_species = taxons.category == 'species'
         taxons = taxons.loc[is_species,
                             ['sci_name', 'order', 'family', 'common_name']]
-        taxons['taxon_dataset_id'] = util.CLEMENTS_DATASET_ID
+        taxons['taxon_dataset_id'] = Clements.dataset_id
         return taxons
 
     def _set_target_birds(self, taxons):
-        targets = pd.read_csv(
-            util.TAXONOMY / 'target_birds.csv').sci_name.tolist()
+        targets = pd.read_csv(TargetBirds.csv).sci_name.tolist()
         target = taxons.sci_name.isin(targets)
         taxons.loc[target, 'target'] = 't'
 
@@ -125,7 +122,7 @@ class CreateDb:
             'url': 'https://en.wikipedia.org/wiki/ISO_3166-1'})
 
         datasets.append({
-            'dataset_id': util.CLEMENTS_DATASET_ID,
+            'dataset_id': Clements.dataset_id,
             'extracted': datetime.now(),
             'version': '2017-07-27',
             'title': 'Standardized birds species codes',

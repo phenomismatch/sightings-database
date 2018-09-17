@@ -37,7 +37,7 @@ def generate_samples():
     cxn = db.connect()
 
     report_name = f'query_samples_{datetime.now().strftime("%Y-%m-%d")}.xlsx'
-    report_path = db.DATA_DIR / 'interim' / report_name
+    report_path = db.Dir.data / 'interim' / report_name
 
     with pd.ExcelWriter(report_path) as writer:
         index = pd.DataFrame(queries, columns=['Tab', 'Query'])

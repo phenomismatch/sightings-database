@@ -12,7 +12,7 @@ class MapsIngest:
     """Ingest MAPS data."""
 
     DATASET_ID = 'maps'
-    MAPS_PATH = util.DATA_DIR / 'raw' / DATASET_ID
+    MAPS_PATH = util.Dir.data / 'raw' / DATASET_ID
     LIST = 'LIST17'
     BANDS = '1117BAND'
     EFFORT = '1117EF'

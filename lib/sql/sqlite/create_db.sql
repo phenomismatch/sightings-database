@@ -46,7 +46,8 @@ CREATE TABLE taxons (
   "order"          TEXT,
   family           TEXT,
   genus            TEXT,
-  common_name      TEXT
+  common_name      TEXT,
+  target           TEXT
 );
 CREATE INDEX taxons_dataset_id ON taxons (taxon_dataset_id);
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
