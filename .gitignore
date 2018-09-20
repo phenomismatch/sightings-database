@@ -49,8 +49,7 @@ data/external/maps/*
 
 # Temp files
 temp/
-backup/
-src/
+old/
 junk*
 
 # Test

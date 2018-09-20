@@ -10,6 +10,6 @@ python-dateutil==2.7.3
 pytz==2018.5
 simpledbf==0.2.6
 six==1.11.0
-SQLAlchemy==1.2.11
+SQLAlchemy==1.2.12
 tables==3.4.4
 xlrd==1.1.0

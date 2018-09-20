@@ -18,19 +18,34 @@ class CaterpillarCountsIngest:
         self.cxn.bulk_add_setup()
         self.cxn.delete_dataset()
 
-        raw_sites = self._get_raw_places()
-        raw_surveys = self._get_raw_surveys()
-        raw_plants = self._get_raw_plants()
-        raw_sightings = self._get_raw_sightings()
-        to_taxon_id = self._select_taxons()
+        # raw_sites = self._get_raw_sites()
+        # raw_surveys = self._get_raw_surveys()
+        # raw_plants = self._get_raw_plants()
+        # raw_sightings = self._get_raw_sightings()
+        # to_taxon_id = self._select_taxons()
 
-        self._insert_dataset()
-        to_place_id = self._insert_places(raw_sites, raw_data)
-        raw_data = self._insert_events(raw_data, to_place_id)
-        self._insert_counts(raw_data, to_taxon_id)
+        # self._insert_dataset()
+        # to_place_id = self._insert_places(raw_sites, raw_data)
+        # raw_data = self._insert_events(raw_data, to_place_id)
+        # self._insert_counts(raw_data, to_taxon_id)
 
         self.cxn.update_places()
         self.cxn.bulk_add_cleanup()
+
+    def _get_raw_sites():
+        pass
+
+    def _get_raw_surveys():
+        pass
+
+    def _get_raw_plants():
+        pass
+
+    def _get_raw_sightings():
+        pass
+
+    def _select_taxons():
+        pass
 
     def _insert_dataset(self):
         print(f'Inserting {Caterpillar.dataset_id} dataset')

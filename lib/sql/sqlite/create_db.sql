@@ -27,6 +27,7 @@ CREATE INDEX countries_alpha2 ON countries(alpha2);
 CREATE INDEX countries_alpha3 ON countries(alpha3);
 
 
+DROP TABLE IF EXISTS codes;
 CREATE TABLE codes (
   dataset_id TEXT NOT NULL,
   field      TEXT NOT NULL,
@@ -39,22 +40,22 @@ CREATE INDEX codes_code  ON codes (dataset_id, code);
 
 DROP TABLE IF EXISTS taxons;
 CREATE TABLE taxons (
-  taxon_id         INTEGER NOT NULL PRIMARY KEY,
-  taxon_dataset_id TEXT NOT NULL,
-  sci_name         TEXT UNIQUE,
-  "group"          TEXT,
-  "class"          TEXT,
-  "order"          TEXT,
-  family           TEXT,
-  genus            TEXT,
-  common_name      TEXT,
-  target           TEXT
+  taxon_id     INTEGER NOT NULL PRIMARY KEY,
+  taxon_source TEXT NOT NULL,
+  sci_name     TEXT UNIQUE,
+  "group"      TEXT,
+  "class"      TEXT,
+  "order"      TEXT,
+  family       TEXT,
+  genus        TEXT,
+  common_name  TEXT,
+  target       TEXT
 );
-CREATE INDEX taxons_dataset_id ON taxons (taxon_dataset_id);
+CREATE INDEX taxons_dataset_id ON taxons (taxon_source);
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
+CREATE INDEX taxons_group  ON taxons ("group");
 CREATE INDEX taxons_class  ON taxons ("class");
 CREATE INDEX taxons_order  ON taxons ("order");
-CREATE INDEX taxons_group  ON taxons ("group");
 CREATE INDEX taxons_family ON taxons (family);
 CREATE INDEX taxons_genus  ON taxons (genus);
 
