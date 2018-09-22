@@ -5,6 +5,7 @@ from datetime import datetime
 import pandas as pd
 import lib.db as db
 import lib.util as util
+from lib.log import log
 
 
 DATASET_ID = 'clements'
@@ -17,7 +18,7 @@ def ingest():
 
     db.delete_dataset(DATASET_ID)
 
-    util.log(f'Ingesting {DATASET_ID} data')
+    log(f'Ingesting {DATASET_ID} data')
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
@@ -38,7 +39,7 @@ def ingest():
 
     taxons.sci_name = taxons.sci_name.str.split().str.join(' ')
     taxons['genus'] = taxons.sci_name.str.split().str[0]
-    taxons['taxon_source'] = DATASET_ID
+    taxons['authority'] = DATASET_ID
     taxons['class'] = 'aves'
     taxons['group'] = None
 

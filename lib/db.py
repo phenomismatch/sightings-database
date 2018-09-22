@@ -5,13 +5,12 @@ import sqlite3
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from lib.log import log
 
 
 PROCESSED = Path('data') / 'processed'
 DB_PATH = PROCESSED / 'sightings.sqlite.db'
 SCRIPT_PATH = Path('lib') / 'sql' / 'sqlite'
-CREATE_SCRIPT = os.fspath(SCRIPT_PATH / 'create_db.sql')
-CREATE_CMD = f'sqlite3 {DB_PATH} < {CREATE_SCRIPT}'
 
 
 def connect(path=None):
@@ -28,11 +27,35 @@ def connect(path=None):
 
 def create():
     """Create the database."""
-    print(f'{datetime.now()} Creating database')
+    log(f'Creating database')
+
+    script = os.fspath(SCRIPT_PATH / 'create_db.sql')
+    cmd = f'sqlite3 {DB_PATH} < {script}'
+
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
 
-    subprocess.check_call(CREATE_CMD, shell=True)
+    subprocess.check_call(cmd, shell=True)
+
+
+def bulk_add_setup():
+    """Delete indices for faster inserts."""
+    log(f'Dropping indices')
+
+    script = os.fspath(SCRIPT_PATH / 'bulk_add_setup.sql')
+    cmd = f'sqlite3 {DB_PATH} < {script}'
+
+    subprocess.check_call(cmd, shell=True)
+
+
+def bulk_add_cleanup():
+    """Re-add indices for faster searches."""
+    log(f'Recreating indices')
+
+    script = os.fspath(SCRIPT_PATH / 'bulk_add_cleanup.sql')
+    cmd = f'sqlite3 {DB_PATH} < {script}'
+
+    subprocess.check_call(cmd, shell=True)
 
 
 def insert_version():
@@ -54,10 +77,13 @@ def insert_dataset(dataset):
 
 def delete_dataset(dataset_id):
     """Clear dataset from the database."""
-    print(f'{datetime.now()} Deleting old {dataset_id} records')
+    log(f'Deleting old {dataset_id} records')
 
     cxn = connect()
     cxn.execute('DELETE FROM datasets WHERE dataset_id = ?', (dataset_id, ))
+    cxn.execute(
+        """DELETE FROM taxons
+            WHERE authority NOT IN (SELECT dataset_id FROM datasets)""")
     cxn.execute(
         """DELETE FROM places
             WHERE dataset_id NOT IN (SELECT dataset_id FROM datasets)""")
@@ -123,7 +149,7 @@ class Db:
 
     def delete_dataset(self):
         """Clear dataset from the database."""
-        print(f'Deleting old {self.dataset_id} records')
+        log(f'Deleting old {self.dataset_id} records')
 
         self.execute(
             'DELETE FROM datasets WHERE dataset_id = ?', (self.dataset_id, ))
@@ -213,12 +239,12 @@ class Db:
 
     def bulk_add_setup(self):
         """Prepare the database for bulk adds."""
-        print('Dropping indexes and constraints')
+        log('Dropping indexes and constraints')
         self.drop_indexes()
 
     def bulk_add_cleanup(self):
         """Prepare the database for use."""
-        print('Adding indexes and constraints')
+        log('Adding indexes and constraints')
         self.add_indexes()
 
     def drop_indexes(self):

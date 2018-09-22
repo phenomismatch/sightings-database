@@ -49,16 +49,16 @@ CREATE INDEX codes_code  ON codes (dataset_id, code);
 
 
 CREATE TABLE taxons (
-  taxon_id         INTEGER PRIMARY KEY,
-  taxon_dataset_id TEXT REFERENCES datasets (dataset_id),
-  sci_name         VARCHAR(80) UNIQUE,
-  "group"          VARCHAR(40),
-  "class"          VARCHAR(20),
-  "order"          VARCHAR(40),
-  family           VARCHAR(80),
-  genus            VARCHAR(20),
-  common_name      VARCHAR(40),
-  target           BOOLEAN
+  taxon_id    INTEGER PRIMARY KEY,
+  authority   TEXT REFERENCES datasets (dataset_id),
+  sci_name    VARCHAR(80) UNIQUE,
+  "group"     VARCHAR(40),
+  "class"     VARCHAR(20),
+  "order"     VARCHAR(40),
+  family      VARCHAR(80),
+  genus       VARCHAR(20),
+  common_name VARCHAR(40),
+  target      BOOLEAN
 );
 CREATE INDEX taxons_sci_name ON taxons (sci_name);
 CREATE INDEX taxons_class    ON taxons ("class");

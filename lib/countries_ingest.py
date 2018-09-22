@@ -3,7 +3,7 @@
 from pathlib import Path
 import pandas as pd
 import lib.db as db
-import lib.util as util
+from lib.log import log
 
 
 DATASET_ID = 'countries'
@@ -15,7 +15,7 @@ def ingest():
     """Extract & transform The ISO Country dataset into a CSV file."""
     db.delete_dataset(DATASET_ID)
 
-    util.log(f'Ingesting {DATASET_ID} data')
+    log(f'Ingesting {DATASET_ID} data')
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,

@@ -40,18 +40,18 @@ CREATE INDEX codes_code  ON codes (dataset_id, code);
 
 DROP TABLE IF EXISTS taxons;
 CREATE TABLE taxons (
-  taxon_id     INTEGER NOT NULL PRIMARY KEY,
-  taxon_source TEXT NOT NULL,
-  sci_name     TEXT UNIQUE,
-  "group"      TEXT,
-  "class"      TEXT,
-  "order"      TEXT,
-  family       TEXT,
-  genus        TEXT,
-  common_name  TEXT,
-  target       TEXT
+  taxon_id    INTEGER NOT NULL PRIMARY KEY,
+  authority   TEXT NOT NULL,
+  sci_name    TEXT UNIQUE,
+  "group"     TEXT,
+  "class"     TEXT,
+  "order"     TEXT,
+  family      TEXT,
+  genus       TEXT,
+  common_name TEXT,
+  target      TEXT
 );
-CREATE INDEX taxons_dataset_id ON taxons (taxon_source);
+CREATE INDEX taxons_dataset_id ON taxons (authority);
 CREATE INDEX taxons_sci_name   ON taxons (sci_name);
 CREATE INDEX taxons_group  ON taxons ("group");
 CREATE INDEX taxons_class  ON taxons ("class");
@@ -96,5 +96,5 @@ CREATE TABLE counts (
   count      INTEGER NOT NULL,
   count_json TEXT
 );
-CREATE INDEX counts_event_id   ON counts (event_id);
-CREATE INDEX counts_taxon_id   ON counts (taxon_id);
+CREATE INDEX counts_event_id ON counts (event_id);
+CREATE INDEX counts_taxon_id ON counts (taxon_id);

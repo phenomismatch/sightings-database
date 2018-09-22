@@ -4,20 +4,22 @@ import argparse
 import subprocess
 from datetime import datetime
 import lib.db as db
-import lib.util as util
+from lib.log import log
 import lib.countries_ingest
 import lib.clements_ingest
 import lib.bbs_ingest
+import lib.maps_ingest
+import lib.pollard_ingest
 
 
 INGESTS = [
     ('countries', lib.countries_ingest),
     ('clements', lib.clements_ingest),
     ('bbs', lib.bbs_ingest),
-    ('maps', None),
-    ('naba', None),
+    ('maps', lib.maps_ingest),
     ('ebird', None),
-    ('pollard', None),
+    ('pollard', lib.pollard_ingest),
+    ('naba', None),
     ('caterpillar', None)]
 OPTIONS = [i[0] for i in INGESTS]
 
@@ -56,10 +58,11 @@ def etl():
     if args.ingest:
         for ingest, module in INGESTS:
             if ingest in args.ingest:
-                util.log('*********************************')
+                log('*********************************')
                 module.ingest()
+        log('*********************************')
 
-    util.log('Done')
+    log('Done')
 
 
 if __name__ == "__main__":
