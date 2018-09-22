@@ -32,8 +32,8 @@ def ingest():
 
     to_taxon_id = insert_taxons(cxn, raw_data)
     to_place_id = insert_places(cxn, raw_data)
-    to_event_id = insert_events(cxn, raw_data, to_place_id)
-    # insert_counts(cxn, raw_data, to_event_id, to_taxon_id)
+    insert_events(cxn, raw_data, to_place_id)
+    insert_counts(cxn, raw_data, to_taxon_id)
 
 
 def get_raw_data():
@@ -42,6 +42,8 @@ def get_raw_data():
 
     raw_data = pd.read_csv(DATA_CSV, dtype='unicode')
     raw_data.rename(columns=lambda x: re.sub(r'\W', '_', x), inplace=True)
+    raw_data.rename(columns=lambda x: re.sub(r'__', '_', x), inplace=True)
+    raw_data.rename(columns=lambda x: re.sub(r'^_|_$', '', x), inplace=True)
 
     raw_data['started'] = pd.to_datetime(
         raw_data['Start_time'], errors='coerce')
@@ -49,7 +51,9 @@ def get_raw_data():
     raw_data['sci_name'] = \
         raw_data['Scientific_Name'].str.split().str.join(' ')
 
-    raw_data = raw_data[raw_data.started.notna() & raw_data.sci_name.notna()]
+    has_started = raw_data.started.notna()
+    has_sci_name = raw_data.sci_name.notna()
+    raw_data = raw_data.loc[has_started & has_sci_name, :].copy()
 
     return raw_data
 
@@ -76,6 +80,7 @@ def insert_taxons(cxn, raw_data):
     taxons = util.add_taxon_genera_records(taxons)
     taxons = util.drop_duplicate_taxons(taxons)
     taxons['taxon_id'] = db.get_ids(taxons, 'taxons')
+    taxons.taxon_id = taxons.taxon_id.astype(int)
 
     taxons.to_sql('taxons', cxn, if_exists='append', index=False)
 
@@ -92,7 +97,6 @@ def insert_places(cxn, raw_data):
     raw_places.rename(columns=lambda x: x.replace(' ', '_'), inplace=True)
 
     place_df = raw_data.drop_duplicates(['Site', 'Route']).copy()
-    place_df.rename(columns=lambda x: x.replace(' ', '_'), inplace=True)
 
     raw_places = pd.merge(
         raw_places, place_df, how='left', on=['Site', 'Route'])
@@ -131,53 +135,59 @@ def insert_events(cxn, raw_data, to_place_id):
 
     events = pd.DataFrame()
 
-    raw_data['ended'] = pd.to_datetime(
-        raw_data['End_time'], errors='coerce')
+    raw_data['event_id'] = db.get_ids(raw_data, 'events')
+    events['event_id'] = raw_data.event_id
 
-    # event_columns = '''
-    #     Site Route County State Start_time End_time Duration Survey Temp
-    #     Sky Wind Archived Was_the_survey_completed Monitoring_Program Date
-    #     Temperature_end Sky_end Wind_end started ended'''.split()
-    # events = raw_data.loc[:, event_columns].copy()
-    #
-    # events['year'] = events['started'].dt.strftime('%Y')
-    # events['day'] = events['started'].dt.strftime('%j')
-    # events['started'] = events['started'].dt.strftime('%H:%M:%S')
-    # events['ended'] = events['ended'].dt.strftime('%H:%M:%S')
-    #
-    # events['place_key'] = tuple(zip(events.Site, events.Route))
-    # events['place_id'] = events.place_key.map(to_place_id)
-    #
-    # has_place_id = events.place_id.notna()
-    # events = events[has_place_id]
-    # raw_data = raw_data[has_place_id].copy()
-    #
-    # events = events.drop(['place_key'] + self.PLACE_KEYS, axis=1)
-    #
-    # events = self.cxn.add_event_id(events)
-    # raw_data['event_id'] = events.index.values
-    #
-    # self.cxn.insert_events(events)
-    #
-    # return raw_data
+    raw_data['place_key'] = tuple(zip(raw_data.Site, raw_data.Route))
+    raw_data['place_id'] = raw_data.place_key.map(to_place_id)
+    events['place_id'] = raw_data.place_id
+
+    events['year'] = raw_data.started.dt.strftime('%Y')
+    events['day'] = raw_data.started.dt.strftime('%j')
+
+    events['started'] = raw_data.started.dt.strftime('%H:%M')
+    events['ended'] = pd.to_datetime(
+        raw_data.End_time, errors='coerce').dt.strftime('%H:%M')
+
+    fields = '''
+        Site Route County State Start_time End_time Duration Survey Temp
+        Sky Wind Archived Was_the_survey_completed Monitoring_Program Date
+        Temperature_end Sky_end Wind_end'''.split()
+    events['event_json'] = util.json_object(raw_data, fields, DATASET_ID)
+
+    has_place_id = events.place_id.notna()
+    events = events.loc[has_place_id, :]
+
+    events.to_sql('events', cxn, if_exists='append', index=False)
 
 
-def insert_counts(cxn, raw_data, to_event_id, to_taxon_id):
+def insert_counts(cxn, raw_data, to_taxon_id):
     """Insert counts."""
     log(f'Inserting {DATASET_ID} counts')
 
-    # count_columns = '''
-    #     event_id sci_name count A B C D E A_key B_key C_key D_key E_key
-    #     Observer_Spotter Other_participants Recorder_Scribe
-    #     Taxon_as_reported'''.split()
-    # counts = raw_data.loc[:, count_columns].copy().reset_index()
-    #
-    # counts['taxon_id'] = counts.sci_name.map(to_taxon_id)
-    # counts['count'] = counts['count'].fillna(0)
-    # counts.taxon_id = counts.taxon_id.astype(int)
-    # counts = self.cxn.add_count_id(counts)
-    # counts = counts.drop(['sci_name'], axis='columns')
-    # self.cxn.insert_counts(counts)
+    counts = pd.DataFrame()
+
+    counts['count_id'] = db.get_ids(raw_data, 'counts')
+
+    counts['event_id'] = raw_data.event_id.astype(int)
+
+    counts['taxon_id'] = raw_data.sci_name.map(to_taxon_id)
+
+    counts['count'] = raw_data.Total
+
+    fields = """A B C D E A_key B_key C_key D_key E_key Observer_Spotter
+        Other_participants Recorder_Scribe Taxon_as_reported""".split()
+    counts['count_json'] = util.json_object(raw_data, fields, DATASET_ID)
+
+    has_place_id = raw_data.place_id.notna().values
+    counts = counts.loc[has_place_id, :]
+
+    has_event_id = counts.event_id.notna()
+    has_taxon_id = counts.taxon_id.notna()
+    has_count = counts['count'].notna()
+    counts = counts.loc[has_event_id & has_taxon_id & has_count, :]
+
+    counts.to_sql('counts', cxn, if_exists='append', index=False)
 
 
 if __name__ == "__main__":

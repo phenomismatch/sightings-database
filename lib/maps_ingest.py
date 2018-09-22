@@ -113,6 +113,7 @@ def insert_events(cxn, to_place_id):
     convert_to_time(raw_events, 'END')
     raw_events = raw_events.groupby(['STA', 'DATE', 'STATION'])
     raw_events = raw_events.agg({'START': min, 'END': max})
+    raw_events.reset_index(inplace=True)
 
     events = pd.DataFrame()
 

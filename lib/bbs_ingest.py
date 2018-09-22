@@ -1,10 +1,10 @@
 """Ingest Breed Bird Survey data."""
 
-import json
 from pathlib import Path
 from datetime import date
 import pandas as pd
 import lib.db as db
+import lib.util as util
 from lib.log import log
 
 
@@ -53,10 +53,9 @@ def insert_places(cxn):
 
     places['geohash'] = None
 
-    json_columns = """countrynum statenum route routename active stratum bcr
+    fields = """countrynum statenum route routename active stratum bcr
         landtypeid routetypeid routetypedetailid""".split()
-    places['place_json'] = raw_places.loc[:, json_columns].apply(
-        lambda x: x.to_json(), axis='columns')
+    places['place_json'] = util.json_object(raw_places, fields)
 
     places.to_sql('places', cxn, if_exists='append', index=False)
 
@@ -90,20 +89,10 @@ def insert_events(cxn, to_place_id):
     events['ended'] = raw_events['endtime']
     convert_to_time(events, 'ended')
 
-    json_array = []
-    for row in raw_events.itertuples():
-        json_array.append(json.dumps({
-            'dataset_id': DATASET_ID,
-            'routedataid': row.routedataid, 'countrynum': row.countrynum,
-            'statenum': row.statenum, 'route': row.route,
-            'rpid': row.rpid, 'month': row.month, 'day': row.day,
-            'obsn': row.obsn, 'totalspp': row.totalspp,
-            'starttemp': row.starttemp, 'endtemp': row.endtemp,
-            'tempscale': row.tempscale, 'startwind': row.startwind,
-            'endwind': row.endwind, 'startsky': row.startsky,
-            'endsky': row.endsky, 'assistant': row.assistant,
-            'runtype': row.runtype}))
-    events['event_json'] = json_array
+    fields = """routedataid countrynum statenum route rpid month day obsn
+        totalspp starttemp endtemp tempscale startwind endwind startsky endsky
+        assistant runtype""".split()
+    events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
 
     events.to_sql('events', cxn, if_exists='append', index=False)
 
@@ -151,17 +140,9 @@ def insert_counts(cxn, to_event_id):
 
     counts['count'] = raw_counts['speciestotal'].fillna(0)
 
-    json_array = []
-    for row in raw_counts.itertuples():
-        json_array.append(json.dumps({
-            'dataset_id': DATASET_ID,
-            'record_id': row.record_id, 'countrynum': row.countrynum,
-            'statenum': row.statenum, 'route': row.route, 'rpid': row.rpid,
-            'year': row.year, 'aou': row.aou, 'count10': row.count10,
-            'count20': row.count20, 'count30': row.count30,
-            'count40': row.count40, 'count50': row.count50,
-            'stoptotal': row.stoptotal}))
-    counts['count_json'] = json_array
+    fields = """record_id countrynum statenum route rpid year aou count10
+        count20 count30 count40 count50 stoptotal""".split()
+    counts['count_json'] = util.json_object(raw_counts, fields, DATASET_ID)
 
     counts = counts[counts.event_id.notna() & counts.taxon_id.notna()]
 
