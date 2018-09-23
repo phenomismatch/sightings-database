@@ -54,5 +54,5 @@ def ingest():
     taxons.to_sql('taxons', db.connect(), if_exists='append', index=False)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ingest()

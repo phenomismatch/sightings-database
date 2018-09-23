@@ -192,5 +192,5 @@ def insert_counts(cxn, raw_data, to_taxon_id):
     counts.to_sql('counts', cxn, if_exists='append', index=False)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ingest()

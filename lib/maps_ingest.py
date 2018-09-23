@@ -206,5 +206,5 @@ def insert_codes(cxn):
     codes.to_sql('codes', cxn, if_exists='append', index=False)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ingest()

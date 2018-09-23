@@ -29,5 +29,5 @@ def ingest():
     countries.to_sql('countries', db.connect(), if_exists='replace')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ingest()
