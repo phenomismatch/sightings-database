@@ -68,9 +68,7 @@ def insert_taxons(cxn, raw_data):
     taxons.rename(columns={'Species': 'common_name'}, inplace=True)
 
     taxons['genus'] = taxons.sci_name.str.split().str[0]
-
     taxons['authority'] = DATASET_ID
-
     taxons['class'] = 'lepidoptera'
     taxons['group'] = None
     taxons['order'] = None
@@ -84,7 +82,11 @@ def insert_taxons(cxn, raw_data):
 
     taxons.to_sql('taxons', cxn, if_exists='append', index=False)
 
-    return taxons.set_index('sci_name').taxon_id.to_dict()
+    sql = """SELECT sci_name, taxon_id
+               FROM taxons
+              WHERE "class" = 'lepidoptera'
+                AND target = 't'"""
+    return pd.read_sql(sql, cxn).set_index('sci_name').taxon_id.to_dict()
 
 
 def insert_places(cxn, raw_data):
