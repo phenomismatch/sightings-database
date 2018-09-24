@@ -17,8 +17,6 @@ DATA_CSV = RAW_DIR / 'pollardbase_example_201802.csv'
 
 def ingest():
     """Ingest the data."""
-    cxn = db.connect()
-
     raw_data = get_raw_data()
 
     db.delete_dataset(DATASET_ID)
@@ -30,10 +28,10 @@ def ingest():
         'version': '2018-02',
         'url': ''})
 
-    to_taxon_id = insert_taxons(cxn, raw_data)
-    to_place_id = insert_places(cxn, raw_data)
-    insert_events(cxn, raw_data, to_place_id)
-    insert_counts(cxn, raw_data, to_taxon_id)
+    to_taxon_id = insert_taxons(raw_data)
+    to_place_id = insert_places(raw_data)
+    insert_events(raw_data, to_place_id)
+    insert_counts(raw_data, to_taxon_id)
 
 
 def get_raw_data():
@@ -58,9 +56,11 @@ def get_raw_data():
     return raw_data
 
 
-def insert_taxons(cxn, raw_data):
+def insert_taxons(raw_data):
     """Insert taxons."""
     log(f'Inserting {DATASET_ID} taxons')
+
+    cxn = db.connect()
 
     firsts = raw_data.sci_name.duplicated(keep='first')
     taxons = raw_data.loc[firsts, ['sci_name', 'Species']]
@@ -89,7 +89,7 @@ def insert_taxons(cxn, raw_data):
     return pd.read_sql(sql, cxn).set_index('sci_name').taxon_id.to_dict()
 
 
-def insert_places(cxn, raw_data):
+def insert_places(raw_data):
     """Insert places."""
     log(f'Inserting {DATASET_ID} places')
 
@@ -126,12 +126,12 @@ def insert_places(cxn, raw_data):
 
     places = places[places.lat.notna() & places.lng.notna()]
 
-    places.to_sql('places', cxn, if_exists='append', index=False)
+    places.to_sql('places', db.connect(), if_exists='append', index=False)
 
     return raw_places.set_index(['Site', 'Route']).place_id.to_dict()
 
 
-def insert_events(cxn, raw_data, to_place_id):
+def insert_events(raw_data, to_place_id):
     """Insert events."""
     log(f'Inserting {DATASET_ID} events')
 
@@ -160,10 +160,10 @@ def insert_events(cxn, raw_data, to_place_id):
     has_place_id = events.place_id.notna()
     events = events.loc[has_place_id, :]
 
-    events.to_sql('events', cxn, if_exists='append', index=False)
+    events.to_sql('events', db.connect(), if_exists='append', index=False)
 
 
-def insert_counts(cxn, raw_data, to_taxon_id):
+def insert_counts(raw_data, to_taxon_id):
     """Insert counts."""
     log(f'Inserting {DATASET_ID} counts')
 
@@ -189,7 +189,7 @@ def insert_counts(cxn, raw_data, to_taxon_id):
     has_count = counts['count'].notna()
     counts = counts.loc[has_event_id & has_taxon_id & has_count, :]
 
-    counts.to_sql('counts', cxn, if_exists='append', index=False)
+    counts.to_sql('counts', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':

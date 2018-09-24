@@ -15,8 +15,6 @@ DATA_CSV = RAW_DIR / 'NABA_JULY4_V2.csv'
 
 def ingest():
     """Ingest the data."""
-    cxn = db.connect()
-
     raw_data = get_raw_data()
 
     db.delete_dataset(DATASET_ID)
@@ -28,10 +26,10 @@ def ingest():
         'version': '2018-07-04',
         'url': ''})
 
-    to_taxon_id = insert_taxons(cxn, raw_data)
-    to_place_id = insert_places(cxn, raw_data)
-    to_event_id = insert_events(cxn, raw_data, to_place_id)
-    insert_counts(cxn, raw_data, to_event_id, to_taxon_id)
+    to_taxon_id = insert_taxons(raw_data)
+    to_place_id = insert_places(raw_data)
+    to_event_id = insert_events(raw_data, to_place_id)
+    insert_counts(raw_data, to_event_id, to_taxon_id)
 
 
 def get_raw_data():
@@ -64,9 +62,11 @@ def get_raw_data():
     return raw_data
 
 
-def insert_taxons(cxn, raw_data):
+def insert_taxons(raw_data):
     """Insert taxons."""
     log(f'Inserting {DATASET_ID} taxons')
+
+    cxn = db.connect()
 
     firsts = raw_data.sci_name.duplicated(keep='first')
     taxons = raw_data.loc[firsts, ['sci_name']]
@@ -94,7 +94,7 @@ def insert_taxons(cxn, raw_data):
     return pd.read_sql(sql, cxn).set_index('sci_name').taxon_id.to_dict()
 
 
-def insert_places(cxn, raw_data):
+def insert_places(raw_data):
     """Insert places."""
     log(f'Inserting {DATASET_ID} places')
 
@@ -119,13 +119,13 @@ def insert_places(cxn, raw_data):
 
     places['place_json'] = util.json_object(raw_places, ['SITE_ID'])
 
-    places.to_sql('places', cxn, if_exists='append', index=False)
+    places.to_sql('places', db.connect(), if_exists='append', index=False)
 
     return raw_places.reset_index().set_index(
         ['LONGITUDE', 'LATITUDE'], verify_integrity=True).place_id.to_dict()
 
 
-def insert_events(cxn, raw_data, to_place_id):
+def insert_events(raw_data, to_place_id):
     """Insert events."""
     log(f'Inserting {DATASET_ID} events')
 
@@ -154,13 +154,13 @@ def insert_events(cxn, raw_data, to_place_id):
     fields = 'iYear Month Day PARTY_HOURS'.split()
     events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
 
-    events.to_sql('events', cxn, if_exists='append', index=False)
+    events.to_sql('events', db.connect(), if_exists='append', index=False)
 
     return raw_events.reset_index().set_index(
         ['iYear', 'Month', 'Day'], verify_integrity=True).event_id.to_dict()
 
 
-def insert_counts(cxn, raw_data, to_event_id, to_taxon_id):
+def insert_counts(raw_data, to_event_id, to_taxon_id):
     """Insert counts."""
     log(f'Inserting {DATASET_ID} counts')
 
@@ -184,7 +184,7 @@ def insert_counts(cxn, raw_data, to_event_id, to_taxon_id):
     has_count = counts['count'].notna()
     counts = counts.loc[has_event_id & has_taxon_id & has_count, :]
 
-    counts.to_sql('counts', cxn, if_exists='append', index=False)
+    counts.to_sql('counts', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':

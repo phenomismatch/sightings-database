@@ -14,8 +14,6 @@ RAW_DIR = Path('data') / 'raw' / DATASET_ID
 
 def ingest():
     """Ingest Breed Bird Survey data."""
-    cxn = db.connect()
-
     db.delete_dataset(DATASET_ID)
 
     db.insert_dataset({
@@ -25,13 +23,13 @@ def ingest():
         'version': '2016.0',
         'url': 'https://www.pwrc.usgs.gov/bbs/'})
 
-    insert_codes(cxn)
-    to_place_id = insert_places(cxn)
-    to_event_id = insert_events(cxn, to_place_id)
-    insert_counts(cxn, to_event_id)
+    insert_codes()
+    to_place_id = insert_places()
+    to_event_id = insert_events(to_place_id)
+    insert_counts(to_event_id)
 
 
-def insert_places(cxn):
+def insert_places():
     """Insert places."""
     log(f'Inserting {DATASET_ID} places')
 
@@ -57,13 +55,13 @@ def insert_places(cxn):
         landtypeid routetypeid routetypedetailid""".split()
     places['place_json'] = util.json_object(raw_places, fields)
 
-    places.to_sql('places', cxn, if_exists='append', index=False)
+    places.to_sql('places', db.connect(), if_exists='append', index=False)
 
     # Build dictionary to map events to place IDs
     return raw_places.set_index(['statenum', 'route']).place_id.to_dict()
 
 
-def insert_events(cxn, to_place_id):
+def insert_events(to_place_id):
     """Insert events."""
     log(f'Inserting {DATASET_ID} events')
 
@@ -94,7 +92,7 @@ def insert_events(cxn, to_place_id):
         assistant runtype""".split()
     events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
 
-    events.to_sql('events', cxn, if_exists='append', index=False)
+    events.to_sql('events', db.connect(), if_exists='append', index=False)
 
     # Build dictionary to map events to place IDs
     return raw_events.set_index(
@@ -111,9 +109,11 @@ def convert_to_time(df, column):
     df.loc[is_na, column] = ''
 
 
-def insert_counts(cxn, to_event_id):
+def insert_counts(to_event_id):
     """Insert counts."""
     log(f'Inserting {DATASET_ID} counts')
+
+    cxn = db.connect()
 
     to_taxon_id = get_raw_taxons(cxn)
 
@@ -149,7 +149,7 @@ def insert_counts(cxn, to_event_id):
     counts.to_sql('counts', cxn, if_exists='append', index=False)
 
 
-def get_raw_taxons(cxn):
+def get_raw_taxons():
     """Get BBS taxon data."""
     csv_path = RAW_DIR / 'bbs_taxons.csv'
     raw = pd.read_csv(csv_path, encoding='ISO-8859-1')
@@ -161,13 +161,13 @@ def get_raw_taxons(cxn):
     raw = raw.set_index('sci_name')
 
     sql = """SELECT sci_name, taxon_id FROM taxons"""
-    taxons = pd.read_sql(sql, cxn).set_index('sci_name')
+    taxons = pd.read_sql(sql, db.connect()).set_index('sci_name')
     taxons = taxons.merge(raw, how='inner', left_index=True, right_index=True)
 
     return taxons.set_index('aou').taxon_id.to_dict()
 
 
-def insert_codes(cxn):
+def insert_codes():
     """Insert codes."""
     log(f'Inserting {DATASET_ID} codes')
 
@@ -257,7 +257,7 @@ def insert_codes(cxn):
         [strata, protocols, descrs, wind, sky, states, types, details],
         ignore_index=True)
     codes['dataset_id'] = DATASET_ID
-    codes.to_sql('codes', cxn, if_exists='append', index=False)
+    codes.to_sql('codes', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':

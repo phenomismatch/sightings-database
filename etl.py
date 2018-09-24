@@ -11,6 +11,7 @@ import lib.bbs_ingest
 import lib.maps_ingest
 import lib.pollard_ingest
 import lib.naba_ingest
+import lib.caterpillar_ingest
 
 
 INGESTS = [
@@ -21,7 +22,7 @@ INGESTS = [
     ('ebird', None),
     ('pollard', lib.pollard_ingest),
     ('naba', lib.naba_ingest),
-    ('caterpillar', None)]
+    ('caterpillar', lib.caterpillar_ingest)]
 OPTIONS = [i[0] for i in INGESTS]
 
 

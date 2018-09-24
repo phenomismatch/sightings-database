@@ -20,8 +20,6 @@ STATIONS = 'STATIONS'
 
 def ingest():
     """Ingest the data."""
-    cxn = db.connect()
-
     convert_dbf_to_csv(LIST)
     convert_dbf_to_csv(BAND)
     convert_dbf_to_csv(EFFORT)
@@ -35,10 +33,10 @@ def ingest():
         'version': '2017.0',
         'url': 'https://www.birdpop.org/pages/maps.php'})
 
-    insert_codes(cxn)
-    to_place_id = insert_places(cxn)
-    to_event_id = insert_events(cxn, to_place_id)
-    insert_counts(cxn, to_event_id)
+    insert_codes()
+    to_place_id = insert_places()
+    to_event_id = insert_events(to_place_id)
+    insert_counts(to_event_id)
 
 
 def convert_dbf_to_csv(file_name):
@@ -52,7 +50,7 @@ def convert_dbf_to_csv(file_name):
         df.to_csv(csv_file, index=False)
 
 
-def insert_places(cxn):
+def insert_places():
     """Insert places."""
     log(f'Inserting {DATASET_ID} places')
 
@@ -95,13 +93,13 @@ def insert_places(cxn):
 
     places['dataset_id'] = DATASET_ID
 
-    places.to_sql('places', cxn, if_exists='append', index=False)
+    places.to_sql('places', db.connect(), if_exists='append', index=False)
 
     # Build dictionary to map events to place IDs
     return raw_places.set_index('STA').place_id.to_dict()
 
 
-def insert_events(cxn, to_place_id):
+def insert_events(to_place_id):
     """Insert events."""
     log(f'Inserting {DATASET_ID} events')
 
@@ -136,7 +134,7 @@ def insert_events(cxn, to_place_id):
     events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
 
     events.loc[events.place_id >= 0, :].to_sql(
-        'events', cxn, if_exists='append', index=False)
+        'events', db.connect(), if_exists='append', index=False)
 
     return raw_events.loc[raw_events.place_id >= 0, :].set_index(
         ['STA', 'DATE'], verify_integrity=True).event_id.to_dict()
@@ -152,11 +150,13 @@ def convert_to_time(df, column):
     df.loc[is_na, column] = ''
 
 
-def insert_counts(cxn, to_event_id):
+def insert_counts(to_event_id):
     """Insert counts."""
     log(f'Inserting {DATASET_ID} counts')
 
-    to_taxon_id = get_raw_taxons(cxn)
+    cxn = db.connect()
+
+    to_taxon_id = get_raw_taxons()
 
     csv_file = RAW_DIR / f'{BAND}.csv'
     raw_counts = pd.read_csv(csv_file, dtype='unicode')
@@ -183,7 +183,7 @@ def insert_counts(cxn, to_event_id):
     counts.to_sql('counts', cxn, if_exists='append', index=False)
 
 
-def get_raw_taxons(cxn):
+def get_raw_taxons():
     """Get MAPS taxon data."""
     raw = pd.read_csv(RAW_DIR / f'{LIST}.csv')
 
@@ -191,19 +191,19 @@ def get_raw_taxons(cxn):
     raw = raw.set_index('SCINAME')
 
     sql = """SELECT sci_name, taxon_id FROM taxons"""
-    taxons = pd.read_sql(sql, cxn).set_index('sci_name')
+    taxons = pd.read_sql(sql, db.connect()).set_index('sci_name')
 
     taxons = taxons.merge(raw, how='inner', left_index=True, right_index=True)
 
     return taxons.set_index('SPEC').taxon_id.to_dict()
 
 
-def insert_codes(cxn):
+def insert_codes():
     """Insert codes."""
     log(f'Inserting {DATASET_ID} codes')
     codes = pd.read_csv(RAW_DIR / 'maps_codes.csv')
     codes['dataset_id'] = DATASET_ID
-    codes.to_sql('codes', cxn, if_exists='append', index=False)
+    codes.to_sql('codes', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':
