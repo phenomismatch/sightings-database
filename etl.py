@@ -41,11 +41,15 @@ def parse_args():
                         metavar='DATASET', choices=OPTIONS,
                         help=f"""Ingest a dataset into the SQLite3 database.
                             Options: { ", ".join(OPTIONS) }""")
+    parser.add_argument('-a', '--ingest-all', action='store_true',
+                        help="""Ingest all datasets.""")
     return parser.parse_args()
 
 
 def etl():
     """Do the selected actions."""
+    separator = '*****************************************'
+
     args = parse_args()
 
     if args.backup:
@@ -58,12 +62,15 @@ def etl():
         db.create()
         db.insert_version()
 
+    if args.ingest_all:
+        args.ingest = OPTIONS
+
     if args.ingest:
         for ingest, module in INGESTS:
             if ingest in args.ingest:
-                log('*********************************')
+                log(separator)
                 module.ingest()
-        log('*********************************')
+        log(separator)
 
     log('Done')
 

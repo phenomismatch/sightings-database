@@ -10,7 +10,14 @@ from lib.log import log
 
 PROCESSED = Path('data') / 'processed'
 DB_PATH = PROCESSED / 'sightings.sqlite.db'
-SCRIPT_PATH = Path('lib') / 'sql' / 'sqlite'
+SCRIPT_PATH = Path('lib') / 'sql'
+
+
+PLACE_FIELDS = """place_id dataset_id lng lat radius geohash
+    place_json""".split()
+EVENT_FIELDS = """event_id place_id year day started ended
+    event_json""".split()
+COUNT_FIELDS = """count_id event_id taxon_id count count_json""".split()
 
 
 def connect(path=None):
@@ -29,31 +36,11 @@ def create():
     """Create the database."""
     log(f'Creating database')
 
-    script = os.fspath(SCRIPT_PATH / 'create_db.sql')
+    script = os.fspath(SCRIPT_PATH / 'create_db_sqlite.sql')
     cmd = f'sqlite3 {DB_PATH} < {script}'
 
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
-
-    subprocess.check_call(cmd, shell=True)
-
-
-def bulk_add_setup():
-    """Delete indices for faster inserts."""
-    log(f'Dropping indices')
-
-    script = os.fspath(SCRIPT_PATH / 'bulk_add_setup.sql')
-    cmd = f'sqlite3 {DB_PATH} < {script}'
-
-    subprocess.check_call(cmd, shell=True)
-
-
-def bulk_add_cleanup():
-    """Re-add indices for faster searches."""
-    log(f'Recreating indices')
-
-    script = os.fspath(SCRIPT_PATH / 'bulk_add_cleanup.sql')
-    cmd = f'sqlite3 {DB_PATH} < {script}'
 
     subprocess.check_call(cmd, shell=True)
 

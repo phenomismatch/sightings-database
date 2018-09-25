@@ -1,6 +1,5 @@
 """Ingest Pollard data."""
 
-import re
 from pathlib import Path
 from datetime import date
 import pandas as pd
@@ -39,9 +38,7 @@ def get_raw_data():
     log(f'Getting {DATASET_ID} raw data')
 
     raw_data = pd.read_csv(DATA_CSV, dtype='unicode')
-    raw_data.rename(columns=lambda x: re.sub(r'\W', '_', x), inplace=True)
-    raw_data.rename(columns=lambda x: re.sub(r'__', '_', x), inplace=True)
-    raw_data.rename(columns=lambda x: re.sub(r'^_|_$', '', x), inplace=True)
+    util.normalize_columns_names(raw_data)
 
     raw_data['started'] = pd.to_datetime(
         raw_data['Start_time'], errors='coerce')
@@ -116,11 +113,9 @@ def insert_places(raw_data):
     places['radius'] = None
     places['geohash'] = None
 
-    fields = [
-        'Site', 'Route', 'County', 'State', 'Land_Owner', 'transect_id',
-        'Route_Poin', 'Route_Po_1', 'Route_Po_2', 'CLIMDIV_ID', 'CD_sub',
-        'CD_Name', 'ST', 'PRE_MEAN', 'PRE_STD', 'TMP_MEAN', 'TMP_STD']
-
+    fields = ['Site', 'Route', 'County', 'State', 'Land_Owner', 'transect_id',
+              'Route_Poin', 'Route_Po_1', 'Route_Po_2', 'CLIMDIV_ID', 'CD_sub',
+              'CD_Name', 'ST', 'PRE_MEAN', 'PRE_STD', 'TMP_MEAN', 'TMP_STD']
     places['place_json'] = util.json_object(raw_places, fields)
 
     places = places[places.lat.notna() & places.lng.notna()]

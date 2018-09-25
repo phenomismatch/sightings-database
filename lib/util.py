@@ -1,8 +1,16 @@
 """Utiliites & constants."""
 
+import re
 import json
 import pandas as pd
 import lib.db as db
+
+
+def normalize_columns_names(df):
+    """Remove problem characters from dataframe columns."""
+    df.rename(columns=lambda x: re.sub(r'\W', '_', x), inplace=True)
+    df.rename(columns=lambda x: re.sub(r'__', '_', x), inplace=True)
+    df.rename(columns=lambda x: re.sub(r'^_|_$', '', x), inplace=True)
 
 
 def json_object(df, fields, dataset_id=None):
@@ -31,7 +39,7 @@ def filter_lng_lat(
     good_lng = df[lng_col].between(lng[0], lng[1])
     good_lat = df[lat_col].between(lat[0], lat[1])
 
-    return df.loc[good_lng & good_lat, :]
+    return df[good_lng & good_lat]
 
 
 def drop_duplicate_taxons(taxons):

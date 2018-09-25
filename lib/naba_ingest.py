@@ -37,7 +37,7 @@ def get_raw_data():
     log(f'Getting {DATASET_ID} raw data')
 
     raw_data = pd.read_csv(DATA_CSV, dtype='unicode')
-    raw_data.rename(columns={'Gen/Tribe/Fam': 'Gen_Tribe_Fam'}, inplace=True)
+    util.normalize_columns_names(raw_data)
 
     raw_data.LATITUDE = pd.to_numeric(raw_data.LATITUDE, errors='coerce')
     raw_data.LONGITUDE = pd.to_numeric(raw_data.LONGITUDE, errors='coerce')
