@@ -10,10 +10,11 @@ from lib.log import log
 
 DATASET_ID = 'caterpillar'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
-SIGHTINGS_CSV = RAW_DIR / '2018-09-18_ArthropodSighting.csv'
-SURVEY_CSV = RAW_DIR / '2018-09-18_Survey.csv'
-PLANT_CSV = RAW_DIR / '2018-09-18_Plant.csv'
-SITE_CSV = RAW_DIR / '2018-09-18_Site.csv'
+FILE_DATE = '2018-09-19'
+SIGHTINGS_CSV = RAW_DIR / f'{FILE_DATE}_ArthropodSighting.csv'
+SURVEY_CSV = RAW_DIR / f'{FILE_DATE}_Survey.csv'
+PLANT_CSV = RAW_DIR / f'{FILE_DATE}_Plant.csv'
+SITE_CSV = RAW_DIR / f'{FILE_DATE}_Site.csv'
 
 
 def ingest():
@@ -123,22 +124,20 @@ def insert_events(to_place_id):
     fields = """ID_survey ID_plant SiteFK Circle Orientation Code Species
         SubmissionTimestamp LocalDate LocalTime ObservationMethod Notes
         WetLeaves PlantSpecies NumberOfLeaves AverageLeafLength HerbivoryScore
-        SubmittedThroughApp MinimumTemperature MaximumTemperature
-        CORRESPONDING_OLD_DATABASE_SURVEY_ID""".split()
+        SubmittedThroughApp MinimumTemperature MaximumTemperature""".split()
     events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
 
     events.to_sql('events', db.connect(), if_exists='append', index=False)
 
     # Build dictionary to map events to place IDs
-    return raw_events.set_index(
-        'CORRESPONDING_OLD_DATABASE_SURVEY_ID').event_id.to_dict()
+    return raw_events.set_index('ID_survey').event_id.to_dict()
 
 
 def insert_counts(to_event_id, to_taxon_id):
     """Insert counts."""
     log(f'Inserting {DATASET_ID} counts')
 
-    raw_counts = pd.read_csv(SIGHTINGS_CSV, dtype='unicode')
+    raw_counts = pd.read_csv(SIGHTINGS_CSV, encoding='ISO-8859-1')
 
     counts = pd.DataFrame()
     counts['count_id'] = db.get_ids(raw_counts, 'counts')
@@ -152,14 +151,10 @@ def insert_counts(to_event_id, to_taxon_id):
         Tented""".split()
     counts['count_json'] = util.json_object(raw_counts, fields, DATASET_ID)
 
-    for row in raw_counts.itertuples():
-        print(row.SurveyFK, to_event_id.get(row.SurveyFK))
-    print(counts.shape)
     has_event_id = counts.event_id.notna()
     has_taxon_id = counts.taxon_id.notna()
     has_count = counts['count'].notna()
     counts = counts.loc[has_event_id & has_taxon_id & has_count, :]
-    print(counts.shape)
 
     counts.to_sql('counts', db.connect(), if_exists='append', index=False)
 

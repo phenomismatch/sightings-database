@@ -95,7 +95,6 @@ def insert_places(raw_data):
 
     raw_places = pd.read_csv(PLACE_CSV, dtype='unicode')
 
-    raw_places['radius'] = None
     raw_places.rename(columns=lambda x: x.replace(' ', '_'), inplace=True)
 
     place_df = raw_data.drop_duplicates(['Site', 'Route']).copy()

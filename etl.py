@@ -9,6 +9,7 @@ import lib.countries_ingest
 import lib.clements_ingest
 import lib.bbs_ingest
 import lib.maps_ingest
+import lib.ebird_ingest
 import lib.pollard_ingest
 import lib.naba_ingest
 import lib.caterpillar_ingest
@@ -19,7 +20,7 @@ INGESTS = [
     ('clements', lib.clements_ingest),
     ('bbs', lib.bbs_ingest),
     ('maps', lib.maps_ingest),
-    ('ebird', None),
+    ('ebird', lib.ebird_ingest),
     ('pollard', lib.pollard_ingest),
     ('naba', lib.naba_ingest),
     ('caterpillar', lib.caterpillar_ingest)]
