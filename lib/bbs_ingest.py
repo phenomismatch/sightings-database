@@ -115,7 +115,7 @@ def insert_counts(to_event_id):
 
     cxn = db.connect()
 
-    to_taxon_id = get_raw_taxons(cxn)
+    to_taxon_id = get_raw_taxons()
 
     csv_path = RAW_DIR / 'bbs_counts.csv'
     raw_counts = pd.read_csv(csv_path, encoding='ISO-8859-1')
