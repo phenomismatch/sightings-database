@@ -1,7 +1,6 @@
 """Extract, transform, & load Clements taxonomy dataset into the database."""
 
 from pathlib import Path
-from datetime import datetime
 import pandas as pd
 import lib.db as db
 import lib.util as util
@@ -22,7 +21,6 @@ def ingest():
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
-        'extracted': datetime.now(),
         'version': '2017-07-27',
         'title': 'Standardized birds species codes',
         'url': 'https://www.birdpop.org/pages/birdSpeciesCodes.php'})

@@ -19,7 +19,6 @@ def ingest():
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
-        'extracted': '2018-01-11',
         'version': '2018-01-11',
         'title': 'ISO 3166-1',
         'url': 'https://en.wikipedia.org/wiki/ISO_3166-1'})

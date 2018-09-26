@@ -1,7 +1,6 @@
 """Ingest Breed Bird Survey data."""
 
 from pathlib import Path
-from datetime import date
 import pandas as pd
 import lib.db as db
 import lib.util as util
@@ -19,7 +18,6 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'North American Breeding Bird Survey (BBS)',
-        'extracted': str(date.today()),
         'version': '2016.0',
         'url': 'https://www.pwrc.usgs.gov/bbs/'})
 
@@ -48,8 +46,6 @@ def insert_places():
     places['lat'] = raw_places['latitude']
 
     places['radius'] = 1609.344 * 25  # twenty-five miles in meters
-
-    places['geohash'] = None
 
     fields = """countrynum statenum route routename active stratum bcr
         landtypeid routetypeid routetypedetailid""".split()

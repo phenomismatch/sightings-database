@@ -1,7 +1,6 @@
 """Ingest Pollard data."""
 
 from pathlib import Path
-from datetime import date
 import pandas as pd
 import lib.db as db
 import lib.util as util
@@ -23,7 +22,6 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'Pollard lepidoptera observations',
-        'extracted': str(date.today()),
         'version': '2018-02',
         'url': ''})
 
@@ -111,7 +109,6 @@ def insert_places(raw_data):
     places['lat'] = pd.to_numeric(raw_places['lat'], errors='coerce')
 
     places['radius'] = None
-    places['geohash'] = None
 
     fields = ['Site', 'Route', 'County', 'State', 'Land_Owner', 'transect_id',
               'Route_Poin', 'Route_Po_1', 'Route_Po_2', 'CLIMDIV_ID', 'CD_sub',

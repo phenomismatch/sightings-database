@@ -1,7 +1,6 @@
 """Ingest Caterpillar Counts data."""
 
 from pathlib import Path
-from datetime import date
 import pandas as pd
 import lib.db as db
 import lib.util as util
@@ -24,7 +23,6 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'Caterpillar Counts',
-        'extracted': str(date.today()),
         'version': '2018-09-18',
         'url': ('https://caterpillarscount.unc.edu/'
                 'iuFYr1xREQOp2ioB5MHvnCTY39UHv2/')})
@@ -83,8 +81,6 @@ def insert_places():
     places['lng'] = raw_places['Longitude']
 
     places['lat'] = raw_places['Latitude']
-
-    places['geohash'] = None
 
     fields = """ID Name Description Region""".split()
     places['place_json'] = util.json_object(raw_places, fields)

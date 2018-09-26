@@ -1,8 +1,6 @@
 """Wrapper for sightings database extract, tranform, & load functions."""
 
 import argparse
-import subprocess
-from datetime import datetime
 import lib.db as db
 from lib.log import log
 import lib.countries_ingest
@@ -43,6 +41,11 @@ def parse_args():
                             Options: { ", ".join(OPTIONS) }""")
     parser.add_argument('-a', '--ingest-all', action='store_true',
                         help="""Ingest all datasets.""")
+    parser.add_argument('--csv', action='store_true',
+                        help="""Export the SQLite3 database to CSV files.""")
+    parser.add_argument('--postgres', action='store_true',
+                        help="""Import the CSV files into the PostgreSQL
+                            database.""")
     return parser.parse_args()
 
 
@@ -53,10 +56,7 @@ def etl():
     args = parse_args()
 
     if args.backup:
-        now = datetime.now()
-        backup = f'{db.DB_PATH}_{now.strftime("%Y-%m-%d")}.sql'
-        cmd = f'cp {db.DB_PATH} {backup}'
-        subprocess.check_call(cmd, shell=True)
+        db.backup_database()
 
     if args.create_db:
         db.create()
@@ -71,6 +71,12 @@ def etl():
                 log(separator)
                 module.ingest()
         log(separator)
+
+    if args.csv:
+        db.export_to_csv_files()
+
+    if args.postgres:
+        db.create_postgres()
 
     log('Done')
 

@@ -2,7 +2,6 @@
 
 import os
 from pathlib import Path
-from datetime import date
 import pandas as pd
 from simpledbf import Dbf5
 import lib.db as db
@@ -29,7 +28,6 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'MAPS: Monitoring Avian Productivity and Survivorship',
-        'extracted': str(date.today()),
         'version': '2017.0',
         'url': 'https://www.birdpop.org/pages/maps.php'})
 
@@ -83,8 +81,6 @@ def insert_places():
         '01M': 111.32 * 1000,
         '05S': 30.92 * 5,
         '10M': 111.32 * 1000 * 10})
-
-    places['geohash'] = None
 
     fields = """STATION LOC STA STA2 NAME LHOLD HOLDCERT O NEARTOWN
         COUNTY STATE US REGION BLOCK LATITUDE LONGITUDE PRECISION SOURCE DATUM

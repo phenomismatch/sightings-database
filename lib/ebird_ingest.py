@@ -1,7 +1,6 @@
 """Ingest eBird data."""
 
 from pathlib import Path
-from datetime import date
 import pandas as pd
 import lib.db as db
 import lib.util as util
@@ -21,7 +20,6 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'eBird Basic Dataset',
-        'extracted': str(date.today()),
         'version': 'relFeb-2018',
         'url': 'https://ebird.org/home'})
 
@@ -109,8 +107,6 @@ def insert_places(raw_data, to_place_id):
         places.radius, errors='coerce').fillna(0.0)
     places.radius *= 1000.0
     places.loc[is_na, 'radius'] = None
-
-    places['geohash'] = None
 
     fields = """COUNTRY_CODE STATE_CODE COUNTY_CODE IBA_CODE BCR_CODE
         USFWS_CODE ATLAS_BLOCK LOCALITY_ID LOCALITY_TYPE

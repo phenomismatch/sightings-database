@@ -1,28 +1,30 @@
 """Common functions for dealing with database connections."""
 
-import os
+from os import fspath, remove
+from os.path import abspath, exists
+from datetime import datetime
 import sqlite3
 import subprocess
-from datetime import datetime
 from pathlib import Path
 from lib.log import log
 
 
 PROCESSED = Path('data') / 'processed'
-DB_PATH = PROCESSED / 'sightings.sqlite.db'
+INTERIM = Path('data') / 'interim'
+DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('lib') / 'sql'
 
 
-PLACE_FIELDS = """place_id dataset_id lng lat radius geohash
-    place_json""".split()
-EVENT_FIELDS = """event_id place_id year day started ended
-    event_json""".split()
-COUNT_FIELDS = """count_id event_id taxon_id count count_json""".split()
+TABLES = """version datasets countries codes taxons places events
+    counts""".split()
+PLACE_FIELDS = "place_id dataset_id lng lat radius place_json".split()
+EVENT_FIELDS = "event_id place_id year day started ended event_json".split()
+COUNT_FIELDS = "count_id event_id taxon_id count count_json".split()
 
 
 def connect(path=None):
     """Connect to an SQLite database."""
-    path = path if path else str(DB_PATH)
+    path = path if path else str(DB_FILE)
     cxn = sqlite3.connect(path)
 
     cxn.execute("PRAGMA page_size = {}".format(2**16))
@@ -36,28 +38,37 @@ def create():
     """Create the database."""
     log(f'Creating database')
 
-    script = os.fspath(SCRIPT_PATH / 'create_db_sqlite.sql')
-    cmd = f'sqlite3 {DB_PATH} < {script}'
+    script = fspath(SCRIPT_PATH / 'create_db_sqlite.sql')
+    cmd = f'sqlite3 {DB_FILE} < {script}'
 
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)
+    if exists(DB_FILE):
+        remove(DB_FILE)
 
+    subprocess.check_call(cmd, shell=True)
+
+
+def backup_database():
+    """Backup the SQLite3 database."""
+    log('Backing up SQLite3 database')
+    now = datetime.now()
+    backup = f'{DB_FILE}_{now.strftime("%Y-%m-%d")}.sql'
+    cmd = f'cp {DB_FILE} {backup}'
     subprocess.check_call(cmd, shell=True)
 
 
 def insert_version():
     """Insert the DB verion."""
     cxn = connect()
-    sql = 'INSERT INTO version (version, created) VALUES (?, ?)'
-    cxn.execute(sql, ('v0.5',  datetime.now()))
+    sql = 'INSERT INTO version (version) VALUES (?)'
+    cxn.execute(sql, ('v0.5',))
     cxn.commit()
 
 
 def insert_dataset(dataset):
     """Insert the DB verion."""
     cxn = connect()
-    sql = """INSERT INTO datasets (dataset_id, extracted, version, title, url)
-                  VALUES (:dataset_id, :extracted, :version, :title, :url)"""
+    sql = """INSERT INTO datasets (dataset_id, version, title, url)
+                  VALUES (:dataset_id, :version, :title, :url)"""
     cxn.execute(sql, dataset)
     cxn.commit()
 
@@ -98,14 +109,14 @@ def get_ids(df, table):
 def next_id(table):
     """Get the max value from the table's ID field."""
     cxn = connect()
-    if not exists(cxn, table):
+    if not table_exists(cxn, table):
         return 1
     field = table[:-1] + '_id'
     sql = 'SELECT COALESCE(MAX({}), 0) AS id FROM {}'.format(field, table)
     return cxn.execute(sql).fetchone()[0] + 1
 
 
-def exists(cxn, table):
+def table_exists(cxn, table):
     """Check if a table exists."""
     sql = """
         SELECT COUNT(*) AS n
@@ -114,3 +125,27 @@ def exists(cxn, table):
            AND name = ?"""
     results = cxn.execute(sql, (table, ))
     return results.fetchone()[0]
+
+
+def export_to_csv_files():
+    """Export the SQLite3 database to CSV files."""
+    log('Exporting the SQLite3 database into CSV files.')
+
+    for table in TABLES:
+        log(f'Exporting {table}')
+        csv_file = INTERIM / f'{table}.csv'
+        cmd = f'sqlite3 -csv {DB_FILE} '
+        cmd += f'"select * from {table};" > {csv_file}'
+        subprocess.check_call(cmd, shell=True)
+
+
+def create_postgres():
+    """Create a PostgreSQL DB from the SQLite3 DB."""
+    script = fspath(SCRIPT_PATH / 'create_db_postgres.sql')
+    cmd = f'psql -d sightings -a -f {script}'
+    subprocess.check_call(cmd, shell=True)
+
+    log('Importing into PostgreSQL database')
+    script = fspath(SCRIPT_PATH / 'import_db_postgres.sql')
+    cmd = f'psql -d sightings -a -f {script}'
+    subprocess.check_call(cmd, shell=True)

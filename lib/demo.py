@@ -1,16 +1,12 @@
 """Some one-off reports."""
 
+from datetime import datetime
 import pandas as pd
-from lib.db_sqlite import DbSqlite
+import lib.db as db
 
 
-def three_butterflies():
-    """Output data for three butterfly species."""
-    cxn = DbSqlite()
-    species = [
-        'Erynnis horatius',
-        'Asterocampa celtis',
-        'Libytheana carinenta']
+def get_species(species):
+    """Output data for the given species to the a CSV file."""
     species = ','.join([f"'{s}'" for s in species])
 
     sql = """SELECT taxons.*, places.*, events.*, counts.*
@@ -19,25 +15,17 @@ def three_butterflies():
                JOIN counts USING (event_id)
                JOIN taxons USING (taxon_id)
               WHERE sci_name IN ({})""".format(species)
-    data = pd.read_sql(sql, cxn.engine)
-    data.to_csv('temp/three_butterflies.csv', index=False)
-
-
-def speyeria_cybele():
-    """Another sample butterfly."""
-    cxn = DbSqlite()
-    species = ['Speyeria cybele']
-    species = ','.join([f"'{s}'" for s in species])
-
-    sql = """SELECT taxons.*, places.*, events.*, counts.*
-               FROM places
-               JOIN events USING (place_id)
-               JOIN counts USING (event_id)
-               JOIN taxons USING (taxon_id)
-              WHERE sci_name IN ({})""".format(species)
-    data = pd.read_sql(sql, cxn.engine)
-    data.to_csv('temp/Speyeria_cybele.csv', index=False)
+    return pd.read_sql(sql, db.connect())
 
 
 if __name__ == '__main__':
-    speyeria_cybele()
+    df = get_species([
+        'Satyrium calanus',
+        'Satyrium titus',
+        'Callophrys niphon',
+        'Callophrys augustinus',
+        'Poanes hobomok'])
+
+    now = datetime.now()
+    report_name = f'temp/species_{now.strftime("%Y-%m-%d")}.csv'
+    df.to_csv(report_name, index=False)

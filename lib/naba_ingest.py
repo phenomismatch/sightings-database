@@ -1,7 +1,6 @@
 """Ingest NABA data."""
 
 from pathlib import Path
-from datetime import date
 import pandas as pd
 import lib.db as db
 import lib.util as util
@@ -22,7 +21,6 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'NABA',
-        'extracted': str(date.today()),
         'version': '2018-07-04',
         'url': ''})
 
@@ -112,7 +110,6 @@ def insert_places(raw_data):
     places['lat'] = pd.to_numeric(raw_places['LATITUDE'], errors='coerce')
 
     places['radius'] = None
-    places['geohash'] = None
 
     places['radius'] = None
     places['dataset_id'] = DATASET_ID

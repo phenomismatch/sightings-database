@@ -16,7 +16,7 @@ Currently, all data is stored in a single SQLite3 or PostgreSQL (PostGIS) databa
 
 
 ### Tables
-There are 3 main tables, several sidecar tables, a few region tables, a few miscellaneous tables, and a slew of structures that support spatialite.
+There are 3 main tables, a few region tables, and a few miscellaneous tables.
 
 Main tables:
 1. taxons: Data about the species and if it is going to be used in the analysis.
