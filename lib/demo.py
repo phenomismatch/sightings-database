@@ -20,11 +20,23 @@ def get_species(species):
 
 if __name__ == '__main__':
     df = get_species([
-        'Satyrium calanus',
-        'Satyrium titus',
-        'Callophrys niphon',
-        'Callophrys augustinus',
-        'Poanes hobomok'])
+        'Papilio canadensis',
+        'Anthocharis midea',
+        'Plebejus saepiolus',
+        'Glaucopsyche lygdamus',
+        'Plebejus icarioides',
+        'Speyeria mormonia',
+        'Chlosyne palla',
+        'Euphydryas editha',
+        'Euphydryas phaeton',
+        'Polygonia gracilis',
+        'Nymphalis californica',
+        'Cercyonis pegala',
+        'Celastrina neglecta',
+        'Speyeria atlantis',
+        'Erynnis icelus',
+        'Thymelicus lineola',
+        'Ochlodes sylvanoides'])
 
     now = datetime.now()
     report_name = f'temp/species_{now.strftime("%Y-%m-%d")}.csv'
