@@ -85,6 +85,7 @@ CREATE TABLE events (
   ended      TEXT,
   event_json TEXT
 );
+CREATE INDEX events_place_id ON events (place_id);
 CREATE INDEX events_year_day ON events (year, day);
 
 

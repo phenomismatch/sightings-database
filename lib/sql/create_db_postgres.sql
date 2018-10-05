@@ -79,6 +79,7 @@ CREATE TABLE places (
   geopoint   GEOGRAPHY(POINT, 4326),
   CONSTRAINT places_dataset_id FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id)
 );
+CREATE INDEX places_dataset_id ON places (dataset_id);
 CREATE INDEX places_lng_lat ON places (lng, lat);
 CREATE INDEX places_geohash ON places (geohash);
 
@@ -93,6 +94,7 @@ CREATE TABLE events (
   event_json JSON,
   CONSTRAINT events_place_id FOREIGN KEY (place_id) REFERENCES places (place_id)
 );
+CREATE INDEX events_place_id ON events (place_id);
 CREATE INDEX events_year_day ON events (year, day);
 
 
@@ -105,3 +107,5 @@ CREATE TABLE counts (
   CONSTRAINT counts_event_id FOREIGN KEY (event_id) REFERENCES events (event_id),
   CONSTRAINT counts_taxon_id FOREIGN KEY (taxon_id) REFERENCES taxons (taxon_id)
 );
+CREATE INDEX counts_event_id ON counts (event_id);
+CREATE INDEX counts_taxon_id ON counts (taxon_id);
