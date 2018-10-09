@@ -1,4 +1,4 @@
-"""Wrapper for sightings database extract, tranform, & load functions."""
+"""Wrapper for sightings database extract, transform, & load functions."""
 
 import argparse
 import lib.db as db

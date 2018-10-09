@@ -66,6 +66,7 @@ CREATE INDEX taxons_order    ON taxons ("order");
 CREATE INDEX taxons_group    ON taxons ("group");
 CREATE INDEX taxons_family   ON taxons (family);
 CREATE INDEX taxons_genus    ON taxons (genus);
+CREATE INDEX taxons_target   ON taxons (target);
 
 
 CREATE TABLE places (
@@ -80,8 +81,9 @@ CREATE TABLE places (
   CONSTRAINT places_dataset_id FOREIGN KEY (dataset_id) REFERENCES datasets (dataset_id)
 );
 CREATE INDEX places_dataset_id ON places (dataset_id);
-CREATE INDEX places_lng_lat ON places (lng, lat);
-CREATE INDEX places_geohash ON places (geohash);
+CREATE INDEX places_lng        ON places (lng);
+CREATE INDEX places_lat        ON places (lat);
+CREATE INDEX places_geohash    ON places (geohash);
 
 
 CREATE TABLE events (
@@ -95,7 +97,8 @@ CREATE TABLE events (
   CONSTRAINT events_place_id FOREIGN KEY (place_id) REFERENCES places (place_id)
 );
 CREATE INDEX events_place_id ON events (place_id);
-CREATE INDEX events_year_day ON events (year, day);
+CREATE INDEX events_year     ON events (year);
+CREATE INDEX events_day      ON events (day);
 
 
 CREATE TABLE counts (

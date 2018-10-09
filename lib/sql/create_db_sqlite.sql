@@ -57,6 +57,7 @@ CREATE INDEX taxons_class  ON taxons ("class");
 CREATE INDEX taxons_order  ON taxons ("order");
 CREATE INDEX taxons_family ON taxons (family);
 CREATE INDEX taxons_genus  ON taxons (genus);
+CREATE INDEX taxons_target ON taxons (target);
 
 
 DROP TABLE IF EXISTS places;
@@ -71,7 +72,8 @@ CREATE TABLE places (
   geopoint   TEXT,
 );
 CREATE INDEX places_dataset_id ON places (dataset_id);
-CREATE INDEX places_lng_lat    ON places (lng, lat);
+CREATE INDEX places_lng        ON places (lng);
+CREATE INDEX places_lat        ON places (lat);
 CREATE INDEX places_geohash    ON places (geohash);
 
 
@@ -86,7 +88,8 @@ CREATE TABLE events (
   event_json TEXT
 );
 CREATE INDEX events_place_id ON events (place_id);
-CREATE INDEX events_year_day ON events (year, day);
+CREATE INDEX events_year     ON events (year);
+CREATE INDEX events_day      ON events (day);
 
 
 DROP TABLE IF EXISTS counts;
