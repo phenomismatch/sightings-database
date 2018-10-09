@@ -23,6 +23,7 @@ all_tables <- places %>%
   inner_join(events, by = "place_id") %>%
   filter(between(year, 2010, 2014)) %>%
   filter(between(day, 100, 200)) %>%
+  head(100) %>%
   inner_join(counts, by = "event_id") %>%
   inner_join(taxons, by = "taxon_id") %>%
   head(100) %>%
