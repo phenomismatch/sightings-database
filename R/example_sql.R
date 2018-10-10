@@ -7,7 +7,7 @@ pg <- dbDriver("PostgreSQL")
 cxn <- dbConnect(
   pg,
   user = "username",
-  password = "password",
+  password = rstudioapi::askForPassword("Database password"),
   host = "35.221.16.125",
   port = 5432,
   dbname = "sightings")

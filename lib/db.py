@@ -12,7 +12,7 @@ from lib.log import log
 PROCESSED = Path('data') / 'processed'
 INTERIM = Path('data') / 'interim'
 DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
-SCRIPT_PATH = Path('lib') / 'sql'
+SCRIPT_PATH = Path('sql')
 
 
 TABLES = """version datasets countries codes taxons places events
