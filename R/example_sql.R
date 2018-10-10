@@ -6,9 +6,11 @@ library("RPostgreSQL")
 pg <- dbDriver("PostgreSQL")
 cxn <- dbConnect(
   pg,
-  user = "username",
+  user = "rafe",
+  # password = "password",
   password = rstudioapi::askForPassword("Database password"),
   host = "35.221.16.125",
+  # host = "localhost",
   port = 5432,
   dbname = "sightings")
 
@@ -23,13 +25,13 @@ taxons <- tbl(cxn, "taxons")
 # it is there only to show how to convert the queries into a dataframe.
 
 all_tables <- places %>%
+  inner_join(events, by = "place_id") %>%
+  inner_join(counts, by = "event_id") %>%
+  inner_join(taxons, by = "taxon_id") %>%
   filter(between(lng, -73, -72)) %>%
   filter(between(lat, 40, 44)) %>%
-  inner_join(events, by = "place_id") %>%
   filter(between(year, 2010, 2014)) %>%
   filter(between(day, 100, 200)) %>%
   head(100) %>%
-  inner_join(counts, by = "event_id") %>%
-  inner_join(taxons, by = "taxon_id") %>%
-  head(100) %>%
   as.data.frame()
+  # show_query()
