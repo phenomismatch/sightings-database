@@ -4,8 +4,13 @@ library("RPostgreSQL")
 
 # cxn <- src_sqlite(path = "data/processed/sightings.sqlite.db", create = FALSE)
 pg <- dbDriver("PostgreSQL")
-cxn <- dbConnect(pg, user = "username", password = "password",
-                 host = "35.221.16.125", port = 5432, dbname = "sightings")
+cxn <- dbConnect(
+  pg,
+  user = "username",
+  password = "password",
+  host = "35.221.16.125",
+  port = 5432,
+  dbname = "sightings")
 
 places <- tbl(cxn, "places")
 events <- tbl(cxn, "events")
