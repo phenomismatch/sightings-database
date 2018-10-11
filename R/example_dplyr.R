@@ -1,12 +1,11 @@
 library(dplyr)
 library(dbplyr)
-library("RPostgreSQL")
+library(RPostgreSQL)
 
 # cxn <- src_sqlite(path = "data/processed/sightings.sqlite.db", create = FALSE)
-pg <- dbDriver("PostgreSQL")
 cxn <- dbConnect(
-  pg,
-  user = "rafe",
+  dbDriver("PostgreSQL"),
+  user = "username",
   # password = "password",
   password = rstudioapi::askForPassword("Database password"),
   host = "35.221.16.125",
