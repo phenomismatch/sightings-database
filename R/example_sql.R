@@ -28,10 +28,16 @@ all_tables <- places %>%
   inner_join(events, by = "place_id") %>%
   inner_join(counts, by = "event_id") %>%
   inner_join(taxons, by = "taxon_id") %>%
-  filter(between(lng, -73, -72)) %>%
-  filter(between(lat, 40, 44)) %>%
-  filter(between(year, 2010, 2014)) %>%
-  filter(between(day, 100, 200)) %>%
+  filter(
+    dataset_id == 'ebird',
+    year == 2014,
+    between(lng, -73, -72),
+    between(lat, 40, 44),
+    between(day, 100, 200),
+    target == "t")  %>%
+  select(lng, lat, year, day, count, sci_name, event_json) %>%
   head(100) %>%
   as.data.frame()
-  # show_query()
+  #show_query()
+
+event_json <- lapply(all_tables$event_json, fromJSON)
