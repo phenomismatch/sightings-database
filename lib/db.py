@@ -140,11 +140,14 @@ def export_to_csv_files():
 
 
 def create_postgres():
-    """Create a PostgreSQL DB from the SQLite3 DB."""
+    """Create the PostgreSQL DB."""
     script = fspath(SCRIPT_PATH / 'create_db_postgres.sql')
     cmd = f'psql -d sightings -a -f {script}'
     subprocess.check_call(cmd, shell=True)
 
+
+def load_postgres():
+    """Load data into the PostgreSQL database from CSV files."""
     log('Importing into PostgreSQL database')
     script = fspath(SCRIPT_PATH / 'import_db_postgres.sql')
     cmd = f'psql -d sightings -a -f {script}'

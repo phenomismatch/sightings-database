@@ -44,6 +44,8 @@ def parse_args():
     parser.add_argument('--csv', action='store_true',
                         help="""Export the SQLite3 database to CSV files.""")
     parser.add_argument('--postgres', action='store_true',
+                        help="""Create the PostgreSQL database.""")
+    parser.add_argument('--load-postgres', action='store_true',
                         help="""Import the CSV files into the PostgreSQL
                             database.""")
     return parser.parse_args()
@@ -77,6 +79,9 @@ def etl():
 
     if args.postgres:
         db.create_postgres()
+
+    if args.load_postgres:
+        db.load_postgres()
 
     log('Done')
 
