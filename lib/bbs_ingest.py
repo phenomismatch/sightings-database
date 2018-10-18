@@ -116,10 +116,7 @@ def insert_counts(to_event_id):
     csv_path = RAW_DIR / 'bbs_counts.csv'
     raw_counts = pd.read_csv(csv_path, encoding='ISO-8859-1')
 
-    # Remove records that don't map to a valid taxon
     raw_counts['taxon_id'] = raw_counts.aou.map(to_taxon_id)
-    has_taxon_id = raw_counts.taxon_id.notna()
-    raw_counts = raw_counts.loc[has_taxon_id, :]
 
     counts = pd.DataFrame()
 
@@ -148,17 +145,18 @@ def insert_counts(to_event_id):
 def get_raw_taxons():
     """Get BBS taxon data."""
     csv_path = RAW_DIR / 'bbs_taxons.csv'
-    raw = pd.read_csv(csv_path, encoding='ISO-8859-1')
+    raw_taxons = pd.read_csv(csv_path, encoding='ISO-8859-1')
 
-    raw['genus1'] = raw.genus.str.split().str[0]
-    raw['species1'] = raw.species.str.split().str[0]
-    raw['sci_name'] = raw.genus1 + ' ' + raw.species1
-    raw = raw.loc[:, ['sci_name', 'aou']]
-    raw = raw.set_index('sci_name')
+    raw_taxons['genus1'] = raw_taxons.genus.str.split().str[0]
+    raw_taxons['species1'] = raw_taxons.species.str.split().str[0]
+    raw_taxons['sci_name'] = raw_taxons.genus1 + ' ' + raw_taxons.species1
+    raw_taxons = raw_taxons.loc[:, ['sci_name', 'aou']]
+    raw_taxons = raw_taxons.set_index('sci_name')
 
     sql = """SELECT sci_name, taxon_id FROM taxons"""
     taxons = pd.read_sql(sql, db.connect()).set_index('sci_name')
-    taxons = taxons.merge(raw, how='inner', left_index=True, right_index=True)
+    taxons = taxons.merge(
+        raw_taxons, how='inner', left_index=True, right_index=True)
 
     return taxons.set_index('aou').taxon_id.to_dict()
 

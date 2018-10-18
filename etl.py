@@ -66,6 +66,7 @@ def etl():
         args.ingest = OPTIONS
 
     if args.ingest:
+        # Order matters
         for ingest, module in INGESTS:
             if ingest in args.ingest:
                 log(separator)

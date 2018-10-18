@@ -67,9 +67,9 @@ CREATE TABLE places (
   lng        NUMERIC NOT NULL,
   lat        NUMERIC NOT NULL,
   radius     NUMERIC,
-  place_json TEXT
+  place_json TEXT,
   geohash    VARCHAR(8),
-  geopoint   TEXT,
+  geopoint   TEXT
 );
 CREATE INDEX places_dataset_id ON places (dataset_id);
 CREATE INDEX places_lng        ON places (lng);

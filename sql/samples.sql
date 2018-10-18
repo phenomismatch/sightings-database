@@ -7,7 +7,7 @@ SELECT *
    AND day  BETWEEN  100 AND  110
    AND lng  BETWEEN  -73 AND  -72
    AND lat  BETWEEN   40 AND   41
-g3q   AND target = 't';
+   AND target = 't';
 
 
 SELECT *

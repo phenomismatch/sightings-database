@@ -15,8 +15,7 @@ DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
 
-TABLES = """version datasets countries codes taxons places events
-    counts""".split()
+TABLES = "version datasets countries codes taxons places events counts".split()
 PLACE_FIELDS = "place_id dataset_id lng lat radius place_json".split()
 EVENT_FIELDS = "event_id place_id year day started ended event_json".split()
 COUNT_FIELDS = "count_id event_id taxon_id count count_json".split()
@@ -32,6 +31,16 @@ def connect(path=None):
     cxn.execute("PRAGMA synchronous = OFF")
     cxn.execute("PRAGMA journal_mode = OFF")
     return cxn
+
+
+def aux_db(cxn, aux_path, aux_name='aux'):
+    """Attach annother database to the current DB connection."""
+    cxn.execute("ATTACH DATABASE '{aux_path}' AS {aux_name}")
+
+
+def aux_detach(cxn, aux_name='aux'):
+    """Detach the temporary database."""
+    cxn.execute(f'DETACH DATABASE {aux_name}')
 
 
 def create():
@@ -51,7 +60,7 @@ def backup_database():
     """Backup the SQLite3 database."""
     log('Backing up SQLite3 database')
     now = datetime.now()
-    backup = f'{DB_FILE}_{now.strftime("%Y-%m-%d")}.sql'
+    backup = f'{DB_FILE[:-3]}_{now.strftime("%Y-%m-%d")}.db'
     cmd = f'cp {DB_FILE} {backup}'
     subprocess.check_call(cmd, shell=True)
 
