@@ -15,10 +15,10 @@ DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
 
-TABLES = "version datasets countries codes taxons places events counts".split()
-PLACE_FIELDS = "place_id dataset_id lng lat radius place_json".split()
-EVENT_FIELDS = "event_id place_id year day started ended event_json".split()
-COUNT_FIELDS = "count_id event_id taxon_id count count_json".split()
+TABLES = 'version datasets countries codes taxons places events counts'.split()
+PLACE_FIELDS = 'place_id dataset_id lng lat radius place_json'.split()
+EVENT_FIELDS = 'event_id place_id year day started ended event_json'.split()
+COUNT_FIELDS = 'count_id event_id taxon_id count count_json'.split()
 
 
 def connect(path=None):
@@ -26,10 +26,10 @@ def connect(path=None):
     path = path if path else str(DB_FILE)
     cxn = sqlite3.connect(path)
 
-    cxn.execute("PRAGMA page_size = {}".format(2**16))
-    cxn.execute("PRAGMA busy_timeout = 10000")
-    cxn.execute("PRAGMA synchronous = OFF")
-    cxn.execute("PRAGMA journal_mode = OFF")
+    cxn.execute('PRAGMA page_size = {}'.format(2**16))
+    cxn.execute('PRAGMA busy_timeout = 10000')
+    cxn.execute('PRAGMA synchronous = OFF')
+    cxn.execute('PRAGMA journal_mode = OFF')
     return cxn
 
 
