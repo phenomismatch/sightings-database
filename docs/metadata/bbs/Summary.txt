@@ -1,0 +1,36 @@
+The field descriptions and file layout below are applicable to the Bird Summary data found in the 
+Ten Stop Summary files found in the States folder where data is grouped by state/province/territory.
+
+The summary data files contain the following columns and related data:
+
+ RouteDataID 	Data identification number; unique for each unique combination of countrynum region, route, RPID, and year.
+
+ CountryNum	The three digit identification code for country.  See RegionCodes.txt file for key.
+
+ StateNum 	The two digit numerical code that identifies the state, province or territory where the 
+		route was run.  See RegionCodes.txt file for key.
+
+ Route       	The three digit code that identifies the route - unique within states.
+
+ RPID		Three digit run protocol identification number.  See RunProtocolID.txt for key.
+
+ Year        	The year. The sStateNumber, sRoute, and iYear columns uniquely identify a 
+		run of a route.
+
+ Aou         	The five digit species identification code.
+
+ Count10     	Total individuals of the species recorded on stops 1-10.
+
+ Count20     	Total individuals of the species recorded on stops 11-20.
+
+ Count30     	Total individuals of the species recorded on stops 21-30.
+
+ Count40     	Total individuals of the species recorded on stops 31-40.
+
+ Count50     	Total individuals of the species recorded on stops 41-50.
+
+ StopTotal   	Total number of stops out of 50 on which the species was recorded.
+
+ SpeciesTotal	Total individuals recorded on that run of the route (Sum from all stops.).
+
+There is one row in the Summary file for every species detected on each run of a route. 

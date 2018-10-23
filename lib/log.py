@@ -1,4 +1,8 @@
-"""Log a status message."""
+"""
+Log a status message.
+
+This tiny module is here to prevent circular dependencies.
+"""
 
 from datetime import datetime
 

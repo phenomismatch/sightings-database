@@ -14,7 +14,6 @@ import lib.caterpillar_ingest
 
 
 INGESTS = [
-    ('countries', lib.countries_ingest),
     ('clements', lib.clements_ingest),
     ('bbs', lib.bbs_ingest),
     ('maps', lib.maps_ingest),
@@ -62,7 +61,6 @@ def etl():
 
     if args.create_db:
         db.create()
-        db.insert_version()
 
     if args.ingest_all:
         args.ingest = OPTIONS
