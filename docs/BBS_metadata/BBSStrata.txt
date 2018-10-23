@@ -1,0 +1,88 @@
+Created by SQL on 02/27/2018
+ 
+This text file provides information regarding the "Stratum" field  found in the "Routes" file available on the BBS FTP site.
+
+North American Breeding Bird Survey physiographic strata.
+
+Source:
+Droege, Sam. 1990. The North American Breeding Bird Survey. pages 1-4. in J.R. Sauer and S. Droege, eds. Survey designs and statistical methods for the estimation of avian population trends. USFWS Biological Report 90(1). 160 pp. As modified from --
+Bystrak, Danny. 1981. The North American Breeding Bird Survey. pages 34-41. in C.J. Ralph and J.M. Scott, eds. Estimating numbers of terrestrial birds. Studies in Avian Biology No. 6. 630 pp.
+
+For more information regarding North American Breeding Bird Survey strata go to:
+http://www.pwrc.usgs.gov/bbs/StrataNames/index.html
+ 
+ 
+StratumID StratumName                              StratumNameFrench                        StratumNameSpanish                      
+--------- ---------------------------------------- ---------------------------------------- ----------------------------------------
+        1 Sub-tropical                             NULL                                     Sub tropical                            
+        2 Floridian                                NULL                                     Floridano                               
+        3 Coastal Flatwoods                        NULL                                     Flatwoods costeros (reg del Mississippi)
+        4 Upper Coastal Plain                      NULL                                     Planicie Costera Superior               
+        5 Mississippi Alluvial Plain               NULL                                     Planicie Aluvial de Mississippi         
+        6 Coastal Prairies                         NULL                                     Praderas Costeras                       
+        7 South Texas Brushlands                   NULL                                     Arbustos del Sur de Texas               
+        8 East Texas Prairies                      NULL                                     Praderas del Este de Texas              
+        9 Glaciated Coastal Plain                  NULL                                     Planicies Costeras Glaciares            
+       10 Northern Piedmont                        NULL                                     Pie de Monte del Norte                  
+       11 Southern Piedmont                        NULL                                     Pie de Monte del Sur                    
+       12 Southern New England                     NULL                                     Sur de Nueva Inglaterra                 
+       13 Ridge and Valley                         NULL                                     Montes y Valles                         
+       14 Highland Rim                             NULL                                     Márgen de Tierras Altas                 
+       15 Lexington Plain                          NULL                                     Planicies de Lexington                  
+       16 Great Lakes Plain                        NULL                                     Planicies de los Grandes Lagos          
+       17 Driftless Area                           NULL                                     Áreas de Deriva                         
+       18 St. Lawrence River Plain                 Plaine du fleuve Saint-Laurent           Planicie Riparia de St. Lawrence        
+       19 Ozark-Ouachita Plateau                   NULL                                     Meseta Ozark-Ouachita                   
+       20 Great Lakes Transition                   NULL                                     Transición de Grandes Lagos             
+       21 Cumberland Plateau                       NULL                                     Meseta Cumberland                       
+       22 Ohio Hills                               NULL                                     Colinas de Ohio                         
+       23 Blue Ridge Mountains                     NULL                                     Montañas Blue Ridge                     
+       24 Allegheny Plateau                        NULL                                     Meseta Allegheny                        
+       25 Open Boreal Forest                       Forêt boréale clairsemée                 Bosque Boreal Abierto                   
+       26 Adirondack Mountains                     Monts Adirondack                         Montañas Adirondack                     
+       27 Northern New England                     Nord de la Nouvelle-Angleterre           Norte de Nueva Inglaterra               
+       28 N. Spruce-Hardwoods                      Forêts nordiques d'épinettes et de feuil Spruce-Hardwoods del Norte              
+       29 Closed Boreal Forest                     Forêt boréale dense                      Bosque Boreal Cerrado                   
+       30 Aspen Parklands                          Tremblaie-parc                           Parque Aspen                            
+       31 Till Plains                              NULL                                     Planicies Till                          
+       32 Dissected Till Plains                    NULL                                     Planicies Till Disectadas               
+       33 Osage Plain-Cross Timbers                NULL                                     Bosques Osage Plain-Cross               
+       34 High Plains Border                       NULL                                     Frontera de Planicies Altas             
+       35 Rolling Red Prairies                     NULL                                     Praderas Rolling Red                    
+       36 High Plains                              NULL                                     Planicies Altas                         
+       37 Drift Prairie                            Prairie à modelé glaciaire               Pradera de Deriva o Pradera Drift       
+       38 Glaciated Missouri Plateau               Plateau glaciaire du Missouri            Meseta Glaciar de Missouri              
+       39 Great Plains Roughlands                  NULL                                     Grandes Plaicies Roughlands             
+       40 Black Prairie                            NULL                                     Pradera Negra                           
+       47 N/A                                      NULL                                     N/D                                     
+       53 Edward's Plateau                         NULL                                     Meseta de Edward                        
+       54 Rolling Red Plains                       NULL                                     Planicies Rolling Red                   
+       55 Staked Plains                            NULL                                     Planicies Staked                        
+       56 Chihuahuan Desert                        NULL                                     Desieto Chihuahueño                     
+       61 Black Hills                              NULL                                     Colinas Black                           
+       62 Southern Rockies                         NULL                                     Rocallosas del Sur                      
+       63 Fraser Plateau                           Plateau du Fraser                        Meseta Fraser                           
+       64 Central Rockies                          Centre des Rocheuses                     Rocallosas Centrales                    
+       65 Dissected Rockies                        NULL                                     Rocallosas Disectadas                   
+       66 Sierra Nevada                            NULL                                     Sierra Nevada                           
+       67 Cascade Mountains                        NULL                                     Montañas Cascade                        
+       68 Northern Rockies                         Nord des Rocheuses                       Rocallosas del Norte                    
+       80 Great Basin Deserts                      NULL                                     Desiertos Great Basin                   
+       81 Mexican Highlands                        NULL                                     Tierras Altas Mexicanas                 
+       82 Sonoran Desert                           NULL                                     Desierto de Sonora                      
+       83 Mojave Desert                            NULL                                     Desierto de Mojave                      
+       84 Pinyon-Juniper Woodlands                 NULL                                     Bosques de Piñón-Junípero               
+       85 Pitt-Klamath Plateau                     NULL                                     Meseta Pitt-Klamath                     
+       86 Wyoming Basin                            NULL                                     Cuenca de Wyoming                       
+       87 Intermountain Grasslands                 NULL                                     Pastizales Intrmontanos                 
+       88 Basin and Range                          NULL                                     Cuenca y Serranía                       
+       89 Columbia Plateau                         NULL                                     Mesta Columbia                          
+       90 S. California Grasslands                 NULL                                     Pastizales del Sur de California        
+       91 Central Valley                           NULL                                     Valle Central                           
+       92 California Foothills                     NULL                                     Estribaciones de California             
+       93 S. Pacific Rainforests                   NULL                                     Bosques Lluviosos del Pacífico Sur      
+       94 N. Pacific Rainforests                   NULL                                     Bosques Lluviosos del Pacífico Sur      
+       95 Los Angeles Ranges                       NULL                                     Sierra de Los Angeles                   
+       96 Southern Alaska Coast                    NULL                                     Costa del Sur de Alaska                 
+       98 Willamette Lowlands                      NULL                                     Tieras Bajas Willamette                 
+       99 Tundra                                   Toundra                                  Tundra                                  
