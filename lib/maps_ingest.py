@@ -31,7 +31,6 @@ def ingest():
         'version': '2017.0',
         'url': 'https://www.birdpop.org/pages/maps.php'})
 
-    insert_codes()
     to_place_id = insert_places()
     to_event_id = insert_events(to_place_id)
     insert_counts(to_event_id)
@@ -192,14 +191,6 @@ def get_raw_taxons():
     taxons = taxons.merge(raw, how='inner', left_index=True, right_index=True)
 
     return taxons.set_index('SPEC').taxon_id.to_dict()
-
-
-def insert_codes():
-    """Insert codes."""
-    log(f'Inserting {DATASET_ID} codes')
-    codes = pd.read_csv(RAW_DIR / 'maps_codes.csv')
-    codes['dataset_id'] = DATASET_ID
-    codes.to_sql('codes', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':

@@ -13,7 +13,8 @@ TAXON_DIR = Path('data') / 'raw' / 'taxonomy'
 
 def ingest():
     """Extract, transform, & load Clements taxonomy into the database."""
-    csv_path = TAXON_DIR / 'Clements-Checklist-v2017-August-2017_2.csv'
+    csv_path = \
+        TAXON_DIR / 'eBird-Clements-v2018-integrated-checklist-August-2018.csv'
 
     db.delete_dataset(DATASET_ID)
 
@@ -37,7 +38,7 @@ def ingest():
 
     taxons.sci_name = taxons.sci_name.str.split().str.join(' ')
     taxons['genus'] = taxons.sci_name.str.split().str[0]
-    taxons['authority'] = DATASET_ID
+    taxons['dataset_id'] = DATASET_ID
     taxons['class'] = 'aves'
     taxons['group'] = None
 

@@ -14,8 +14,7 @@ INTERIM = Path('data') / 'interim'
 DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
-
-TABLES = 'datasets codes taxons places events counts'.split()
+TABLES = 'datasets taxons places events counts'.split()
 PLACE_FIELDS = 'place_id dataset_id lng lat radius place_json'.split()
 EVENT_FIELDS = """event_id place_id dataset_id year day started ended
     event_json""".split()

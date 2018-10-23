@@ -70,7 +70,7 @@ def insert_taxons(raw_data):
     taxons = raw_data.loc[firsts, ['sci_name']]
 
     taxons['genus'] = taxons.sci_name.str.split().str[0]
-    taxons['authority'] = DATASET_ID
+    taxons['dataset_id'] = DATASET_ID
     taxons['class'] = 'lepidoptera'
     taxons['group'] = None
     taxons['order'] = None

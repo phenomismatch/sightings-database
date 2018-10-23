@@ -47,7 +47,7 @@ def insert_taxons():
 
     taxons['sci_name'] = taxons.group
     taxons['genus'] = None
-    taxons['authority'] = DATASET_ID
+    taxons['dataset_id'] = DATASET_ID
     taxons['class'] = None
     taxons['order'] = None
     taxons['family'] = None

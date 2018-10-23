@@ -21,7 +21,6 @@ def ingest():
         'version': '2016.0',
         'url': 'https://www.pwrc.usgs.gov/bbs/'})
 
-    insert_codes()
     to_place_id = insert_places()
     to_event_id = insert_events(to_place_id)
     insert_counts(to_event_id)
@@ -159,99 +158,6 @@ def get_raw_taxons():
         raw_taxons, how='inner', left_index=True, right_index=True)
 
     return taxons.set_index('aou').taxon_id.to_dict()
-
-
-def insert_codes():
-    """Insert codes."""
-    log(f'Inserting {DATASET_ID} codes')
-
-    bcr = pd.read_fwf(
-        RAW_DIR / 'BCR.txt',
-        skiprows=7,
-        encoding='ISO-8859-1',
-        usecols=[0, 1],
-        keep_default_na=False,
-        names=['code', 'value'])
-    bcr['field'] = 'bcr'
-
-    strata = pd.read_fwf(
-        RAW_DIR / 'BBSStrata.txt',
-        skiprows=16,
-        encoding='ISO-8859-1',
-        usecols=[0, 1],
-        keep_default_na=False,
-        names=['code', 'value'])
-    strata['field'] = 'strata'
-
-    protocols = pd.read_fwf(
-        RAW_DIR / 'RunProtocolID.txt',
-        skiprows=4,
-        encoding='ISO-8859-1',
-        colspecs=[(0, 3), (5, 55)],
-        names=['code', 'value'])
-    protocols['field'] = 'runprotocol'
-
-    descrs = pd.read_fwf(
-        RAW_DIR / 'RunProtocolID.txt',
-        skiprows=4,
-        encoding='ISO-8859-1',
-        colspecs=[(0, 3), (56, 141)],
-        names=['code', 'value'])
-    descrs['field'] = 'runprotocoldesc'
-
-    wind = pd.read_fwf(
-        RAW_DIR / 'weathercodes.txt',
-        skiprows=8,
-        skipfooter=13,
-        encoding='ISO-8859-1',
-        colspecs=[(0, 1), (7, 72)],
-        keep_default_na=False,
-        names=['code', 'value'])
-    wind['field'] = 'wind'
-
-    sky = pd.read_fwf(
-        RAW_DIR / 'weathercodes.txt',
-        skiprows=23,
-        encoding='ISO-8859-1',
-        colspecs=[(0, 1), (6, 56)],
-        keep_default_na=False,
-        names=['code', 'value'])
-    sky['field'] = 'sky'
-
-    states = pd.read_fwf(
-        RAW_DIR / 'RegionCodes.txt',
-        skiprows=11,
-        usecols=[1, 2],
-        encoding='ISO-8859-1',
-        keep_default_na=False,
-        names=['code', 'value'])
-    states['field'] = 'state'
-
-    types = pd.read_fwf(
-        RAW_DIR / 'RouteInf.txt',
-        skiprows=28,
-        skipfooter=13,
-        colspecs=[(3, 4), (7, 18)],
-        encoding='ISO-8859-1',
-        keep_default_na=False,
-        names=['code', 'value'])
-    types['field'] = 'routetype'
-
-    details = pd.read_fwf(
-        RAW_DIR / 'RouteInf.txt',
-        skiprows=33,
-        skipfooter=5,
-        colspecs=[(3, 4), (7, 45)],
-        encoding='ISO-8859-1',
-        keep_default_na=False,
-        names=['code', 'value'])
-    details['field'] = 'routetypedetail'
-
-    codes = bcr.append(
-        [strata, protocols, descrs, wind, sky, states, types, details],
-        ignore_index=True)
-    codes['dataset_id'] = DATASET_ID
-    codes.to_sql('codes', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':

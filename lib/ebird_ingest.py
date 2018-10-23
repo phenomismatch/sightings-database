@@ -23,8 +23,6 @@ def ingest():
         'version': 'relFeb-2018',
         'url': 'https://ebird.org/home'})
 
-    insert_codes()
-
     chunk = 1_000_000
     reader = pd.read_csv(
         RAW_DIR / 'ebd_relFeb-2018.txt',
@@ -183,38 +181,6 @@ def insert_counts(counts, to_event_id, to_taxon_id):
 
     counts.loc[:, db.COUNT_FIELDS].to_sql(
         'counts', db.connect(), if_exists='append', index=False)
-
-
-def insert_codes():
-    """Insert codes."""
-    log(f'Inserting {DATASET_ID} codes')
-
-    bcr = pd.read_csv(
-        RAW_DIR / 'BCRCodes.txt',
-        sep='\t',
-        encoding='ISO-8859-1',
-        names=['code', 'value'])
-    bcr['field'] = 'BCR CODE'
-
-    iba = pd.read_csv(
-        RAW_DIR / 'IBACodes.txt',
-        sep='\t',
-        encoding='ISO-8859-1',
-        names=['code', 'value'])
-    iba['field'] = 'IBA CODE'
-
-    usfws = pd.read_csv(
-        RAW_DIR / 'USFWSCodes.txt',
-        sep='\t',
-        encoding='ISO-8859-1',
-        names=['code', 'value'])
-    usfws['field'] = 'USFWS CODE'
-
-    codes = pd.read_csv(RAW_DIR / 'ebird_codes.csv')
-    codes = codes.append([bcr, iba, usfws], ignore_index=True, sort=True)
-    codes['dataset_id'] = DATASET_ID
-
-    codes.to_sql('codes', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':
