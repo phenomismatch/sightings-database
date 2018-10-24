@@ -151,7 +151,7 @@ def insert_counts(to_event_id):
 
     cxn = db.connect()
 
-    to_taxon_id = get_raw_taxons()
+    to_taxon_id = get_raw_taxa()
 
     csv_file = RAW_DIR / f'{BAND}.csv'
     raw_counts = pd.read_csv(csv_file, dtype='unicode')
@@ -178,7 +178,7 @@ def insert_counts(to_event_id):
     counts.to_sql('counts', cxn, if_exists='append', index=False)
 
 
-def get_raw_taxons():
+def get_raw_taxa():
     """Get MAPS taxon data."""
     raw = pd.read_csv(RAW_DIR / f'{LIST}.csv')
 

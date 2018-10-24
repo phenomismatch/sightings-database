@@ -27,13 +27,13 @@ def ingest():
         'url': ('https://caterpillarscount.unc.edu/'
                 'iuFYr1xREQOp2ioB5MHvnCTY39UHv2/')})
 
-    to_taxon_id = insert_taxons()
+    to_taxon_id = insert_taxa()
     to_place_id = insert_places()
     to_event_id = insert_events(to_place_id)
     insert_counts(to_event_id, to_taxon_id)
 
 
-def insert_taxons():
+def insert_taxa():
     """Insert taxa."""
     log(f'Inserting {DATASET_ID} taxa')
 
@@ -54,7 +54,7 @@ def insert_taxons():
     taxa['target'] = None
     taxa['common_name'] = ''
 
-    # taxa = util.drop_duplicate_taxons(taxa)
+    # taxa = util.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
 

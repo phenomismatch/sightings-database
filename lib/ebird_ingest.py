@@ -15,7 +15,7 @@ def ingest():
     """Ingest eBird data."""
     db.delete_dataset(DATASET_ID)
 
-    to_taxon_id = get_taxons()
+    to_taxon_id = get_taxa()
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
@@ -47,7 +47,7 @@ def ingest():
         insert_counts(raw_data, to_event_id, to_taxon_id)
 
 
-def get_taxons():
+def get_taxa():
     """Build a dictionary of scientific names and taxon_ids."""
     sql = """SELECT taxon_id, sci_name
                FROM taxa

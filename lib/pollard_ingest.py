@@ -25,7 +25,7 @@ def ingest():
         'version': '2018-02',
         'url': ''})
 
-    to_taxon_id = insert_taxons(raw_data)
+    to_taxon_id = insert_taxa(raw_data)
     to_place_id = insert_places(raw_data)
     insert_events(raw_data, to_place_id)
     insert_counts(raw_data, to_taxon_id)
@@ -51,7 +51,7 @@ def get_raw_data():
     return raw_data
 
 
-def insert_taxons(raw_data):
+def insert_taxa(raw_data):
     """Insert taxa."""
     log(f'Inserting {DATASET_ID} taxa')
 
@@ -70,7 +70,7 @@ def insert_taxons(raw_data):
     taxa['family'] = None
     taxa['target'] = 't'
 
-    # taxa = util.drop_duplicate_taxons(taxa)
+    # taxa = util.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
 

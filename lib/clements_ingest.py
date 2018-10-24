@@ -40,7 +40,7 @@ def ingest():
     target = taxa.sci_name.isin(targets)
     taxa.loc[target, 'target'] = 't'
 
-    # taxa = util.drop_duplicate_taxons(taxa)
+    # taxa = util.drop_duplicate_taxa(taxa)
 
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
     taxa.to_sql('taxa', db.connect(), if_exists='append', index=False)

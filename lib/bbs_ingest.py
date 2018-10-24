@@ -110,7 +110,7 @@ def insert_counts(to_event_id):
 
     cxn = db.connect()
 
-    to_taxon_id = get_raw_taxons()
+    to_taxon_id = get_raw_taxa()
 
     csv_path = RAW_DIR / 'bbs_counts.csv'
     raw_counts = pd.read_csv(csv_path, encoding='ISO-8859-1')
@@ -141,21 +141,21 @@ def insert_counts(to_event_id):
     counts.to_sql('counts', cxn, if_exists='append', index=False)
 
 
-def get_raw_taxons():
+def get_raw_taxa():
     """Get BBS taxon data."""
-    csv_path = RAW_DIR / 'bbs_taxons.csv'
-    raw_taxons = pd.read_csv(csv_path, encoding='ISO-8859-1')
+    csv_path = RAW_DIR / 'bbs_taxa.csv'
+    raw_taxa = pd.read_csv(csv_path, encoding='ISO-8859-1')
 
-    raw_taxons['genus1'] = raw_taxons.genus.str.split().str[0]
-    raw_taxons['species1'] = raw_taxons.species.str.split().str[0]
-    raw_taxons['sci_name'] = raw_taxons.genus1 + ' ' + raw_taxons.species1
-    raw_taxons = raw_taxons.loc[:, ['sci_name', 'aou']]
-    raw_taxons = raw_taxons.set_index('sci_name')
+    raw_taxa['genus1'] = raw_taxa.genus.str.split().str[0]
+    raw_taxa['species1'] = raw_taxa.species.str.split().str[0]
+    raw_taxa['sci_name'] = raw_taxa.genus1 + ' ' + raw_taxa.species1
+    raw_taxa = raw_taxa.loc[:, ['sci_name', 'aou']]
+    raw_taxa = raw_taxa.set_index('sci_name')
 
     sql = """SELECT sci_name, taxon_id FROM taxa"""
     taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
     taxa = taxa.merge(
-        raw_taxons, how='inner', left_index=True, right_index=True)
+        raw_taxa, how='inner', left_index=True, right_index=True)
 
     return taxa.set_index('aou').taxon_id.to_dict()
 

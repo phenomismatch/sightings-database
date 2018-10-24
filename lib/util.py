@@ -49,7 +49,7 @@ def filter_lng_lat(
     return df[good_lng & good_lat]
 
 
-# def drop_duplicate_taxons(taxa):
+# def drop_duplicate_taxa(taxa):
 #     """Remove."""
 #     cxn = db.connect()
 #     existing = pd.read_sql('SELECT sci_name, taxon_id FROM taxa', cxn)
