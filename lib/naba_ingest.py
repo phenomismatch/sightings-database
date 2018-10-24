@@ -78,7 +78,7 @@ def insert_taxa(raw_data):
     taxa['target'] = 't'
     taxa['common_name'] = ''
 
-    # taxa = util.drop_duplicate_taxa(taxa)
+    taxa = db.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
 

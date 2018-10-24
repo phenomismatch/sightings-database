@@ -12,12 +12,12 @@ TAXON_DIR = Path('data') / 'raw' / 'taxonomy'
 
 def ingest():
     """Extract, transform, & load Clements taxonomy into the database."""
+    log(f'Ingesting {DATASET_ID} data')
+
     csv_path = \
         TAXON_DIR / 'eBird-Clements-v2018-integrated-checklist-August-2018.csv'
 
     db.delete_dataset(DATASET_ID)
-
-    log(f'Ingesting {DATASET_ID} data')
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
@@ -33,17 +33,18 @@ def ingest():
         'eBird species group': 'group'})
 
     taxa.sci_name = taxa.sci_name.str.split().str.join(' ')
+    taxa = db.drop_duplicate_taxa(taxa)
+
     taxa['genus'] = taxa.sci_name.str.split().str[0]
     taxa['class'] = 'aves'
 
     targets = pd.read_csv(TAXON_DIR / 'target_birds.csv').sci_name.tolist()
-    target = taxa.sci_name.isin(targets)
-    taxa.loc[target, 'target'] = 't'
-
-    # taxa = util.drop_duplicate_taxa(taxa)
+    targets = taxa.sci_name.isin(targets)
+    taxa.loc[targets, 'target'] = 't'
 
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
-    taxa.to_sql('taxa', db.connect(), if_exists='append', index=False)
+    taxa.loc[:, db.TAXA_FIELDS].to_sql(
+        'taxa', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':

@@ -47,12 +47,3 @@ def filter_lng_lat(
     good_lat = df[lat_col].between(lat[0], lat[1])
 
     return df[good_lng & good_lat]
-
-
-# def drop_duplicate_taxa(taxa):
-#     """Remove."""
-#     cxn = db.connect()
-#     existing = pd.read_sql('SELECT sci_name, taxon_id FROM taxa', cxn)
-#     existing = existing.set_index('sci_name').taxon_id.to_dict()
-#     in_existing = taxa.sci_name.isin(existing)
-#     return taxa.loc[~in_existing, :].drop_duplicates('sci_name').copy()

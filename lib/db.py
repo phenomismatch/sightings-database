@@ -6,6 +6,7 @@ from datetime import datetime
 import sqlite3
 import subprocess
 from pathlib import Path
+import pandas as pd
 from lib.util import log
 
 
@@ -15,6 +16,8 @@ DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
 TABLES = 'datasets taxa places events counts'.split()
+TAXA_FIELDS = """taxon_id sci_name group class order family genus common_name
+    category target""".split()
 PLACE_FIELDS = 'place_id dataset_id lng lat radius place_json'.split()
 EVENT_FIELDS = """event_id place_id dataset_id year day started ended
     event_json""".split()
@@ -70,7 +73,6 @@ def delete_dataset(dataset_id):
 
     cxn = connect()
     cxn.execute('DELETE FROM datasets WHERE dataset_id = ?', (dataset_id, ))
-    cxn.execute('DELETE FROM taxa WHERE dataset_id = ?', (dataset_id, ))
     cxn.execute('DELETE FROM places WHERE dataset_id = ?', (dataset_id, ))
     cxn.execute('DELETE FROM events WHERE dataset_id = ?', (dataset_id, ))
     cxn.execute('DELETE FROM counts WHERE dataset_id = ?', (dataset_id, ))
@@ -88,7 +90,7 @@ def next_id(table):
     cxn = connect()
     if not table_exists(cxn, table):
         return 1
-    field = table[:-1] + '_id'
+    field = 'taxon_id' if table == 'taxa' else table[:-1] + '_id'
     sql = 'SELECT COALESCE(MAX({}), 0) AS id FROM {}'.format(field, table)
     return cxn.execute(sql).fetchone()[0] + 1
 
@@ -129,3 +131,12 @@ def load_postgres():
     script = fspath(SCRIPT_PATH / 'import_db_postgres.sql')
     cmd = f'psql -d sightings -a -f {script}'
     subprocess.check_call(cmd, shell=True)
+
+
+def drop_duplicate_taxa(taxa):
+    """Remove taxa already in the database from the data frame."""
+    cxn = connect()
+    existing = pd.read_sql('SELECT sci_name, taxon_id FROM taxa', cxn)
+    existing = existing.set_index('sci_name').taxon_id.to_dict()
+    in_existing = taxa.sci_name.isin(existing)
+    return taxa.loc[~in_existing, :].drop_duplicates('sci_name').copy()

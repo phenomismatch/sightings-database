@@ -10,6 +10,7 @@ import lib.ebird_ingest
 import lib.pollard_ingest
 import lib.naba_ingest
 import lib.caterpillar_ingest
+import lib.missing_taxa
 
 
 INGESTS = [
@@ -46,6 +47,9 @@ def parse_args():
     parser.add_argument('--load-postgres', action='store_true',
                         help="""Import the CSV files into the PostgreSQL
                             database.""")
+    parser.add_argument('--missing', action='store_true',
+                        help="""Find the bird taxons that are missing
+                            from Clements taxonomy..""")
     return parser.parse_args()
 
 
@@ -80,6 +84,9 @@ def etl():
 
     if args.load_postgres:
         db.load_postgres()
+
+    if args.missing:
+        lib.missing_taxa.missing_birds()
 
     log('Done')
 

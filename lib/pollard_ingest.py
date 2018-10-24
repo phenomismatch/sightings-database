@@ -63,14 +63,13 @@ def insert_taxa(raw_data):
     taxa.rename(columns={'Species': 'common_name'}, inplace=True)
 
     taxa['genus'] = taxa.sci_name.str.split().str[0]
-    taxa['dataset_id'] = DATASET_ID
     taxa['class'] = 'lepidoptera'
     taxa['group'] = None
     taxa['order'] = None
     taxa['family'] = None
     taxa['target'] = 't'
 
-    # taxa = util.drop_duplicate_taxa(taxa)
+    taxa = db.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
 
