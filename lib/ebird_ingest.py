@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import lib.db as db
 import lib.util as util
-from lib.log import log
+from lib.util import log
 
 
 DATASET_ID = 'ebird'
@@ -50,11 +50,11 @@ def ingest():
 def get_taxons():
     """Build a dictionary of scientific names and taxon_ids."""
     sql = """SELECT taxon_id, sci_name
-               FROM taxons
+               FROM taxa
               WHERE target = 't'
                 AND "class"='aves'"""
-    taxons = pd.read_sql(sql, db.connect())
-    return taxons.set_index('sci_name').taxon_id.to_dict()
+    taxa = pd.read_sql(sql, db.connect())
+    return taxa.set_index('sci_name').taxon_id.to_dict()
 
 
 def filter_data(raw_data, to_taxon_id):

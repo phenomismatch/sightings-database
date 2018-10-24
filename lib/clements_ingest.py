@@ -3,8 +3,7 @@
 from pathlib import Path
 import pandas as pd
 import lib.db as db
-import lib.util as util
-from lib.log import log
+from lib.util import log
 
 
 DATASET_ID = 'clements'
@@ -26,31 +25,25 @@ def ingest():
         'title': 'Standardized birds species codes',
         'url': 'https://www.birdpop.org/pages/birdSpeciesCodes.php'})
 
-    taxons = pd.read_csv(csv_path, dtype='unicode')
+    taxa = pd.read_csv(csv_path, encoding='ISO-8859-1', dtype=object)
 
-    taxons = taxons.rename(columns={
+    taxa = taxa.rename(columns={
         'scientific name': 'sci_name',
-        'English name': 'common_name'})
+        'English name': 'common_name',
+        'eBird species group': 'group'})
 
-    is_species = taxons.category == 'species'
-    columns = ['sci_name', 'order', 'family', 'common_name']
-    taxons = taxons.loc[is_species, columns]
-
-    taxons.sci_name = taxons.sci_name.str.split().str.join(' ')
-    taxons['genus'] = taxons.sci_name.str.split().str[0]
-    taxons['dataset_id'] = DATASET_ID
-    taxons['class'] = 'aves'
-    taxons['group'] = None
+    taxa.sci_name = taxa.sci_name.str.split().str.join(' ')
+    taxa['genus'] = taxa.sci_name.str.split().str[0]
+    taxa['class'] = 'aves'
 
     targets = pd.read_csv(TAXON_DIR / 'target_birds.csv').sci_name.tolist()
-    target = taxons.sci_name.isin(targets)
-    taxons.loc[target, 'target'] = 't'
+    target = taxa.sci_name.isin(targets)
+    taxa.loc[target, 'target'] = 't'
 
-    taxons = util.add_taxon_genera_records(taxons)
-    taxons = util.drop_duplicate_taxons(taxons)
+    # taxa = util.drop_duplicate_taxons(taxa)
 
-    taxons['taxon_id'] = db.get_ids(taxons, 'taxons')
-    taxons.to_sql('taxons', db.connect(), if_exists='append', index=False)
+    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa.to_sql('taxa', db.connect(), if_exists='append', index=False)
 
 
 if __name__ == '__main__':

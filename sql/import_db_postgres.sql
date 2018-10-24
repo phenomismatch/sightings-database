@@ -6,7 +6,7 @@
 
 \copy codes FROM '/museum/rafe/sightings/data/interim/codes.csv' WITH (FORMAT csv);
 
-\copy taxons FROM '/museum/rafe/sightings/data/interim/taxons.csv' WITH (FORMAT csv);
+\copy taxa FROM '/museum/rafe/sightings/data/interim/taxa.csv' WITH (FORMAT csv);
 
 \copy places FROM '/museum/rafe/sightings/data/interim/places.csv' WITH (FORMAT csv);
 

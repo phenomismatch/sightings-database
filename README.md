@@ -19,7 +19,7 @@ Currently, all data is stored in a single SQLite3 or PostgreSQL (PostGIS) databa
 There are 3 main tables, a few region tables, and a few miscellaneous tables.
 
 Main tables:
-1. taxons: Data about the species and if it is going to be used in the analysis.
+1. taxa: Data about the species and if it is going to be used in the analysis.
 1. events: Date and spatial coordinates of each observation.
 1. counts: What species were observed and how many. This is a child table of events.
 

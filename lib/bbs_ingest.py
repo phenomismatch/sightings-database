@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import lib.db as db
 import lib.util as util
-from lib.log import log
+from lib.util import log
 
 
 DATASET_ID = 'bbs'
@@ -152,12 +152,12 @@ def get_raw_taxons():
     raw_taxons = raw_taxons.loc[:, ['sci_name', 'aou']]
     raw_taxons = raw_taxons.set_index('sci_name')
 
-    sql = """SELECT sci_name, taxon_id FROM taxons"""
-    taxons = pd.read_sql(sql, db.connect()).set_index('sci_name')
-    taxons = taxons.merge(
+    sql = """SELECT sci_name, taxon_id FROM taxa"""
+    taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
+    taxa = taxa.merge(
         raw_taxons, how='inner', left_index=True, right_index=True)
 
-    return taxons.set_index('aou').taxon_id.to_dict()
+    return taxa.set_index('aou').taxon_id.to_dict()
 
 
 if __name__ == '__main__':

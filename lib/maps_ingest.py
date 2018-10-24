@@ -6,7 +6,7 @@ import pandas as pd
 from simpledbf import Dbf5
 import lib.db as db
 import lib.util as util
-from lib.log import log
+from lib.util import log
 
 
 DATASET_ID = 'maps'
@@ -185,12 +185,12 @@ def get_raw_taxons():
     raw = raw.loc[:, ['SCINAME', 'SPEC']]
     raw = raw.set_index('SCINAME')
 
-    sql = """SELECT sci_name, taxon_id FROM taxons"""
-    taxons = pd.read_sql(sql, db.connect()).set_index('sci_name')
+    sql = """SELECT sci_name, taxon_id FROM taxa"""
+    taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
 
-    taxons = taxons.merge(raw, how='inner', left_index=True, right_index=True)
+    taxa = taxa.merge(raw, how='inner', left_index=True, right_index=True)
 
-    return taxons.set_index('SPEC').taxon_id.to_dict()
+    return taxa.set_index('SPEC').taxon_id.to_dict()
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ cxn <- dbConnect(
 places <- tbl(cxn, "places")
 events <- tbl(cxn, "events")
 counts <- tbl(cxn, "counts")
-taxons <- tbl(cxn, "taxons")
+taxa <- tbl(cxn, "taxa")
 
 
 # "dplyr" is lazy and only evaluates as little as possible to create the desired output.
@@ -26,7 +26,7 @@ taxons <- tbl(cxn, "taxons")
 all_tables <- places %>%
   inner_join(events, by = "place_id") %>%
   inner_join(counts, by = "event_id") %>%
-  inner_join(taxons, by = "taxon_id") %>%
+  inner_join(taxa, by = "taxon_id") %>%
   filter(
     dataset_id == 'ebird',
     year == 2014,

@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import lib.db as db
 import lib.util as util
-from lib.log import log
+from lib.util import log
 
 
 DATASET_ID = 'caterpillar'
@@ -34,34 +34,33 @@ def ingest():
 
 
 def insert_taxons():
-    """Insert taxons."""
-    log(f'Inserting {DATASET_ID} taxons')
+    """Insert taxa."""
+    log(f'Inserting {DATASET_ID} taxa')
 
     cxn = db.connect()
 
-    taxons = pd.read_csv(SIGHTINGS_CSV, encoding='ISO-8859-1')
+    taxa = pd.read_csv(SIGHTINGS_CSV, encoding='ISO-8859-1')
 
-    firsts = taxons.Group.duplicated(keep='first')
-    taxons = taxons.loc[firsts, ['Group']].copy()
-    taxons = taxons.rename(columns={'Group': 'group'})
+    firsts = taxa.Group.duplicated(keep='first')
+    taxa = taxa.loc[firsts, ['Group']].copy()
+    taxa = taxa.rename(columns={'Group': 'group'})
 
-    taxons['sci_name'] = taxons.group
-    taxons['genus'] = None
-    taxons['dataset_id'] = DATASET_ID
-    taxons['class'] = None
-    taxons['order'] = None
-    taxons['family'] = None
-    taxons['target'] = None
-    taxons['common_name'] = ''
+    taxa['sci_name'] = taxa.group
+    taxa['genus'] = None
+    taxa['dataset_id'] = DATASET_ID
+    taxa['class'] = None
+    taxa['order'] = None
+    taxa['family'] = None
+    taxa['target'] = None
+    taxa['common_name'] = ''
 
-    taxons = util.add_taxon_genera_records(taxons)
-    taxons = util.drop_duplicate_taxons(taxons)
-    taxons['taxon_id'] = db.get_ids(taxons, 'taxons')
-    taxons.taxon_id = taxons.taxon_id.astype(int)
+    # taxa = util.drop_duplicate_taxons(taxa)
+    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa.taxon_id = taxa.taxon_id.astype(int)
 
-    taxons.to_sql('taxons', cxn, if_exists='append', index=False)
+    taxa.to_sql('taxa', cxn, if_exists='append', index=False)
 
-    sql = """SELECT sci_name, taxon_id FROM taxons WHERE "group" IS NOT NULL"""
+    sql = """SELECT sci_name, taxon_id FROM taxa WHERE "group" IS NOT NULL"""
     return pd.read_sql(sql, cxn).set_index('sci_name').taxon_id.to_dict()
 
 

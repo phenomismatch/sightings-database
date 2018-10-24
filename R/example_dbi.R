@@ -16,7 +16,7 @@ SELECT lng, lat, year, day, count, sci_name,
   FROM places
   JOIN events USING (place_id)
   JOIN counts USING (event_id)
-  JOIN taxons USING (taxon_id)
+  JOIN taxa USING (taxon_id)
  WHERE dataset_id = 'ebird'
    AND lng  BETWEEN  -73 AND  -72
    AND lat  BETWEEN   40 AND   41

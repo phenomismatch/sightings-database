@@ -2,8 +2,15 @@
 
 import re
 import json
+from datetime import datetime
 import pandas as pd
-import lib.db as db
+
+
+def log(msg):
+    """Log a status message."""
+    now = datetime.now().strftime('%Y-%M-%d %H:%M:%S')
+    msg = f'{now} {msg}'
+    print(msg)
 
 
 def normalize_columns_names(df):
@@ -42,19 +49,10 @@ def filter_lng_lat(
     return df[good_lng & good_lat]
 
 
-def drop_duplicate_taxons(taxons):
-    """Update the taxons dataframe and add them to the taxons CSV file."""
-    cxn = db.connect()
-    existing = pd.read_sql('SELECT sci_name, taxon_id FROM taxons', cxn)
-    existing = existing.set_index('sci_name').taxon_id.to_dict()
-    in_existing = taxons.sci_name.isin(existing)
-    return taxons.loc[~in_existing, :].drop_duplicates('sci_name').copy()
-
-
-def add_taxon_genera_records(taxons):
-    """Create genera records."""
-    genera = taxons.groupby('genus').first().reset_index()
-    genera.sci_name = genera.genus + ' sp.'
-    genera.common_name = ''
-    taxons = pd.concat([taxons, genera], sort=True)
-    return taxons
+# def drop_duplicate_taxons(taxa):
+#     """Remove."""
+#     cxn = db.connect()
+#     existing = pd.read_sql('SELECT sci_name, taxon_id FROM taxa', cxn)
+#     existing = existing.set_index('sci_name').taxon_id.to_dict()
+#     in_existing = taxa.sci_name.isin(existing)
+#     return taxa.loc[~in_existing, :].drop_duplicates('sci_name').copy()

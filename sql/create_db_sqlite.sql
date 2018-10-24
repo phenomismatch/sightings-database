@@ -8,10 +8,9 @@ CREATE TABLE datasets (
 );
 
 
-DROP TABLE IF EXISTS taxons;
-CREATE TABLE taxons (
+DROP TABLE IF EXISTS taxa;
+CREATE TABLE taxa (
   taxon_id    INTEGER NOT NULL PRIMARY KEY,
-  dataset_id  VARCHAR(12) NOT NULL,
   sci_name    VARCHAR(80) NOT NULL UNIQUE,
   "group"     VARCHAR(40),
   "class"     VARCHAR(20),
@@ -19,16 +18,17 @@ CREATE TABLE taxons (
   family      VARCHAR(80),
   genus       VARCHAR(20),
   common_name VARCHAR(120),
+  category    VARCHAR(20),
   target      BOOLEAN
 );
-CREATE INDEX taxons_dataset_id ON taxons (dataset_id);
-CREATE INDEX taxons_sci_name   ON taxons (sci_name);
-CREATE INDEX taxons_group  ON taxons ("group");
-CREATE INDEX taxons_class  ON taxons ("class");
-CREATE INDEX taxons_order  ON taxons ("order");
-CREATE INDEX taxons_family ON taxons (family);
-CREATE INDEX taxons_genus  ON taxons (genus);
-CREATE INDEX taxons_target ON taxons (target);
+CREATE INDEX taxons_sci_name ON taxa (sci_name);
+CREATE INDEX taxons_group  ON taxa ("group");
+CREATE INDEX taxons_class  ON taxa ("class");
+CREATE INDEX taxons_order  ON taxa ("order");
+CREATE INDEX taxons_family ON taxa (family);
+CREATE INDEX taxons_genus  ON taxa (genus);
+CREATE INDEX taxons_target ON taxa (target);
+CREATE INDEX taxons_category ON taxa (category);
 
 
 DROP TABLE IF EXISTS places;

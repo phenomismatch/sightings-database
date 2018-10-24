@@ -9,11 +9,11 @@ def get_species(species):
     """Output data for the given species to the a CSV file."""
     species = ','.join([f"'{s}'" for s in species])
 
-    sql = """SELECT taxons.*, places.*, events.*, counts.*
+    sql = """SELECT taxa.*, places.*, events.*, counts.*
                FROM places
                JOIN events USING (place_id)
                JOIN counts USING (event_id)
-               JOIN taxons USING (taxon_id)
+               JOIN taxa USING (taxon_id)
               WHERE sci_name IN ({})""".format(species)
     return pd.read_sql(sql, db.connect())
 

@@ -6,7 +6,7 @@ from datetime import datetime
 import sqlite3
 import subprocess
 from pathlib import Path
-from lib.log import log
+from lib.util import log
 
 
 PROCESSED = Path('data') / 'processed'
@@ -14,7 +14,7 @@ INTERIM = Path('data') / 'interim'
 DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
-TABLES = 'datasets taxons places events counts'.split()
+TABLES = 'datasets taxa places events counts'.split()
 PLACE_FIELDS = 'place_id dataset_id lng lat radius place_json'.split()
 EVENT_FIELDS = """event_id place_id dataset_id year day started ended
     event_json""".split()
@@ -70,11 +70,10 @@ def delete_dataset(dataset_id):
 
     cxn = connect()
     cxn.execute('DELETE FROM datasets WHERE dataset_id = ?', (dataset_id, ))
-    cxn.execute('DELETE FROM taxons WHERE dataset_id = ?', (dataset_id, ))
+    cxn.execute('DELETE FROM taxa WHERE dataset_id = ?', (dataset_id, ))
     cxn.execute('DELETE FROM places WHERE dataset_id = ?', (dataset_id, ))
     cxn.execute('DELETE FROM events WHERE dataset_id = ?', (dataset_id, ))
     cxn.execute('DELETE FROM counts WHERE dataset_id = ?', (dataset_id, ))
-    cxn.execute('DELETE FROM codes WHERE dataset_id = ?', (dataset_id, ))
     cxn.commit()
 
 

@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import lib.db as db
 import lib.util as util
-from lib.log import log
+from lib.util import log
 
 
 DATASET_ID = 'pollard'
@@ -52,33 +52,32 @@ def get_raw_data():
 
 
 def insert_taxons(raw_data):
-    """Insert taxons."""
-    log(f'Inserting {DATASET_ID} taxons')
+    """Insert taxa."""
+    log(f'Inserting {DATASET_ID} taxa')
 
     cxn = db.connect()
 
     firsts = raw_data.sci_name.duplicated(keep='first')
-    taxons = raw_data.loc[firsts, ['sci_name', 'Species']]
+    taxa = raw_data.loc[firsts, ['sci_name', 'Species']]
 
-    taxons.rename(columns={'Species': 'common_name'}, inplace=True)
+    taxa.rename(columns={'Species': 'common_name'}, inplace=True)
 
-    taxons['genus'] = taxons.sci_name.str.split().str[0]
-    taxons['dataset_id'] = DATASET_ID
-    taxons['class'] = 'lepidoptera'
-    taxons['group'] = None
-    taxons['order'] = None
-    taxons['family'] = None
-    taxons['target'] = 't'
+    taxa['genus'] = taxa.sci_name.str.split().str[0]
+    taxa['dataset_id'] = DATASET_ID
+    taxa['class'] = 'lepidoptera'
+    taxa['group'] = None
+    taxa['order'] = None
+    taxa['family'] = None
+    taxa['target'] = 't'
 
-    taxons = util.add_taxon_genera_records(taxons)
-    taxons = util.drop_duplicate_taxons(taxons)
-    taxons['taxon_id'] = db.get_ids(taxons, 'taxons')
-    taxons.taxon_id = taxons.taxon_id.astype(int)
+    # taxa = util.drop_duplicate_taxons(taxa)
+    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa.taxon_id = taxa.taxon_id.astype(int)
 
-    taxons.to_sql('taxons', cxn, if_exists='append', index=False)
+    taxa.to_sql('taxa', cxn, if_exists='append', index=False)
 
     sql = """SELECT sci_name, taxon_id
-               FROM taxons
+               FROM taxa
               WHERE "class" = 'lepidoptera'
                 AND target = 't'"""
     return pd.read_sql(sql, cxn).set_index('sci_name').taxon_id.to_dict()

@@ -2,8 +2,7 @@
 
 import argparse
 import lib.db as db
-from lib.log import log
-import lib.countries_ingest
+from lib.util import log
 import lib.clements_ingest
 import lib.bbs_ingest
 import lib.maps_ingest
