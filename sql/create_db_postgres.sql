@@ -6,7 +6,7 @@ CREATE EXTENSION IF NOT EXISTS "postgis_topology";
 -- GRANT sightings_user TO username;
 
 DROP TABLE IF EXISTS datasets CASCADE;
-DROP TABLE IF EXISTS taxa   CASCADE;
+DROP TABLE IF EXISTS taxa     CASCADE;
 DROP TABLE IF EXISTS places   CASCADE;
 DROP TABLE IF EXISTS events   CASCADE;
 DROP TABLE IF EXISTS counts;
@@ -33,14 +33,14 @@ CREATE TABLE taxa (
   category    VARCHAR(20),
   target      BOOLEAN
 );
-CREATE INDEX taxons_sci_name ON taxa (sci_name);
-CREATE INDEX taxons_class  ON taxa ("class");
-CREATE INDEX taxons_order  ON taxa ("order");
-CREATE INDEX taxons_group  ON taxa ("group");
-CREATE INDEX taxons_family ON taxa (family);
-CREATE INDEX taxons_genus  ON taxa (genus);
-CREATE INDEX taxons_target ON taxa (target);
-CREATE INDEX taxons_category ON taxa (category);
+CREATE INDEX taxa_sci_name ON taxa (sci_name);
+CREATE INDEX taxa_class  ON taxa ("class");
+CREATE INDEX taxa_order  ON taxa ("order");
+CREATE INDEX taxa_group  ON taxa ("group");
+CREATE INDEX taxa_family ON taxa (family);
+CREATE INDEX taxa_genus  ON taxa (genus);
+CREATE INDEX taxa_target ON taxa (target);
+CREATE INDEX taxa_category ON taxa (category);
 
 
 CREATE TABLE places (
