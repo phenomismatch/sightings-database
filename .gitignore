@@ -36,6 +36,9 @@ data/raw/naba/*
 data/raw/caterpillar/*
 !data/raw/caterpillar/.gitkeep
 
+data/raw/nestwatch/*
+!data/raw/nestwatch/.gitkeep
+
 data/interim/*
 !data/interim/.gitkeep
 
