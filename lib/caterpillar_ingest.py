@@ -120,7 +120,7 @@ def insert_events(to_place_id):
         SubmissionTimestamp LocalDate LocalTime ObservationMethod Notes
         WetLeaves PlantSpecies NumberOfLeaves AverageLeafLength HerbivoryScore
         SubmittedThroughApp MinimumTemperature MaximumTemperature""".split()
-    events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
+    events['event_json'] = util.json_object(raw_events, fields)
 
     events.to_sql('events', db.connect(), if_exists='append', index=False)
 
@@ -144,7 +144,7 @@ def insert_counts(to_event_id, to_taxon_id):
 
     fields = """ID SurveyFK Length PhotoURL Notes Hairy Rolled
         Tented""".split()
-    counts['count_json'] = util.json_object(raw_counts, fields, DATASET_ID)
+    counts['count_json'] = util.json_object(raw_counts, fields)
 
     has_event_id = counts.event_id.notna()
     has_taxon_id = counts.taxon_id.notna()

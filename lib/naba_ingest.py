@@ -148,7 +148,7 @@ def insert_events(raw_data, to_place_id):
     events['ended'] = None
 
     fields = 'iYear Month Day PARTY_HOURS'.split()
-    events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
+    events['event_json'] = util.json_object(raw_events, fields)
 
     events.to_sql('events', db.connect(), if_exists='append', index=False)
 
@@ -173,7 +173,7 @@ def insert_counts(raw_data, to_event_id, to_taxon_id):
     counts['count'] = raw_data.SumOfBFLY_COUNT
 
     fields = 'SPECIES_CODE Gen_Tribe_Fam Species'.split()
-    counts['count_json'] = util.json_object(raw_data, fields, DATASET_ID)
+    counts['count_json'] = util.json_object(raw_data, fields)
 
     has_event_id = counts.event_id.notna()
     has_taxon_id = counts.taxon_id.notna()

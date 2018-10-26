@@ -140,3 +140,10 @@ def drop_duplicate_taxa(taxa):
     existing = existing.set_index('sci_name').taxon_id.to_dict()
     in_existing = taxa.sci_name.isin(existing)
     return taxa.loc[~in_existing, :].drop_duplicates('sci_name').copy()
+
+
+def update_taxa(counts):
+    """Update taxonomies to point to revised scientific names."""
+    # Get revised taxa
+    # Get counts with revised taxon_ids
+    # Update those taxon_ids

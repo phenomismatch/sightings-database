@@ -20,14 +20,12 @@ def normalize_columns_names(df):
     df.rename(columns=lambda x: re.sub(r'^_|_$', '', x), inplace=True)
 
 
-def json_object(df, fields, dataset_id=None):
+def json_object(df, fields):
     """Build an array of json objects from the dataframe fields."""
     df = df.fillna('')
     json_array = []
     for row in df.itertuples():
         obj = {}
-        if dataset_id:
-            obj['dataset_id'] = dataset_id
         for field in fields:
             value = getattr(row, field)
             if value != '':

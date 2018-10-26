@@ -126,7 +126,7 @@ def insert_events(to_place_id):
     events['ended'] = raw_events['END']
 
     fields = 'STA DATE STATION'.split()
-    events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
+    events['event_json'] = util.json_object(raw_events, fields)
 
     events.loc[events.place_id >= 0, :].to_sql(
         'events', db.connect(), if_exists='append', index=False)
@@ -171,7 +171,7 @@ def insert_counts(to_event_id):
         STATUS DATE TIME STA STATION NET ANET DISP NOTE PPC SSC PPF SSF TT RR
         HD UPP UNP BPL NF FP SW COLOR SC CC BC MC WC JC OV1 V1 VM V94 V95 V96
         V97 OVYR VYR N B A""".split()
-    counts['count_json'] = util.json_object(raw_counts, fields, DATASET_ID)
+    counts['count_json'] = util.json_object(raw_counts, fields)
 
     counts = counts[counts.event_id.notna() & counts.taxon_id.notna()]
 

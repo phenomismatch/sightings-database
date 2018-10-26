@@ -146,7 +146,7 @@ def insert_events(raw_data, to_place_id, to_event_id):
     fields = """SAMPLING_EVENT_IDENTIFIER EFFORT_AREA_HA APPROVED REVIEWED
         NUMBER_OBSERVERS ALL_SPECIES_REPORTED OBSERVATION_DATE GROUP_IDENTIFIER
         DURATION_MINUTES""".split()
-    events['event_json'] = util.json_object(events, fields, DATASET_ID)
+    events['event_json'] = util.json_object(events, fields)
 
     events.loc[:, db.EVENT_FIELDS].to_sql(
         'events', db.connect(), if_exists='append', index=False)
@@ -177,7 +177,7 @@ def insert_counts(counts, to_event_id, to_taxon_id):
         TAXONOMIC_ORDER CATEGORY SUBSPECIES_SCIENTIFIC_NAME
         BREEDING_BIRD_ATLAS_CODE BREEDING_BIRD_ATLAS_CATEGORY AGE_SEX
         OBSERVER_ID HAS_MEDIA""".split()
-    counts['count_json'] = util.json_object(counts, fields, DATASET_ID)
+    counts['count_json'] = util.json_object(counts, fields)
 
     counts.loc[:, db.COUNT_FIELDS].to_sql(
         'counts', db.connect(), if_exists='append', index=False)

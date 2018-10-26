@@ -144,7 +144,7 @@ def insert_events(raw_data, to_place_id):
         Site Route County State Start_time End_time Duration Survey Temp
         Sky Wind Archived Was_the_survey_completed Monitoring_Program Date
         Temperature_end Sky_end Wind_end'''.split()
-    events['event_json'] = util.json_object(raw_data, fields, DATASET_ID)
+    events['event_json'] = util.json_object(raw_data, fields)
 
     has_place_id = events.place_id.notna()
     events = events.loc[has_place_id, :]
@@ -168,7 +168,7 @@ def insert_counts(raw_data, to_taxon_id):
 
     fields = """A B C D E A_key B_key C_key D_key E_key Observer_Spotter
         Other_participants Recorder_Scribe Taxon_as_reported""".split()
-    counts['count_json'] = util.json_object(raw_data, fields, DATASET_ID)
+    counts['count_json'] = util.json_object(raw_data, fields)
 
     has_place_id = raw_data.place_id.notna().values
     counts = counts.loc[has_place_id, :]

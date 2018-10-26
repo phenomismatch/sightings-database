@@ -85,7 +85,7 @@ def insert_events(to_place_id):
     fields = """routedataid countrynum statenum route rpid month day obsn
         totalspp starttemp endtemp tempscale startwind endwind startsky endsky
         assistant runtype""".split()
-    events['event_json'] = util.json_object(raw_events, fields, DATASET_ID)
+    events['event_json'] = util.json_object(raw_events, fields)
 
     events.to_sql('events', db.connect(), if_exists='append', index=False)
 
@@ -134,7 +134,7 @@ def insert_counts(to_event_id):
 
     fields = """record_id countrynum statenum route rpid year aou count10
         count20 count30 count40 count50 stoptotal""".split()
-    counts['count_json'] = util.json_object(raw_counts, fields, DATASET_ID)
+    counts['count_json'] = util.json_object(raw_counts, fields)
 
     counts = counts[counts.event_id.notna() & counts.taxon_id.notna()]
 
