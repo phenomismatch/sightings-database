@@ -1,4 +1,4 @@
-"""Utiliites & constants."""
+"""Utilities & constants."""
 
 import re
 import json
