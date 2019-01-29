@@ -1,8 +1,4 @@
-"""
-Find the bird taxons that are missing from Clements taxonomy.
-
-Run 'python etl.py -ci clements' before this utility.
-"""
+"""Find the bird taxons that are missing from Clements taxonomy."""
 
 from pathlib import Path
 import pandas as pd

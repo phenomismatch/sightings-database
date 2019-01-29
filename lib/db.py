@@ -7,7 +7,7 @@ import sqlite3
 import subprocess
 from pathlib import Path
 import pandas as pd
-from lib.util import log
+from lib.util import log, update_json
 
 
 PROCESSED = Path('data') / 'processed'
@@ -79,10 +79,10 @@ def delete_dataset(dataset_id):
     cxn.commit()
 
 
-def get_ids(df, table):
+def get_ids(dfn, table):
     """Get IDs to add to the dataframe."""
     start = next_id(table)
-    return range(start, start + df.shape[0])
+    return range(start, start + dfn.shape[0])
 
 
 def next_id(table):
@@ -142,8 +142,13 @@ def drop_duplicate_taxa(taxa):
     return taxa.loc[~in_existing, :].drop_duplicates('sci_name').copy()
 
 
-def update_taxa(counts):
-    """Update taxonomies to point to revised scientific names."""
-    # Get revised taxa
-    # Get counts with revised taxon_ids
-    # Update those taxon_ids
+def update_taxa_json(taxa, fields):
+    """Update json in the taxon_json with the data from the fields."""
+    taxa.taxon_json = taxa.apply(
+        lambda x: update_json(x, fields), axis='columns')
+
+    batch = taxa.loc[:, ['taxon_json', 'taxon_id']].values.tolist()
+    cxn = connect()
+    sql = """UPDATE taxa SET taxon_json = ? WHERE taxon_id = ?"""
+    cxn.executemany(sql, batch)
+    cxn.commit()

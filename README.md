@@ -13,27 +13,7 @@ Currently, all data is stored in a single SQLite3 or PostgreSQL (PostGIS) databa
 1. Pollard butterfly dataset.
 1. NABA butterfly dataset.
 1. Caterpillar Counts dataset.
-
-
-### Tables
-There are 3 main tables, a few region tables, and a few miscellaneous tables.
-
-Main tables:
-1. taxa: Data about the species and if it is going to be used in the analysis.
-1. events: Date and spatial coordinates of each observation.
-1. counts: What species were observed and how many. This is a child table of events.
-
-Region tables:
-Note that these tables are under heavy development.
-1. Eco3: Ecoregions level 3 for North America.
-
-Misc. tables:
-1. datasets: Information about what datasets were collected
-1. version: DB version information
-1. countries: Holds country codes
-
-### Sample queries (Under heavy development)
-Getting the indices correct for the various queries is an ongoing effort.
+1. NestWatch dataset.
 
 #### Samples in R
 See this R [script](R/example_sql.R) for how to access the spatialite database in R.
