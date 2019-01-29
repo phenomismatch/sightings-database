@@ -19,7 +19,7 @@ def get_species(species):
 
 
 if __name__ == '__main__':
-    df = get_species([
+    DF = get_species([
         'Papilio canadensis',
         'Anthocharis midea',
         'Plebejus saepiolus',
@@ -38,6 +38,6 @@ if __name__ == '__main__':
         'Thymelicus lineola',
         'Ochlodes sylvanoides'])
 
-    now = datetime.now()
-    report_name = f'temp/species_{now.strftime("%Y-%m-%d")}.csv'
-    df.to_csv(report_name, index=False)
+    NOW = datetime.now()
+    REPORT_NAME = f'temp/species_{NOW.strftime("%Y-%m-%d")}.csv'
+    DF.to_csv(REPORT_NAME, index=False)

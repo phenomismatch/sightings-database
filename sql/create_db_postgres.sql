@@ -32,7 +32,8 @@ CREATE TABLE taxa (
   common_name VARCHAR(120),
   category    VARCHAR(20),
   target      BOOLEAN,
-  revised_id  INTEGER
+  revised_id  INTEGER,
+  taxon_json  JSON
 );
 CREATE INDEX taxa_sci_name ON taxa (sci_name);
 CREATE INDEX taxa_class  ON taxa ("class");

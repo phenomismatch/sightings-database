@@ -1,6 +1,7 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
 """Wrapper for sightings database extract, transform, & load functions."""
+
+# pylint: disable=unused-argument
 
 import argparse
 import lib.db as db
@@ -11,6 +12,7 @@ import lib.maps_ingest
 import lib.ebird_ingest
 import lib.pollard_ingest
 import lib.naba_ingest
+import lib.nestwatch_ingest
 import lib.caterpillar_ingest
 
 
@@ -23,6 +25,7 @@ DATASETS = [  # Order matters
     ('pollard', lib.pollard_ingest),
     ('naba', lib.naba_ingest),
     ('caterpillar', lib.caterpillar_ingest),
+    ('nestwatch', lib.nestwatch_ingest),
     ('ebird', lib.ebird_ingest)]
 OPTIONS = [i[0] for i in DATASETS] + ['all']
 
@@ -92,8 +95,8 @@ def ingest(args):
         args.datasets = OPTIONS
 
     # Order matters
-    for ingest, module in DATASETS:
-        if ingest in args.ingest:
+    for _ingest, module in DATASETS:
+        if _ingest in args.datasets:
             log(SEPARATOR)
             module.ingest()
     log(SEPARATOR)

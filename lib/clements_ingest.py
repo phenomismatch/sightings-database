@@ -3,6 +3,7 @@
 from pathlib import Path
 import pandas as pd
 import lib.db as db
+import lib.util as util
 from lib.util import log
 
 
@@ -21,8 +22,8 @@ def ingest():
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
-        'version': '2017-07-27',
-        'title': 'Standardized birds species codes',
+        'version': 'August 2018',
+        'title': 'eBird Clements integrated checklists',
         'url': 'https://www.birdpop.org/pages/birdSpeciesCodes.php'})
 
     taxa = pd.read_csv(csv_path, encoding='ISO-8859-1', dtype=object)
@@ -31,6 +32,7 @@ def ingest():
         'scientific name': 'sci_name',
         'English name': 'common_name',
         'eBird species group': 'group'})
+    taxa.rename(columns=lambda x: x.replace(' ', '_'), inplace=True)
 
     taxa.sci_name = taxa.sci_name.str.split().str.join(' ')
     taxa = db.drop_duplicate_taxa(taxa)
@@ -42,8 +44,11 @@ def ingest():
     targets = taxa.sci_name.isin(targets)
     taxa.loc[targets, 'target'] = 't'
 
+    fields = 'eBird_species_code_2018 sort_v2018 range extinct'.split()
+    taxa['taxon_json'] = util.json_object(taxa, fields)
+
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
-    taxa.loc[:, db.TAXA_FIELDS].to_sql(
+    taxa.loc[:, db.TAXON_FIELDS].to_sql(
         'taxa', db.connect(), if_exists='append', index=False)
 
 

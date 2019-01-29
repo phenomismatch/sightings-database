@@ -16,8 +16,8 @@ DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
 TABLES = 'datasets taxa places events counts'.split()
-TAXA_FIELDS = """taxon_id sci_name group class order family genus common_name
-    category target""".split()
+TAXON_FIELDS = """taxon_id sci_name group class order family genus common_name
+    category target taxon_json""".split()
 PLACE_FIELDS = 'place_id dataset_id lng lat radius place_json'.split()
 EVENT_FIELDS = """event_id place_id dataset_id year day started ended
     event_json""".split()

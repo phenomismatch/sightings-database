@@ -102,14 +102,8 @@ def insert_places(raw_data):
     raw_places['place_id'] = db.get_ids(raw_places, 'places')
     places['place_id'] = raw_places['place_id']
 
-    places['dataset_id'] = DATASET_ID
-
     places['lng'] = pd.to_numeric(raw_places['LONGITUDE'], errors='coerce')
-
     places['lat'] = pd.to_numeric(raw_places['LATITUDE'], errors='coerce')
-
-    places['radius'] = None
-
     places['radius'] = None
     places['dataset_id'] = DATASET_ID
 
