@@ -9,6 +9,7 @@ from lib.util import log
 
 DATASET_ID = 'ebird'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
+RAW_CSV = 'ebd_relDec-2018.txt'
 
 
 def ingest():
@@ -19,13 +20,13 @@ def ingest():
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
-        'title': 'eBird Basic Dataset',
-        'version': 'relFeb-2018',
+        'title': RAW_CSV,
+        'version': 'relDec-2018',
         'url': 'https://ebird.org/home'})
 
     chunk = 1_000_000
     reader = pd.read_csv(
-        RAW_DIR / 'ebd_relFeb-2018.txt',
+        RAW_DIR / RAW_CSV,
         delimiter='\t',
         quoting=3,
         chunksize=chunk,
@@ -45,6 +46,7 @@ def ingest():
         to_place_id = insert_places(raw_data, to_place_id)
         to_event_id = insert_events(raw_data, to_place_id, to_event_id)
         insert_counts(raw_data, to_event_id, to_taxon_id)
+        break
 
 
 def get_taxa():
@@ -97,7 +99,6 @@ def insert_places(raw_data, to_place_id):
     places = places[~old_places]
 
     places['place_id'] = db.get_ids(places, 'places')
-
     places['dataset_id'] = DATASET_ID
 
     is_na = places.radius.isna()
@@ -129,19 +130,17 @@ def insert_events(raw_data, to_place_id, to_event_id):
     events = events[~old_events]
 
     events['event_id'] = db.get_ids(events, 'events')
-
     events['place_key'] = tuple(zip(events.lng, events.lat))
     events['place_id'] = events.place_key.map(to_place_id)
-
     events['year'] = events.date.dt.strftime('%Y')
     events['day'] = events.date.dt.strftime('%j')
-
     events['started'] = pd.to_datetime(events['started'], format='%H:%M:%S')
     events['delta'] = pd.to_numeric(events.DURATION_MINUTES, errors='coerce')
     events.delta = pd.to_timedelta(events.delta, unit='m', errors='coerce')
     events['ended'] = events.started + events.delta
     convert_to_time(events, 'started')
     convert_to_time(events, 'ended')
+    events['dataset_id'] = DATASET_ID
 
     fields = """SAMPLING_EVENT_IDENTIFIER EFFORT_AREA_HA APPROVED REVIEWED
         NUMBER_OBSERVERS ALL_SPECIES_REPORTED OBSERVATION_DATE GROUP_IDENTIFIER
@@ -156,11 +155,11 @@ def insert_events(raw_data, to_place_id, to_event_id):
     return {**to_event_id, **new_event_ids}
 
 
-def convert_to_time(df, column):
+def convert_to_time(dfm, column):
     """Convert the time field from datetime format to HH:MM format."""
-    is_na = df[column].isna()
-    df[column] = df[column].dt.strftime('%H:%M')
-    df.loc[is_na, column] = None
+    is_na = dfm[column].isna()
+    dfm[column] = dfm[column].dt.strftime('%H:%M')
+    dfm.loc[is_na, column] = None
 
 
 def insert_counts(counts, to_event_id, to_taxon_id):
@@ -168,10 +167,9 @@ def insert_counts(counts, to_event_id, to_taxon_id):
     log(f'Inserting {DATASET_ID} counts')
 
     counts['count_id'] = db.get_ids(counts, 'counts')
-
     counts['event_id'] = counts.SAMPLING_EVENT_IDENTIFIER.map(to_event_id)
-
     counts['taxon_id'] = counts.SCIENTIFIC_NAME.map(to_taxon_id)
+    counts['dataset_id'] = DATASET_ID
 
     fields = """SCIENTIFIC_NAME GLOBAL_UNIQUE_IDENTIFIER LAST_EDITED_DATE
         TAXONOMIC_ORDER CATEGORY SUBSPECIES_SCIENTIFIC_NAME
