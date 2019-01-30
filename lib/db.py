@@ -79,10 +79,10 @@ def delete_dataset(dataset_id):
     cxn.commit()
 
 
-def get_ids(dfn, table):
+def get_ids(dfm, table):
     """Get IDs to add to the dataframe."""
     start = next_id(table)
-    return range(start, start + dfn.shape[0])
+    return range(start, start + dfm.shape[0])
 
 
 def next_id(table):

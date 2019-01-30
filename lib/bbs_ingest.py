@@ -59,8 +59,7 @@ def insert_taxa():
     raw_taxa = raw_taxa.set_index('sci_name')
     sql = """SELECT * FROM taxa"""
     taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
-    taxa = taxa.merge(
-        raw_taxa, how='inner', left_index=True, right_index=True)
+    taxa = taxa.merge(raw_taxa, how='inner', left_index=True, right_index=True)
     db.update_taxa_json(taxa, fields)
 
     to_taxon_id = taxa.set_index('aou').taxon_id.to_dict()
@@ -75,7 +74,6 @@ def insert_places():
     raw_places = pd.read_sql(sql, db.connect(BBS_DB))
 
     places = pd.DataFrame()
-
     raw_places['place_id'] = db.get_ids(raw_places, 'places')
     places['place_id'] = raw_places['place_id']
     places['dataset_id'] = DATASET_ID
@@ -107,14 +105,11 @@ def insert_events(to_place_id):
     events['dataset_id'] = DATASET_ID
     raw_events['place_key'] = tuple(zip(raw_events.statenum, raw_events.route))
     events['place_id'] = raw_events.place_key.map(to_place_id)
-
     events['year'] = raw_events['year']
     events['day'] = pd.to_datetime(
         raw_events.loc[:, ['year', 'month', 'day']]).dt.strftime('%j')
-
     events['started'] = raw_events['starttime']
     convert_to_time(events, 'started')
-
     events['ended'] = raw_events['endtime']
     convert_to_time(events, 'ended')
 
@@ -122,7 +117,6 @@ def insert_events(to_place_id):
         totalspp starttemp endtemp tempscale startwind endwind startsky endsky
         assistant runtype""".split()
     events['event_json'] = util.json_object(raw_events, fields)
-
     events.to_sql('events', db.connect(), if_exists='append', index=False)
 
     # Build dictionary to map events to place IDs
