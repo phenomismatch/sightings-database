@@ -38,11 +38,11 @@ def get_raw_data():
     raw_data = pd.read_csv(DATA_CSV, dtype='unicode')
     util.normalize_columns_names(raw_data)
 
-    raw_data['started'] = pd.to_datetime(
-        raw_data['Start_time'], errors='coerce')
+    raw_data['started'] = pd.to_datetime(raw_data.Start_time, errors='coerce')
 
     raw_data['sci_name'] = \
-        raw_data['Scientific_Name'].str.split().str.join(' ')
+        raw_data.Scientific_Name.str.split().str.join(' ')
+    raw_data['dataset_id'] = DATASET_ID
 
     has_started = raw_data.started.notna()
     has_sci_name = raw_data.sci_name.notna()
@@ -58,8 +58,7 @@ def insert_taxa(raw_data):
     cxn = db.connect()
 
     firsts = raw_data.sci_name.duplicated(keep='first')
-    taxa = raw_data.loc[firsts, ['sci_name', 'Species']]
-
+    taxa = raw_data.loc[~firsts, ['sci_name', 'Species']]
     taxa.rename(columns={'Species': 'common_name'}, inplace=True)
 
     taxa['genus'] = taxa.sci_name.str.split().str[0]
@@ -72,13 +71,13 @@ def insert_taxa(raw_data):
     taxa = db.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
+    taxa['taxon_json'] = '{}'
 
     taxa.to_sql('taxa', cxn, if_exists='append', index=False)
 
     sql = """SELECT sci_name, taxon_id
                FROM taxa
-              WHERE "class" = 'lepidoptera'
-                AND target = 't'"""
+              WHERE "class" = 'lepidoptera'"""
     return pd.read_sql(sql, cxn).set_index('sci_name').taxon_id.to_dict()
 
 
@@ -87,7 +86,6 @@ def insert_places(raw_data):
     log(f'Inserting {DATASET_ID} places')
 
     raw_places = pd.read_csv(PLACE_CSV, dtype='unicode')
-
     raw_places.rename(columns=lambda x: x.replace(' ', '_'), inplace=True)
 
     place_df = raw_data.drop_duplicates(['Site', 'Route']).copy()
@@ -96,16 +94,11 @@ def insert_places(raw_data):
         raw_places, place_df, how='left', on=['Site', 'Route'])
 
     places = pd.DataFrame()
-
     raw_places['place_id'] = db.get_ids(raw_places, 'places')
     places['place_id'] = raw_places['place_id']
-
     places['dataset_id'] = DATASET_ID
-
     places['lng'] = pd.to_numeric(raw_places['long'], errors='coerce')
-
     places['lat'] = pd.to_numeric(raw_places['lat'], errors='coerce')
-
     places['radius'] = None
 
     fields = ['Site', 'Route', 'County', 'State', 'Land_Owner', 'transect_id',
@@ -114,9 +107,7 @@ def insert_places(raw_data):
     places['place_json'] = util.json_object(raw_places, fields)
 
     places = places[places.lat.notna() & places.lng.notna()]
-
     places.to_sql('places', db.connect(), if_exists='append', index=False)
-
     return raw_places.set_index(['Site', 'Route']).place_id.to_dict()
 
 
@@ -128,17 +119,15 @@ def insert_events(raw_data, to_place_id):
 
     raw_data['event_id'] = db.get_ids(raw_data, 'events')
     events['event_id'] = raw_data.event_id
-
     raw_data['place_key'] = tuple(zip(raw_data.Site, raw_data.Route))
     raw_data['place_id'] = raw_data.place_key.map(to_place_id)
     events['place_id'] = raw_data.place_id
-
     events['year'] = raw_data.started.dt.strftime('%Y')
     events['day'] = raw_data.started.dt.strftime('%j')
-
     events['started'] = raw_data.started.dt.strftime('%H:%M')
     events['ended'] = pd.to_datetime(
         raw_data.End_time, errors='coerce').dt.strftime('%H:%M')
+    events['dataset_id'] = raw_data.dataset_id
 
     fields = '''
         Site Route County State Start_time End_time Duration Survey Temp
@@ -157,14 +146,11 @@ def insert_counts(raw_data, to_taxon_id):
     log(f'Inserting {DATASET_ID} counts')
 
     counts = pd.DataFrame()
-
     counts['count_id'] = db.get_ids(raw_data, 'counts')
-
     counts['event_id'] = raw_data.event_id.astype(int)
-
     counts['taxon_id'] = raw_data.sci_name.map(to_taxon_id)
-
     counts['count'] = raw_data.Total
+    counts['dataset_id'] = raw_data.dataset_id
 
     fields = """A B C D E A_key B_key C_key D_key E_key Observer_Spotter
         Other_participants Recorder_Scribe Taxon_as_reported""".split()

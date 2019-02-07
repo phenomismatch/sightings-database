@@ -42,7 +42,7 @@ def insert_taxa():
     taxa = pd.read_csv(SIGHTINGS_CSV, encoding='ISO-8859-1')
 
     firsts = taxa.Group.duplicated(keep='first')
-    taxa = taxa.loc[firsts, ['Group']].copy()
+    taxa = taxa.loc[~firsts, ['Group']].copy()
     taxa = taxa.rename(columns={'Group': 'group'})
 
     taxa['sci_name'] = taxa.group

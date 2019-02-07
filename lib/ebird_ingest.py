@@ -46,7 +46,6 @@ def ingest():
         to_place_id = insert_places(raw_data, to_place_id)
         to_event_id = insert_events(raw_data, to_place_id, to_event_id)
         insert_counts(raw_data, to_event_id, to_taxon_id)
-        break
 
 
 def get_taxa():

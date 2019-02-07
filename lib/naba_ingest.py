@@ -45,6 +45,7 @@ def get_raw_data():
 
     raw_data['SumOfBFLY_COUNT'] = raw_data[
         'SumOfBFLY_COUNT'].fillna(0).astype(float).astype(int)
+    raw_data['dataset_id'] = DATASET_ID
 
     raw_data['sci_name'] = raw_data.apply(
         lambda x: f'{x["Gen_Tribe_Fam"]} {x.Species}', axis='columns')
@@ -66,9 +67,13 @@ def insert_taxa(raw_data):
 
     cxn = db.connect()
 
-    firsts = raw_data.sci_name.duplicated(keep='first')
-    taxa = raw_data.loc[firsts, ['sci_name']]
+    has_code = raw_data.SPECIES_CODE.notna()
+    raw_taxa = raw_data.loc[has_code, :]
 
+    firsts = raw_taxa.sci_name.duplicated(keep='first')
+    raw_taxa = raw_taxa.loc[~firsts, :]
+
+    taxa = raw_taxa.copy()
     taxa['genus'] = taxa.sci_name.str.split().str[0]
     taxa['dataset_id'] = DATASET_ID
     taxa['class'] = 'lepidoptera'
@@ -76,18 +81,26 @@ def insert_taxa(raw_data):
     taxa['order'] = None
     taxa['family'] = None
     taxa['target'] = 't'
+    taxa['category'] = None
     taxa['common_name'] = ''
+    fields = 'SPECIES_CODE Gen_Tribe_Fam Species'.split()
+    taxa['taxon_json'] = util.json_object(taxa, fields)
 
     taxa = db.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
+    taxa.loc[:, db.TAXON_FIELDS].to_sql(
+        'taxa', cxn, if_exists='append', index=False)
 
-    taxa.to_sql('taxa', cxn, if_exists='append', index=False)
+    raw_taxa = raw_taxa.set_index('sci_name')
+    sql = """SELECT * FROM taxa"""
+    taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
+    taxa = taxa.merge(raw_taxa, how='inner', left_index=True, right_index=True)
+    db.update_taxa_json(taxa, fields)
 
     sql = """SELECT sci_name, taxon_id
                FROM taxa
-              WHERE "class" = 'lepidoptera'
-                AND target = 't'"""
+              WHERE "class" = 'lepidoptera'"""
     return pd.read_sql(sql, cxn).set_index('sci_name').taxon_id.to_dict()
 
 
@@ -143,6 +156,7 @@ def insert_events(raw_data, to_place_id):
 
     fields = 'iYear Month Day PARTY_HOURS'.split()
     events['event_json'] = util.json_object(raw_events, fields)
+    events['dataset_id'] = raw_events.dataset_id
 
     events.to_sql('events', db.connect(), if_exists='append', index=False)
 
@@ -157,17 +171,12 @@ def insert_counts(raw_data, to_event_id, to_taxon_id):
     raw_data['key'] = tuple(zip(raw_data.iYear, raw_data.Month, raw_data.Day))
 
     counts = pd.DataFrame()
-
     counts['count_id'] = db.get_ids(raw_data, 'counts')
-
     counts['event_id'] = raw_data.key.map(to_event_id)
-
     counts['taxon_id'] = raw_data.sci_name.map(to_taxon_id)
-
     counts['count'] = raw_data.SumOfBFLY_COUNT
-
-    fields = 'SPECIES_CODE Gen_Tribe_Fam Species'.split()
-    counts['count_json'] = util.json_object(raw_data, fields)
+    counts['count_json'] = '{}'
+    counts['dataset_id'] = raw_data.dataset_id
 
     has_event_id = counts.event_id.notna()
     has_taxon_id = counts.taxon_id.notna()
