@@ -44,8 +44,8 @@ def get_raw_data():
         raw_data.Scientific_Name.str.split().str.join(' ')
     raw_data['dataset_id'] = DATASET_ID
 
-    has_started = raw_data.started.notna()
-    has_sci_name = raw_data.sci_name.notna()
+    has_started = raw_data['started'].notna()
+    has_sci_name = raw_data['sci_name'].notna()
     raw_data = raw_data.loc[has_started & has_sci_name, :].copy()
 
     return raw_data
@@ -57,11 +57,11 @@ def insert_taxa(raw_data):
 
     cxn = db.connect()
 
-    firsts = raw_data.sci_name.duplicated(keep='first')
+    firsts = raw_data['sci_name'].duplicated(keep='first')
     taxa = raw_data.loc[~firsts, ['sci_name', 'Species']]
     taxa.rename(columns={'Species': 'common_name'}, inplace=True)
 
-    taxa['genus'] = taxa.sci_name.str.split().str[0]
+    taxa['genus'] = taxa['sci_name'].str.split().str[0]
     taxa['class'] = 'lepidoptera'
     taxa['group'] = None
     taxa['order'] = None
@@ -70,7 +70,7 @@ def insert_taxa(raw_data):
 
     taxa = db.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
-    taxa.taxon_id = taxa.taxon_id.astype(int)
+    taxa['taxon_id'] = taxa['taxon_id'].astype(int)
     taxa['taxon_json'] = '{}'
 
     taxa.to_sql('taxa', cxn, if_exists='append', index=False)
@@ -118,24 +118,24 @@ def insert_events(raw_data, to_place_id):
     events = pd.DataFrame()
 
     raw_data['event_id'] = db.get_ids(raw_data, 'events')
-    events['event_id'] = raw_data.event_id
+    events['event_id'] = raw_data['event_id']
     raw_data['place_key'] = tuple(zip(raw_data.Site, raw_data.Route))
-    raw_data['place_id'] = raw_data.place_key.map(to_place_id)
-    events['place_id'] = raw_data.place_id
-    events['year'] = raw_data.started.dt.strftime('%Y')
-    events['day'] = raw_data.started.dt.strftime('%j')
-    events['started'] = raw_data.started.dt.strftime('%H:%M')
+    raw_data['place_id'] = raw_data['place_key'].map(to_place_id)
+    events['place_id'] = raw_data['place_id']
+    events['year'] = raw_data['started'].dt.strftime('%Y')
+    events['day'] = raw_data['started'].dt.strftime('%j')
+    events['started'] = raw_data['started'].dt.strftime('%H:%M')
     events['ended'] = pd.to_datetime(
-        raw_data.End_time, errors='coerce').dt.strftime('%H:%M')
-    events['dataset_id'] = raw_data.dataset_id
+        raw_data['End_time'], errors='coerce').dt.strftime('%H:%M')
+    events['dataset_id'] = raw_data['dataset_id']
 
-    fields = '''
+    fields = """
         Site Route County State Start_time End_time Duration Survey Temp
         Sky Wind Archived Was_the_survey_completed Monitoring_Program Date
-        Temperature_end Sky_end Wind_end'''.split()
+        Temperature_end Sky_end Wind_end""".split()
     events['event_json'] = util.json_object(raw_data, fields)
 
-    has_place_id = events.place_id.notna()
+    has_place_id = events['place_id'].notna()
     events = events.loc[has_place_id, :]
 
     events.to_sql('events', db.connect(), if_exists='append', index=False)
@@ -147,20 +147,20 @@ def insert_counts(raw_data, to_taxon_id):
 
     counts = pd.DataFrame()
     counts['count_id'] = db.get_ids(raw_data, 'counts')
-    counts['event_id'] = raw_data.event_id.astype(int)
-    counts['taxon_id'] = raw_data.sci_name.map(to_taxon_id)
-    counts['count'] = raw_data.Total
-    counts['dataset_id'] = raw_data.dataset_id
+    counts['event_id'] = raw_data['event_id'].astype(int)
+    counts['taxon_id'] = raw_data['sci_name'].map(to_taxon_id)
+    counts['count'] = raw_data['Total']
+    counts['dataset_id'] = raw_data['dataset_id']
 
     fields = """A B C D E A_key B_key C_key D_key E_key Observer_Spotter
         Other_participants Recorder_Scribe Taxon_as_reported""".split()
     counts['count_json'] = util.json_object(raw_data, fields)
 
-    has_place_id = raw_data.place_id.notna().values
+    has_place_id = raw_data['place_id'].notna().values
     counts = counts.loc[has_place_id, :]
 
-    has_event_id = counts.event_id.notna()
-    has_taxon_id = counts.taxon_id.notna()
+    has_event_id = counts['event_id'].notna()
+    has_taxon_id = counts['taxon_id'].notna()
     has_count = counts['count'].notna()
     counts = counts.loc[has_event_id & has_taxon_id & has_count, :]
 
