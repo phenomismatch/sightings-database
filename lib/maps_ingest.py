@@ -52,7 +52,7 @@ def insert_taxa():
     """Get MAPS taxon data."""
     log(f'Inserting {DATASET_ID} taxa')
 
-    raw_taxa = pd.read_csv(RAW_DIR / f'{LIST}.csv')
+    raw_taxa = pd.read_csv(RAW_DIR / f'{LIST}.csv').fillna('')
     raw_taxa.rename(
         columns={'SCINAME': 'sci_name', 'COMMONNAME': 'common_name'},
         inplace=True)

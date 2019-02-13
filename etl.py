@@ -22,10 +22,10 @@ DATASETS = [  # Order matters
     ('clements', lib.clements_ingest),
     ('bbs', lib.bbs_ingest),
     ('maps', lib.maps_ingest),
+    ('nestwatch', lib.nestwatch_ingest),
     ('pollard', lib.pollard_ingest),
     ('naba', lib.naba_ingest),
-    ('caterpillar', lib.caterpillar_ingest),
-    ('nestwatch', lib.nestwatch_ingest),
+    # ('caterpillar', lib.caterpillar_ingest),
     ('ebird', lib.ebird_ingest)]
 OPTIONS = [i[0] for i in DATASETS] + ['all']
 
