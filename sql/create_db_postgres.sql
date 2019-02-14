@@ -24,13 +24,13 @@ CREATE TABLE datasets (
 CREATE TABLE taxa (
   taxon_id    INTEGER PRIMARY KEY,
   sci_name    VARCHAR(80) UNIQUE,
-  "group"     VARCHAR(40),
-  "class"     VARCHAR(20),
-  "order"     VARCHAR(40),
+  "group"     VARCHAR(80),
+  "class"     VARCHAR(80),
+  "order"     VARCHAR(80),
   family      VARCHAR(80),
-  genus       VARCHAR(20),
+  genus       VARCHAR(80),
   common_name VARCHAR(120),
-  category    VARCHAR(20),
+  category    VARCHAR(80),
   target      BOOLEAN,
   revised_id  INTEGER,
   taxon_json  JSON
