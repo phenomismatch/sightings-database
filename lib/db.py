@@ -1,7 +1,7 @@
 """Common functions for dealing with database connections."""
 
-from os import fspath, remove
-from os.path import abspath, exists
+from os import fspath, remove, makedirs
+from os.path import abspath, exists, join
 from datetime import datetime
 import sqlite3
 import subprocess
@@ -11,7 +11,6 @@ from lib.util import log, update_json
 
 
 PROCESSED = Path('data') / 'processed'
-INTERIM = Path('data') / 'interim'
 DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
@@ -106,15 +105,17 @@ def table_exists(cxn, table):
     return results.fetchone()[0]
 
 
-def export_to_csv_files():
+def export_to_csv_files(export_path):
     """Export the SQLite3 database to CSV files."""
     log('Exporting the SQLite3 database into CSV files.')
 
+    makedirs(export_path, exist_ok=True)
+
     for table in TABLES:
         log(f'Exporting {table}')
-        csv_file = INTERIM / f'{table}.csv'
-        cmd = f'sqlite3 -csv {DB_FILE} '
-        cmd += f'"select * from {table};" > {csv_file}'
+        csv_file = join(export_path, f'{table}.csv')
+        cmd = f'sqlite3 -csv "{DB_FILE}" '
+        cmd += f'"select * from {table};" > "{csv_file}"'
         subprocess.check_call(cmd, shell=True)
 
 

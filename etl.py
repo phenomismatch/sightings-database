@@ -61,10 +61,14 @@ def parse_args():
             other datasets.""")
     ingest_parser.set_defaults(func=ingest)
 
-    create_parser = subparsers.add_parser(
+    csv_parser = subparsers.add_parser(
         'csv',
         help="""Export the SQLite3 database to CSV files.""")
-    create_parser.set_defaults(func=csv)
+    csv_parser.add_argument(
+        'path',
+        help="""Export the CSV files to this directory."""
+    )
+    csv_parser.set_defaults(func=csv)
 
     postgres_parser = subparsers.add_parser(
         'postgres',
@@ -104,7 +108,7 @@ def ingest(args):
 
 def csv(args):
     """Export the SQLite3 database to CSV files."""
-    db.export_to_csv_files()
+    db.export_to_csv_files(args.path)
 
 
 def postgres(args):
