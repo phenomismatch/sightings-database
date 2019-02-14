@@ -1,3 +1,5 @@
+-- Need to split -d counts.csv... every 20M records or so
+
 psql "sslmode=disable dbname=sightings user=<username> hostaddr=35.221.16.125"
 psql "sslmode=disable dbname=sightings user=<username> hostaddr=localhost"
 

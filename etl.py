@@ -27,7 +27,10 @@ DATASETS = [  # Order matters
     ('naba', lib.naba_ingest),
     # ('caterpillar', lib.caterpillar_ingest),
     ('ebird', lib.ebird_ingest)]
-OPTIONS = [i[0] for i in DATASETS] + ['all']
+DATASET_NAMES = [x[0] for x in DATASETS]
+DATASET_OPTIONS = DATASET_NAMES + ['all']
+EXPORTS = ['datasets', 'taxa'] + DATASET_NAMES
+EXPORT_OPTIONS = EXPORTS + ['all']
 
 
 def parse_args():
@@ -39,45 +42,39 @@ def parse_args():
     subparsers = parser.add_subparsers()
 
     backup_parser = subparsers.add_parser(
-        'backup',
-        help="""Backup the SQLite3 database.""")
+        'backup', help="""Backup the SQLite3 database.""")
     backup_parser.set_defaults(func=backup)
 
     create_parser = subparsers.add_parser(
-        'create',
-        help="""Create the SQLite3 database tables & indices.""")
+        'create', help="""Create the SQLite3 database tables & indices.""")
     create_parser.set_defaults(func=create)
 
     ingest_parser = subparsers.add_parser(
-        'ingest',
-        help=f"""Ingest a dataset into the SQLite3 database.""")
+        'ingest', help="""Ingest a dataset into the SQLite3 database.""")
     ingest_parser.add_argument(
-        'datasets',
-        nargs='+',
-        metavar='DATASET',
-        choices=OPTIONS,
+        'datasets', nargs='+', metavar='DATASETS', choices=DATASET_OPTIONS,
         help=f"""Ingest a dataset into the SQLite3 database.
-            Options: { ", ".join(OPTIONS) }. Note: 'all' will ingest all of the
-            other datasets.""")
+            Options: { ", ".join(DATASET_OPTIONS) }. Note: 'all' will ingest all
+            datasets.""")
     ingest_parser.set_defaults(func=ingest)
 
     csv_parser = subparsers.add_parser(
-        'csv',
-        help="""Export the SQLite3 database to CSV files.""")
+        'csv', help="""Export the SQLite3 database to CSV files.""")
     csv_parser.add_argument(
-        'path',
-        help="""Export the CSV files to this directory."""
-    )
+        'exports', nargs='+', choices=EXPORT_OPTIONS,
+        help="""Export a dataset or table to CSV file(s).
+            Options: { ", ".join(EXPORTS) }. Note: 'all' will export
+            everything.""")
+    csv_parser.add_argument(
+        'path', help="""Export the CSV files to this directory.""")
     csv_parser.set_defaults(func=csv)
 
     postgres_parser = subparsers.add_parser(
-        'postgres',
-        help="""Create the PostgreSQL database.""")
+        'postgres', help="""Create the PostgreSQL database.""")
     postgres_parser.set_defaults(func=postgres)
 
     load_parser = subparsers.add_parser(
-        'load',
-        help="""Load CSV files into the PostgreSQL database.""")
+        'load', help="""Load CSV files into the PostgreSQL database.""")
     load_parser.set_defaults(func=load)
 
     return parser.parse_args()
@@ -96,7 +93,7 @@ def create(args):
 def ingest(args):
     """Ingest datasets into the SQLite3 database."""
     if 'all' in args.datasets:
-        args.datasets = OPTIONS
+        args.datasets = DATASET_OPTIONS
 
     # Order matters
     for _ingest, module in DATASETS:
@@ -108,7 +105,12 @@ def ingest(args):
 
 def csv(args):
     """Export the SQLite3 database to CSV files."""
-    db.export_to_csv_files(args.path)
+    if 'all' in args.datasets:
+        args.datasets = EXPORTS
+    for export in EXPORTS:
+        log(SEPARATOR)
+        db.export_to_csv_files(export, args.path)
+    log(SEPARATOR)
 
 
 def postgres(args):

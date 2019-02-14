@@ -100,12 +100,15 @@ def insert_events_and_counts(raw_data):
     aggs = {**aggs, **strs}
     raw_data = raw_data.groupby('ATTEMPT_ID').agg(aggs)
 
+    raw_data['FIRST_LAY_DT'] = raw_data['FIRST_LAY_DT'].str[:9]
+    raw_data['HATCH_DT'] = raw_data['HATCH_DT'].str[:9]
+    raw_data['FLEDGE_DT'] = raw_data['FLEDGE_DT'].str[:9]
     raw_data['lay_date'] = pd.to_datetime(
-        raw_data['FIRST_LAY_DT'], errors='coerce')
+        raw_data['FIRST_LAY_DT'], format='%d%b%Y', errors='coerce')
     raw_data['hatch_date'] = pd.to_datetime(
-        raw_data['HATCH_DT'], errors='coerce')
+        raw_data['HATCH_DT'], format='%d%b%Y', errors='coerce')
     raw_data['fledge_date'] = pd.to_datetime(
-        raw_data['FLEDGE_DT'], errors='coerce')
+        raw_data['FLEDGE_DT'], format='%d%b%Y', errors='coerce')
     raw_data['started'] = None
     raw_data['ended'] = None
 
@@ -134,6 +137,7 @@ def filter_records(dfm, event_date, count1, count2=None):
     has_date = dfm[event_date].notna()
     has_count1 = dfm[count1].notna()
     has_count2 = dfm[count2].notna() if count2 else has_count1
+    dfm = dfm.loc[has_date & (has_count1 | has_count2), :].copy()
     return dfm.loc[has_date & (has_count1 | has_count2), :].copy()
 
 

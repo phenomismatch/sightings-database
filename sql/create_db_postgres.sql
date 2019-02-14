@@ -84,8 +84,8 @@ CREATE INDEX events_day        ON events (day);
 CREATE TABLE counts (
   count_id   INTEGER PRIMARY KEY,
   event_id   INTEGER NOT NULL,
-  taxon_id   INTEGER NOT NULL,
   dataset_id VARCHAR(12) NOT NULL,
+  taxon_id   INTEGER NOT NULL,
   count      INTEGER NOT NULL,
   count_json JSON,
   CONSTRAINT counts_event_id   FOREIGN KEY (event_id)   REFERENCES events (event_id),

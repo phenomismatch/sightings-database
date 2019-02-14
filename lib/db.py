@@ -14,7 +14,8 @@ PROCESSED = Path('data') / 'processed'
 DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
 
-TABLES = 'datasets taxa places events counts'.split()
+SPLIT_TABLES = 'places events counts'.split()
+TABLES = 'datasets taxa'.split() + SPLIT_TABLES
 TAXON_FIELDS = """taxon_id sci_name group class order family genus common_name
     category target taxon_json""".split()
 PLACE_FIELDS = 'place_id dataset_id lng lat radius place_json'.split()
@@ -105,18 +106,26 @@ def table_exists(cxn, table):
     return results.fetchone()[0]
 
 
-def export_to_csv_files(export_path):
+def export_to_csv_files(export, export_path):
     """Export the SQLite3 database to CSV files."""
-    log('Exporting the SQLite3 database into CSV files.')
+    log('Exporting into CSV files.')
 
     makedirs(export_path, exist_ok=True)
 
-    for table in TABLES:
-        log(f'Exporting {table}')
-        csv_file = join(export_path, f'{table}.csv')
+    if export in TABLES:
+        log(f'Exporting {export}')
+        csv_file = join(export_path, f'{export}.csv')
         cmd = f'sqlite3 -csv "{DB_FILE}" '
-        cmd += f'"select * from {table};" > "{csv_file}"'
+        cmd += f'"select * from {export};" > "{csv_file}"'
         subprocess.check_call(cmd, shell=True)
+    else:
+        for table in SPLIT_TABLES:
+            log(f'Exporting {table} {export}')
+            csv_file = join(export_path, f'{table}_{export}.csv')
+            sql = f"select * from {table} where dataset_id = '{export}';"
+            cmd = f'sqlite3 -csv "{DB_FILE}" '
+            cmd += f'"{sql}" > "{csv_file}"'
+            subprocess.check_call(cmd, shell=True)
 
 
 def create_postgres():
