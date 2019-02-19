@@ -15,5 +15,6 @@ psql "sslmode=disable dbname=sightings user=<username> hostaddr=localhost"
 
 UPDATE places
    SET geopoint = ST_SetSRID(ST_MakePoint(lng, lat), 4326),
-       geohash  = ST_GeoHash(ST_MakePoint(lng, lat), 7);
+       geohash  = ST_GeoHash(ST_MakePoint(lng, lat), 7)
+ WHERE dataset_id = ?;
 COMMIT;

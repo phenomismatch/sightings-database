@@ -120,7 +120,7 @@ def export_to_csv_files(export, export_path):
         subprocess.check_call(cmd, shell=True)
     else:
         for table in SPLIT_TABLES:
-            log(f'Exporting {table} {export}')
+            log(f'Exporting {export} {table}')
             csv_file = join(export_path, f'{table}_{export}.csv')
             sql = f"select * from {table} where dataset_id = '{export}';"
             cmd = f'sqlite3 -csv "{DB_FILE}" '
@@ -135,7 +135,7 @@ def create_postgres():
     subprocess.check_call(cmd, shell=True)
 
 
-def load_postgres():
+def import_postgres():
     """Load data into the PostgreSQL database from CSV files."""
     log('Importing into PostgreSQL database')
     script = fspath(SCRIPT_PATH / 'import_db_postgres.sql')

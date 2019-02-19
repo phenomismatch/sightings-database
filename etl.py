@@ -28,7 +28,7 @@ DATASETS = [  # Order matters
     # ('caterpillar', lib.caterpillar_ingest),
     ('ebird', lib.ebird_ingest)]
 DATASET_NAMES = [x[0] for x in DATASETS]
-DATASET_OPTIONS = DATASET_NAMES + ['all']
+INGEST_OPTIONS = DATASET_NAMES + ['all']
 EXPORTS = ['datasets', 'taxa'] + DATASET_NAMES
 EXPORT_OPTIONS = EXPORTS + ['all']
 
@@ -50,32 +50,32 @@ def parse_args():
     create_parser.set_defaults(func=create)
 
     ingest_parser = subparsers.add_parser(
-        'ingest', help="""Ingest a dataset into the SQLite3 database.""")
+        'ingest',
+        help="""Ingest a dataset into the SQLite3 database.""")
     ingest_parser.add_argument(
-        'datasets', nargs='+', metavar='DATASETS', choices=DATASET_OPTIONS,
+        'datasets', nargs='+', choices=INGEST_OPTIONS,
         help=f"""Ingest a dataset into the SQLite3 database.
-            Options: { ", ".join(DATASET_OPTIONS) }. Note: 'all' will ingest all
-            datasets.""")
+            Note: 'all' will ingest all datasets.""")
     ingest_parser.set_defaults(func=ingest)
 
     csv_parser = subparsers.add_parser(
-        'csv', help="""Export the SQLite3 database to CSV files.""")
+        'export',
+        help="""Export data from an SQLite3 database to CSV files.""")
     csv_parser.add_argument(
-        'exports', nargs='+', choices=EXPORT_OPTIONS,
+        'datasets', nargs='+', choices=EXPORT_OPTIONS,
         help="""Export a dataset or table to CSV file(s).
-            Options: { ", ".join(EXPORTS) }. Note: 'all' will export
-            everything.""")
+            Note: 'all' will export everything.""")
     csv_parser.add_argument(
         'path', help="""Export the CSV files to this directory.""")
-    csv_parser.set_defaults(func=csv)
+    csv_parser.set_defaults(func=export)
 
     postgres_parser = subparsers.add_parser(
         'postgres', help="""Create the PostgreSQL database.""")
     postgres_parser.set_defaults(func=postgres)
 
     load_parser = subparsers.add_parser(
-        'load', help="""Load CSV files into the PostgreSQL database.""")
-    load_parser.set_defaults(func=load)
+        'import', help="""Import CSV files into the PostgreSQL database.""")
+    load_parser.set_defaults(func=import_)
 
     return parser.parse_args()
 
@@ -93,7 +93,7 @@ def create(args):
 def ingest(args):
     """Ingest datasets into the SQLite3 database."""
     if 'all' in args.datasets:
-        args.datasets = DATASET_OPTIONS
+        args.datasets = INGEST_OPTIONS
 
     # Order matters
     for _ingest, module in DATASETS:
@@ -103,13 +103,13 @@ def ingest(args):
     log(SEPARATOR)
 
 
-def csv(args):
+def export(args):
     """Export the SQLite3 database to CSV files."""
     if 'all' in args.datasets:
         args.datasets = EXPORTS
-    for export in EXPORTS:
+    for item in args.datasets:
         log(SEPARATOR)
-        db.export_to_csv_files(export, args.path)
+        db.export_to_csv_files(item, args.path)
     log(SEPARATOR)
 
 
@@ -118,9 +118,9 @@ def postgres(args):
     db.create_postgres()
 
 
-def load(args):
-    """Load the CSV files into the PostgreSQL database."""
-    db.load_postgres()
+def import_(args):
+    """Import the CSV files into the PostgreSQL database."""
+    db.import_postgres()
 
 
 def etl():
