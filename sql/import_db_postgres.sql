@@ -1,4 +1,4 @@
--- Need to split -d counts.csv... every 20M records or so
+-- split --additional-suffix=.csv --numeric-suffixes=1 --lines=10000000 counts_ebird.csv counts_ebird_
 
 psql "sslmode=disable dbname=sightings user=<username> hostaddr=35.221.16.125"
 psql "sslmode=disable dbname=sightings user=<username> hostaddr=localhost"
