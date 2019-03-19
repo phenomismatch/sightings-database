@@ -10,6 +10,8 @@ import pandas as pd
 from lib.util import log, update_json
 
 
+EBIRD_DATASET_ID = 'ebird'
+
 PROCESSED = Path('data') / 'processed'
 DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
@@ -126,6 +128,17 @@ def export_to_csv_files(export, export_path):
             cmd = f'sqlite3 -csv "{DB_FILE}" '
             cmd += f'"{sql}" > "{csv_file}"'
             subprocess.check_call(cmd, shell=True)
+
+
+def taxon_ids_per_event():
+    """Get all bBird counts grouped by event ID."""
+    cxn = connect()
+    sql = """
+        select event_id, group_concat(taxon_id, ' ') as taxon_ids
+          from counts
+         where dataset_id = ?
+      group by event_id"""
+    return cxn.execute(sql, (EBIRD_DATASET_ID, ))
 
 
 def create_postgres():

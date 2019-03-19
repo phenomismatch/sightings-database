@@ -174,14 +174,13 @@ def insert_counts(raw_data, to_event_id, to_taxon_id):
     counts['count_id'] = db.get_ids(raw_data, 'counts')
     counts['event_id'] = raw_data.key.map(to_event_id)
     counts['taxon_id'] = raw_data.sci_name.map(to_taxon_id)
-    counts['count'] = raw_data.SumOfBFLY_COUNT
+    counts['count'] = raw_data.SumOfBFLY_COUNT.fillna(0)
     counts['count_json'] = '{}'
     counts['dataset_id'] = raw_data.dataset_id
 
     has_event_id = counts.event_id.notna()
     has_taxon_id = counts.taxon_id.notna()
-    has_count = counts['count'].notna()
-    counts = counts.loc[has_event_id & has_taxon_id & has_count, :]
+    counts = counts.loc[has_event_id & has_taxon_id, :]
 
     counts.to_sql('counts', db.connect(), if_exists='append', index=False)
 

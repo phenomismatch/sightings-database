@@ -7,9 +7,9 @@ import lib.util as util
 from lib.util import log
 
 
-DATASET_ID = 'ebird'
+DATASET_ID = db.EBIRD_DATASET_ID
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
-RAW_CSV = 'ebd_relDec-2018.txt'
+RAW_CSV = 'ebd_relDec-2018.txt.gz'
 
 
 def ingest():
@@ -30,6 +30,7 @@ def ingest():
         delimiter='\t',
         quoting=3,
         chunksize=chunk,
+        compression='infer',
         dtype='unicode')
 
     to_place_id = {}
@@ -72,15 +73,14 @@ def filter_data(raw_data, to_taxon_id):
     raw_data['date'] = pd.to_datetime(
         raw_data['OBSERVATION_DATE'], errors='coerce')
     raw_data['count'] = pd.to_numeric(raw_data['count'], errors='coerce')
+    raw_data['count'] = raw_data['count'].fillna(0)
 
     has_date = raw_data.date.notna()
-    has_count = raw_data['count'].notna()
     is_approved = raw_data.APPROVED == '1'
     is_complete = raw_data['ALL_SPECIES_REPORTED'] == '1'
     in_species = raw_data['SCIENTIFIC_NAME'].isin(to_taxon_id)
 
-    raw_data = raw_data[
-        has_date & has_count & is_approved & is_complete & in_species]
+    raw_data = raw_data[has_date & is_approved & is_complete & in_species]
 
     return util.filter_lng_lat(
         raw_data, 'lng', 'lat', lng=(-95.0, -50.0), lat=(20.0, 90.0))
@@ -143,7 +143,8 @@ def insert_events(raw_data, to_place_id, to_event_id):
 
     fields = """SAMPLING_EVENT_IDENTIFIER EFFORT_AREA_HA APPROVED REVIEWED
         NUMBER_OBSERVERS ALL_SPECIES_REPORTED OBSERVATION_DATE GROUP_IDENTIFIER
-        DURATION_MINUTES""".split()
+        DURATION_MINUTES PROTOCOL_TYPE PROTOCOL_CODE PROJECT_CODE
+        TRIP_COMMENTS""".split()
     events['event_json'] = util.json_object(events, fields)
 
     events.loc[:, db.EVENT_FIELDS].to_sql(
@@ -173,7 +174,7 @@ def insert_counts(counts, to_event_id, to_taxon_id):
     fields = """SCIENTIFIC_NAME GLOBAL_UNIQUE_IDENTIFIER LAST_EDITED_DATE
         TAXONOMIC_ORDER CATEGORY SUBSPECIES_SCIENTIFIC_NAME
         BREEDING_BIRD_ATLAS_CODE BREEDING_BIRD_ATLAS_CATEGORY AGE_SEX
-        OBSERVER_ID HAS_MEDIA""".split()
+        OBSERVER_ID HAS_MEDIA SPECIES_COMMENTS""".split()
     counts['count_json'] = util.json_object(counts, fields)
 
     counts.loc[:, db.COUNT_FIELDS].to_sql(
