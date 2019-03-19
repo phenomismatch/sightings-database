@@ -21,15 +21,11 @@ def build():
 
         events[event_id] = checklists[taxon_ids]
 
-        print(event_id, taxon_ids)
+    db.insert_checklists(checklists)
+    db.update_event_checklists(events)
+    db.delete_ebird_0_counts()
+    db.vacuum()
 
-        # Create checklists
-        #   insert into checklists (checklist_id, taxon_id) values (?, ?)
-        # Update events with checklist_ids
-        #   cxn.executemany(
-        #       'update events set checklist_id=? where event_id=?', lists)
-        # delete from counts where dataset_id = 'ebird' and count = 0
-        # vacuum
 
 if __name__ == '__main__':
     build()

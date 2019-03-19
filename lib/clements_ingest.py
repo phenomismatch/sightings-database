@@ -13,12 +13,12 @@ TAXON_DIR = Path('data') / 'raw' / 'taxonomy'
 
 def ingest():
     """Extract, transform, & load Clements taxonomy into the database."""
-    log(f'Ingesting {DATASET_ID} data')
-
     csv_path = \
         TAXON_DIR / 'eBird-Clements-v2018-integrated-checklist-August-2018.csv'
 
     db.delete_dataset(DATASET_ID)
+
+    log(f'Ingesting {DATASET_ID} data')
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,

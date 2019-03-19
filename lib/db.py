@@ -141,6 +141,47 @@ def taxon_ids_per_event():
     return cxn.execute(sql, (EBIRD_DATASET_ID, ))
 
 
+def insert_checklists(checklists):
+    """Insert a batch of checklist records."""
+    log('Inserting checklists')
+    batch = []
+    for taxon_ids, checklist_id in checklists.items():
+        taxon_ids = taxon_ids.split()
+        for taxon_id in taxon_ids:
+            batch.append((checklist_id, taxon_id))
+
+    cxn = connect()
+    sql = """insert into checklists (checklist_id, taxon_id) values (?, ?)"""
+    cxn.executemany(sql, batch)
+    cxn.commit()
+
+
+def update_event_checklists(events):
+    """Update checklist IDs for events."""
+    log('Inserting event checklist IDs')
+    batch = [(cid, eid) for eid, cid in events.items()]
+    cxn = connect()
+    sql = """update events set checklist_id = ? where event_id = ?"""
+    cxn.executemany(sql, batch)
+    cxn.commit()
+
+
+def delete_ebird_0_counts():
+    """Remove ebird records with a zero count."""
+    log('Deleting eBird zero count records')
+    cxn = connect()
+    sql = """delete from counts where dataset = ? and count = 0"""
+    cxn.execute(sql, (EBIRD_DATASET_ID, ))
+    cxn.commit()
+
+
+def vacuum():
+    """Remove ebird records with a zero count."""
+    log('Vacuum database')
+    cxn = connect()
+    cxn.execute('vacuum')
+
+
 def create_postgres():
     """Create the PostgreSQL DB."""
     script = fspath(SCRIPT_PATH / 'create_db_postgres.sql')

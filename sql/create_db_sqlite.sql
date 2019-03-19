@@ -68,6 +68,15 @@ CREATE INDEX events_year       ON events (year);
 CREATE INDEX events_day        ON events (day);
 
 
+DROP TABLE IF EXISTS checklists;
+CREATE TABLE checklists (
+  event_id   INTEGER NOT NULL,
+  taxon_id   INTEGER NOT NULL
+);
+CREATE INDEX checklists_event_id ON checklists (event_id);
+CREATE INDEX checklists_taxon_id ON checklists (taxon_id);
+
+
 DROP TABLE IF EXISTS counts;
 CREATE TABLE counts (
   count_id   INTEGER NOT NULL PRIMARY KEY,
