@@ -7,7 +7,7 @@ import lib.util as util
 from lib.util import log
 
 
-DATASET_ID = db.EBIRD_DATASET_ID
+DATASET_ID = 'ebird'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
 RAW_CSV = 'ebd_relDec-2018.txt.gz'
 
@@ -39,7 +39,7 @@ def ingest():
     for i, raw_data in enumerate(reader, 1):
         log(f'Processing {DATASET_ID} chunk {i * chunk:,}')
 
-        raw_data = filter_data(raw_data, to_taxon_id)
+        raw_data = filter_data(raw_data)
 
         if raw_data.shape[0] == 0:
             continue
@@ -59,7 +59,7 @@ def get_taxa():
     return taxa.set_index('sci_name').taxon_id.to_dict()
 
 
-def filter_data(raw_data, to_taxon_id):
+def filter_data(raw_data):
     """Limit the size & scope of the data."""
     raw_data = raw_data.rename(columns={
         'LONGITUDE': 'lng',
@@ -72,15 +72,15 @@ def filter_data(raw_data, to_taxon_id):
 
     raw_data['date'] = pd.to_datetime(
         raw_data['OBSERVATION_DATE'], errors='coerce')
+
+    raw_data.loc[raw_data['count'] == 'X', 'count'] = '-1'
     raw_data['count'] = pd.to_numeric(raw_data['count'], errors='coerce')
-    raw_data['count'] = raw_data['count'].fillna(0)
 
-    has_date = raw_data.date.notna()
-    is_approved = raw_data.APPROVED == '1'
+    has_date = raw_data['date'].notna()
+    is_approved = raw_data['APPROVED'] == '1'
     is_complete = raw_data['ALL_SPECIES_REPORTED'] == '1'
-    in_species = raw_data['SCIENTIFIC_NAME'].isin(to_taxon_id)
 
-    raw_data = raw_data[has_date & is_approved & is_complete & in_species]
+    raw_data = raw_data[has_date & is_approved & is_complete]
 
     return util.filter_lng_lat(
         raw_data, 'lng', 'lat', lng=(-95.0, -50.0), lat=(20.0, 90.0))
@@ -165,6 +165,11 @@ def convert_to_time(dfm, column):
 def insert_counts(counts, to_event_id, to_taxon_id):
     """Insert counts."""
     log(f'Inserting {DATASET_ID} counts')
+
+    in_species = counts['SCIENTIFIC_NAME'].isin(to_taxon_id)
+    counts = counts[in_species]
+    if counts.shape[0] == 0:
+        return
 
     counts['count_id'] = db.get_ids(counts, 'counts')
     counts['event_id'] = counts.SAMPLING_EVENT_IDENTIFIER.map(to_event_id)

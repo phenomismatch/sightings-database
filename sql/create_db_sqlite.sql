@@ -53,28 +53,19 @@ CREATE INDEX places_geohash    ON places (geohash);
 
 DROP TABLE IF EXISTS events;
 CREATE TABLE events (
-  event_id   INTEGER NOT NULL PRIMARY KEY,
-  place_id   INTEGER NOT NULL,
-  dataset_id VARCHAR(12) NOT NULL,
-  year       INTEGER NOT NULL,
-  day        INTEGER NOT NULL,
-  started    TEXT,
-  ended      TEXT,
-  event_json TEXT
+  event_id     INTEGER NOT NULL PRIMARY KEY,
+  place_id     INTEGER NOT NULL,
+  dataset_id   VARCHAR(12) NOT NULL,
+  year         INTEGER NOT NULL,
+  day          INTEGER NOT NULL,
+  started      TEXT,
+  ended        TEXT,
+  event_json   TEXT
 );
-CREATE INDEX events_place_id   ON events (place_id);
-CREATE INDEX events_dataset_id ON events (dataset_id);
-CREATE INDEX events_year       ON events (year);
-CREATE INDEX events_day        ON events (day);
-
-
-DROP TABLE IF EXISTS checklists;
-CREATE TABLE checklists (
-  event_id   INTEGER NOT NULL,
-  taxon_id   INTEGER NOT NULL
-);
-CREATE INDEX checklists_event_id ON checklists (event_id);
-CREATE INDEX checklists_taxon_id ON checklists (taxon_id);
+CREATE INDEX events_place_id     ON events (place_id);
+CREATE INDEX events_dataset_id   ON events (dataset_id);
+CREATE INDEX events_year         ON events (year);
+CREATE INDEX events_day          ON events (day);
 
 
 DROP TABLE IF EXISTS counts;

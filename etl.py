@@ -6,7 +6,6 @@
 import argparse
 import lib.db as db
 from lib.util import log
-import lib.checklists
 import lib.clements_ingest
 import lib.bbs_ingest
 import lib.maps_ingest
@@ -59,10 +58,6 @@ def parse_args():
             Note: 'all' will ingest all datasets.""")
     ingest_parser.set_defaults(func=ingest)
 
-    checklists_parser = subparsers.add_parser(
-        'checklists', help="""Create eBird checklists.""")
-    checklists_parser.set_defaults(func=checklists_build)
-
     csv_parser = subparsers.add_parser(
         'export',
         help="""Export data from an SQLite3 database to CSV files.""")
@@ -106,11 +101,6 @@ def ingest(args):
             log(SEPARATOR)
             module.ingest()
     log(SEPARATOR)
-
-
-def checklists_build(args):
-    """Create eBird checklists."""
-    lib.checklists.build()
 
 
 def export(args):

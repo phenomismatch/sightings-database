@@ -10,8 +10,6 @@ import pandas as pd
 from lib.util import log, update_json
 
 
-EBIRD_DATASET_ID = 'ebird'
-
 PROCESSED = Path('data') / 'processed'
 DB_FILE = abspath(PROCESSED / 'sightings.sqlite.db')
 SCRIPT_PATH = Path('sql')
@@ -33,8 +31,7 @@ def connect(path=None):
 
     cxn.execute('PRAGMA page_size = {}'.format(2**16))
     cxn.execute('PRAGMA busy_timeout = 10000')
-    cxn.execute('PRAGMA synchronous = OFF')
-    cxn.execute('PRAGMA journal_mode = OFF')
+    cxn.execute('PRAGMA journal_mode = WAL')
     return cxn
 
 
@@ -128,58 +125,6 @@ def export_to_csv_files(export, export_path):
             cmd = f'sqlite3 -csv "{DB_FILE}" '
             cmd += f'"{sql}" > "{csv_file}"'
             subprocess.check_call(cmd, shell=True)
-
-
-def taxon_ids_per_event():
-    """Get all bBird counts grouped by event ID."""
-    cxn = connect()
-    sql = """
-        select event_id, group_concat(taxon_id, ' ') as taxon_ids
-          from counts
-         where dataset_id = ?
-      group by event_id"""
-    return cxn.execute(sql, (EBIRD_DATASET_ID, ))
-
-
-def insert_checklists(checklists):
-    """Insert a batch of checklist records."""
-    log('Inserting checklists')
-    batch = []
-    for taxon_ids, checklist_id in checklists.items():
-        taxon_ids = taxon_ids.split()
-        for taxon_id in taxon_ids:
-            batch.append((checklist_id, taxon_id))
-
-    cxn = connect()
-    sql = """insert into checklists (checklist_id, taxon_id) values (?, ?)"""
-    cxn.executemany(sql, batch)
-    cxn.commit()
-
-
-def update_event_checklists(events):
-    """Update checklist IDs for events."""
-    log('Inserting event checklist IDs')
-    batch = [(cid, eid) for eid, cid in events.items()]
-    cxn = connect()
-    sql = """update events set checklist_id = ? where event_id = ?"""
-    cxn.executemany(sql, batch)
-    cxn.commit()
-
-
-def delete_ebird_0_counts():
-    """Remove ebird records with a zero count."""
-    log('Deleting eBird zero count records')
-    cxn = connect()
-    sql = """delete from counts where dataset = ? and count = 0"""
-    cxn.execute(sql, (EBIRD_DATASET_ID, ))
-    cxn.commit()
-
-
-def vacuum():
-    """Remove ebird records with a zero count."""
-    log('Vacuum database')
-    cxn = connect()
-    cxn.execute('vacuum')
 
 
 def create_postgres():

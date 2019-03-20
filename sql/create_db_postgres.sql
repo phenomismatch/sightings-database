@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS taxa     CASCADE;
 DROP TABLE IF EXISTS places   CASCADE;
 DROP TABLE IF EXISTS events   CASCADE;
 DROP TABLE IF EXISTS counts;
-DROP TABLE IF EXISTS checklists;
 
 
 CREATE TABLE datasets (
@@ -77,14 +76,6 @@ CREATE INDEX events_place_id   ON events (place_id);
 CREATE INDEX events_dataset_id ON events (dataset_id);
 CREATE INDEX events_year       ON events (year);
 CREATE INDEX events_day        ON events (day);
-
-
-CREATE TABLE checklists (
-  event_id   INTEGER REFERENCES events (event_id),
-  taxon_id   INTEGER REFERENCES taxa   (taxon_id),
-);
-CREATE INDEX checklists_event_id ON checklists (event_id);
-CREATE INDEX checklists_taxon_id ON checklists (taxon_id);
 
 
 CREATE TABLE counts (
