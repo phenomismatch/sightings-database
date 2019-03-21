@@ -66,7 +66,7 @@ def insert_taxa(raw_data):
     taxa['group'] = None
     taxa['order'] = None
     taxa['family'] = None
-    taxa['target'] = 't'
+    taxa['target'] = None
 
     taxa = db.drop_duplicate_taxa(taxa)
     taxa['taxon_id'] = db.get_ids(taxa, 'taxa')

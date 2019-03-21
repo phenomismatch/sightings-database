@@ -29,7 +29,7 @@ DATASETS = [  # Order matters
     ('ebird', lib.ebird_ingest)]
 DATASET_NAMES = [x[0] for x in DATASETS]
 INGEST_OPTIONS = DATASET_NAMES + ['all']
-EXPORTS = ['datasets', 'taxa'] + DATASET_NAMES
+EXPORTS = ['datasets', 'taxa'] + [x for x in DATASET_NAMES if x != 'clements']
 EXPORT_OPTIONS = EXPORTS + ['all']
 
 

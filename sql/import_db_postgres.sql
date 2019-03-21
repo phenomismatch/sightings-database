@@ -1,4 +1,5 @@
 -- split --additional-suffix=.csv --numeric-suffixes=1 --lines=10000000 counts_ebird.csv counts_ebird_
+-- split --additional-suffix=.csv --numeric-suffixes=1 --lines=5000000 events_ebird.csv events_ebird_
 
 psql "sslmode=disable dbname=sightings user=<username> hostaddr=35.221.16.125"
 psql "sslmode=disable dbname=sightings user=<username> hostaddr=localhost"

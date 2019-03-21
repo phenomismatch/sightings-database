@@ -80,7 +80,7 @@ def insert_taxa(raw_data):
     taxa['group'] = None
     taxa['order'] = None
     taxa['family'] = None
-    taxa['target'] = 't'
+    taxa['target'] = None
     taxa['category'] = None
     taxa['common_name'] = ''
     fields = 'SPECIES_CODE Gen_Tribe_Fam Species'.split()
