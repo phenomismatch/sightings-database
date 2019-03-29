@@ -20,7 +20,7 @@ def ebird():
     places = set()
     events = set()
 
-    with gzip.open(csv_path) as ebird_file:
+    with gzip.open(csv_path, 'rt') as ebird_file:
         reader = csv.DictReader(ebird_file, delimiter='\t')
         i = 0
         while True:
@@ -29,7 +29,8 @@ def ebird():
                 print(i)
             try:
                 row = next(reader)
-            except csv.Error:
+            except csv.Error as err:
+                print(err)
                 continue
             except StopIteration:
                 break
