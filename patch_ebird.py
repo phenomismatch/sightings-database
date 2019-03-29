@@ -11,7 +11,7 @@ DATASET_ID = 'ebird'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
 RAW_CSV = 'ebd_relDec-2018.txt.gz'
 
-TARGETS = ['Ammospiza caudacutus', 'Ammospiza nelsoni']
+TARGETS = ['Ammospiza caudacuta', 'Ammospiza nelsoni']
 
 
 def ingest():
@@ -94,3 +94,5 @@ def insert_counts(counts, to_event_id, to_taxon_id):
 
 if __name__ == '__main__':
     ingest()
+
+#SELECT * FROM counts WHERE dataset_id = 'ebird' AND taxon_id in (30923, 30928)
