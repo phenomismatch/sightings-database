@@ -1,5 +1,6 @@
 """Run some sanity checks on the DB."""
 
+import sys
 import csv
 import gzip
 from pathlib import Path
@@ -8,6 +9,8 @@ from datetime import datetime
 
 def ebird():
     """Verify that the ebird records seem correct."""
+    csv.field_size_limit(sys.maxsize)
+
     csv_path = Path('data') / 'raw' / 'ebird' / 'ebd_relDec-2018.txt.gz'
     target_path = Path('data') / 'raw' / 'taxonomy' / 'target_birds.csv'
 
@@ -27,6 +30,7 @@ def ebird():
             i += 1
             if i % 1_000_000 == 0:
                 print(i)
+                sys.stdout.flush()
             try:
                 row = next(reader)
             except csv.Error as err:
