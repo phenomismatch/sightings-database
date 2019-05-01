@@ -50,7 +50,7 @@ def parse_args():
     create_parser.set_defaults(func=create)
 
     ingest_parser = subparsers.add_parser(
-        'ingest',
+        'ingest', aliases=['i', 'in'],
         help="""Ingest a dataset into the SQLite3 database.""")
     ingest_parser.add_argument(
         'datasets', nargs='+', choices=INGEST_OPTIONS,

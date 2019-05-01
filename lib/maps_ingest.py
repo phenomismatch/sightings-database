@@ -1,9 +1,20 @@
-"""Ingest Monitoring Avian Productivity and Survivorship data."""
+"""
+Ingest Monitoring Avian Productivity and Survivorship (MAPS) data.
+
+This is a bird banding survey, so there is going to be a count of one for each
+observation. The data has is broken into 4 files:
+1) A list of species.
+2) A list of banding stations, which correspond to the places table.
+3) An effort table containing information about the banding conditions. This
+    corresponds with the events table.
+4) The band table which contains information about the bird's condition. This
+    corresponds with the counts table. A count of one is assumed.
+"""
 
 import os
 from pathlib import Path
 import pandas as pd
-from simpledbf import Dbf5  # pylint: disable=import-error
+from simpledbf import Dbf5
 import lib.db as db
 import lib.util as util
 from lib.util import log
@@ -49,7 +60,11 @@ def convert_dbf_to_csv(file_name):
 
 
 def insert_taxa():
-    """Get MAPS taxon data."""
+    """
+    Get MAPS taxon data.
+
+    Using the SPEC field is used as the taxon ID in this data.
+    """
     log(f'Inserting {DATASET_ID} taxa')
 
     raw_taxa = pd.read_csv(RAW_DIR / f'{LIST}.csv').fillna('')
@@ -134,8 +149,9 @@ def insert_events(to_place_id):
     # Raw events are STA, DATE, STATION groups with min & max times
     convert_to_time(raw_events, 'START')
     convert_to_time(raw_events, 'END')
-    raw_events = raw_events.groupby(['STA', 'DATE', 'STATION'])
-    raw_events = raw_events.agg({'START': min, 'END': max})
+    raw_events['LENGTH_MAX'] = raw_events['LENGTH']
+    raw_events = raw_events.groupby(['STA', 'STATION', 'DATE', 'NET'])
+    raw_events = raw_events.agg({'START': min, 'END': max, 'LENGTH': max})
     raw_events.reset_index(inplace=True)
 
     events = pd.DataFrame()
@@ -153,13 +169,13 @@ def insert_events(to_place_id):
     events['started'] = raw_events['START']
     events['ended'] = raw_events['END']
     events['dataset_id'] = DATASET_ID
-    fields = 'STA DATE STATION'.split()
+    fields = 'STA DATE STATION NET LENGTH'.split()
     events['event_json'] = util.json_object(raw_events, fields)
     events.loc[events.place_id >= 0, :].to_sql(
         'events', db.connect(), if_exists='append', index=False)
 
     return raw_events.loc[raw_events.place_id >= 0, :].set_index(
-        ['STA', 'DATE'], verify_integrity=True).event_id.to_dict()
+        ['STA', 'DATE', 'NET'], verify_integrity=True).event_id.to_dict()
 
 
 def convert_to_time(dfm, column):
@@ -181,7 +197,8 @@ def insert_counts(to_event_id, to_taxon_id):
     raw_counts = pd.read_csv(csv_file, dtype='unicode')
     counts = pd.DataFrame()
     counts['count_id'] = db.get_ids(raw_counts, 'counts')
-    raw_counts['key'] = tuple(zip(raw_counts.STA, raw_counts.DATE))
+    raw_counts['key'] = tuple(zip(
+        raw_counts.STA, raw_counts.DATE, raw_counts.NET))
     counts['event_id'] = raw_counts.key.map(to_event_id)
     counts['taxon_id'] = raw_counts.SPEC.map(to_taxon_id)
     counts['count'] = 1

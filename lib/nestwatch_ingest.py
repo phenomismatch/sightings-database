@@ -1,4 +1,9 @@
-"""Ingest nest watch data."""
+"""
+Ingest nest watch data.
+
+This is data contains observations of the nest status over time. This is
+sampled data so the dates of events are appoximate. All data is in one file.
+"""
 
 from pathlib import Path
 from datetime import datetime
@@ -14,12 +19,13 @@ DATA_CSV = RAW_DIR / 'nw_export_20190129.csv'
 
 DATES = 'lay_date hatch_date fledge_date'.split()
 EVENT_FIELDS = """LOC_ID CAVITY_ENTRANCE_DIAM_CM FIRST_LAY_DT HATCH_DT
-    FLEDGE_DT ENTRANCE_ORIENTATION HABITAT_CODE_1 HABITAT_CODE_2 HABITAT_CODE_3
-    PROJ_PERIOD_ID USER_ID OUTCOME_CODE_LIST place_id event_type""".split()
+    FLEDGE_DT ENTRANCE_ORIENTATION HABITAT_CODE_1 HABITAT_CODE_2
+    HABITAT_CODE_3 PROJ_PERIOD_ID USER_ID OUTCOME_CODE_LIST ATTEMPT_ID
+    place_id event_type""".split()
 COUNT_FIELDS = "SPECIES_CODE taxon_id count_type""".split()
 NUMBERS = """CLUTCH_SIZE_HOST_ATLEAST EGGS_HOST_UNH_ATLEAST
     YOUNG_HOST_TOTAL_ATLEAST YOUNG_HOST_FLEDGED_ATLEAST
-    YOUNG_HOST_DEAD_ATLEAST""".split()
+    YOUNG_HOST_DEAD_ATLEAST ATTEMPT_ID""".split()
 
 
 def ingest():
@@ -149,7 +155,6 @@ def add_count_records(dfm, count_type):
     has_count = pd.to_numeric(dfm[count_type], errors='coerce').notna()
     dfm = dfm.loc[has_count, :].copy()
     dfm[count_type] = dfm[count_type].astype(int)
-    dfm = dfm.loc[dfm[count_type] > 0, :].copy()
     dfm['count_id'] = db.get_ids(dfm, 'counts')
     dfm['dataset_id'] = DATASET_ID
     dfm['count'] = dfm[count_type]
