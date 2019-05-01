@@ -66,7 +66,7 @@ def insert_dataset(dataset):
     cxn.commit()
 
 
-def delete_dataset(dataset_id):
+def delete_dataset_records(dataset_id):
     """Clear dataset from the database."""
     log(f'Deleting old {dataset_id} records')
 

@@ -16,7 +16,7 @@ def ingest():
     csv_path = \
         TAXON_DIR / 'eBird-Clements-v2018-integrated-checklist-August-2018.csv'
 
-    db.delete_dataset(DATASET_ID)
+    db.delete_dataset_records(DATASET_ID)
 
     log(f'Ingesting {DATASET_ID} data')
 

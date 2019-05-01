@@ -18,7 +18,7 @@ SITE_CSV = RAW_DIR / f'{FILE_DATE}_Site.csv'
 
 def ingest():
     """Ingest the data."""
-    db.delete_dataset(DATASET_ID)
+    db.delete_dataset_records(DATASET_ID)
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,

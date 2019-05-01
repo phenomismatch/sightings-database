@@ -15,7 +15,7 @@ BBS_DB = str(RAW_DIR / 'breed-bird-survey.sqlite.db')
 
 def ingest():
     """Ingest Breed Bird Survey data."""
-    db.delete_dataset(DATASET_ID)
+    db.delete_dataset_records(DATASET_ID)
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,

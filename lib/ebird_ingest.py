@@ -14,7 +14,7 @@ RAW_CSV = 'ebd_relDec-2018.txt.gz'
 
 def ingest():
     """Ingest eBird data."""
-    db.delete_dataset(DATASET_ID)
+    db.delete_dataset_records(DATASET_ID)
 
     to_taxon_id = get_taxa()
 

@@ -16,7 +16,7 @@ def ingest():
     """Ingest the data."""
     raw_data = get_raw_data()
 
-    db.delete_dataset(DATASET_ID)
+    db.delete_dataset_records(DATASET_ID)
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,

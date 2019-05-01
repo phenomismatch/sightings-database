@@ -34,7 +34,9 @@ def ingest():
     convert_dbf_to_csv(BAND)
     convert_dbf_to_csv(EFFORT)
 
-    db.delete_dataset(DATASET_ID)
+    import_csv_files()
+
+    db.delete_dataset_records(DATASET_ID)
 
     db.insert_dataset({
         'dataset_id': DATASET_ID,
@@ -42,10 +44,10 @@ def ingest():
         'version': '2017.0',
         'url': 'https://www.birdpop.org/pages/maps.php'})
 
-    to_taxon_id = insert_taxa()
-    to_place_id = insert_places()
-    to_event_id = insert_events(to_place_id)
-    insert_counts(to_event_id, to_taxon_id)
+    # to_taxon_id = insert_taxa()
+    # to_place_id = insert_places()
+    # to_event_id = insert_events(to_place_id)
+    # insert_counts(to_event_id, to_taxon_id)
 
 
 def convert_dbf_to_csv(file_name):
@@ -59,44 +61,77 @@ def convert_dbf_to_csv(file_name):
         dfm.to_csv(csv_file, index=False)
 
 
-def insert_taxa():
-    """
-    Get MAPS taxon data.
+def import_csv_files():
+    """Read raw CSV files into the database."""
+    log(f'Reading {DATASET_ID} CSV files')
 
-    Using the SPEC field is used as the taxon ID in this data.
-    """
+    cxn = db.connect()
+
+    df = pd.read_csv(RAW_DIR / f'{LIST}.csv')
+    df['SCINAME'] = df['SCINAME'].str.split().str.join(' ')
+    df['GENUS'] = df['SCINAME'].str.split().str[0]
+    df.to_sql('maps_list', cxn, if_exists='replace', index=False)
+
+    df = pd.read_csv(RAW_DIR / f'{STATIONS}.csv', dtype='unicode')
+    df.to_sql('maps_stations', cxn, if_exists='replace', index=False)
+
+    df = pd.read_csv(RAW_DIR / f'{EFFORT}.csv', dtype='unicode')
+    df.to_sql('maps_effort', cxn, if_exists='replace', index=False)
+
+    df = pd.read_csv(RAW_DIR / f'{BAND}.csv', dtype='unicode')
+    df.to_sql('maps_bands', cxn, if_exists='replace', index=False)
+
+
+def insert_taxa():
+    """Get MAPS taxon data."""
     log(f'Inserting {DATASET_ID} taxa')
 
-    raw_taxa = pd.read_csv(RAW_DIR / f'{LIST}.csv').fillna('')
-    raw_taxa.rename(
-        columns={'SCINAME': 'sci_name', 'COMMONNAME': 'common_name'},
-        inplace=True)
-    raw_taxa.sci_name = raw_taxa.sci_name.str.split().str.join(' ')
+    sql = """
+        WITH new_taxa AS (SELECT * FROM maps_list
+                           WHERE spec NOT IN (SELECT spec FROM taxa))
+        INSERT INTO taxa
+            (class, genus, sci_name, common_name, spec)
+        SELECT 'aves' AS class,
+               genus,
+               sciname AS sci_name,
+               commonname AS common_name,
+               spec
+          FROM new_taxa;"""
 
-    taxa = raw_taxa.copy()
-    taxa = db.drop_duplicate_taxa(taxa)
-    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
-    taxa.taxon_id = taxa.taxon_id.astype(int)
-    taxa['group'] = None
-    taxa['class'] = 'aves'
-    taxa['order'] = None
-    taxa['family'] = None
-    taxa['genus'] = taxa.sci_name.str.split().str[0]
-    taxa['category'] = None
-    taxa['target'] = None
-    fields = 'SP SPEC CONF SPEC6 CONF6'.split()
-    taxa['taxon_json'] = util.json_object(taxa, fields)
-    taxa.loc[:, db.TAXON_FIELDS].to_sql(
-        'taxa', db.connect(), if_exists='append', index=False)
+    with db.connect() as cxn:
+        cxn.execute(sql)
+        cxn.commit()
 
-    raw_taxa = raw_taxa.set_index('sci_name')
-    sql = """SELECT * FROM taxa"""
-    taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
-    taxa = taxa.merge(raw_taxa, how='inner', left_index=True, right_index=True)
-    db.update_taxa_json(taxa, fields)
-
-    to_taxon_id = taxa.set_index('SPEC').taxon_id.to_dict()
-    return to_taxon_id
+    # raw_taxa = pd.read_csv(RAW_DIR / f'{LIST}.csv').fillna('')
+    # raw_taxa.rename(
+    #     columns={'SCINAME': 'sci_name', 'COMMONNAME': 'common_name'},
+    #     inplace=True)
+    # raw_taxa.sci_name = raw_taxa.sci_name.str.split().str.join(' ')
+    #
+    # taxa = raw_taxa.copy()
+    # taxa = db.drop_duplicate_taxa(taxa)
+    # taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    # taxa.taxon_id = taxa.taxon_id.astype(int)
+    # taxa['group'] = None
+    # taxa['class'] = 'aves'
+    # taxa['order'] = None
+    # taxa['family'] = None
+    # taxa['genus'] = taxa.sci_name.str.split().str[0]
+    # taxa['category'] = None
+    # taxa['target'] = None
+    # fields = 'SP SPEC CONF SPEC6 CONF6'.split()
+    # taxa['taxon_json'] = util.json_object(taxa, fields)
+    # taxa.loc[:, db.TAXON_FIELDS].to_sql(
+    #     'taxa', db.connect(), if_exists='append', index=False)
+    #
+    # raw_taxa = raw_taxa.set_index('sci_name')
+    # sql = """SELECT * FROM taxa"""
+    # taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
+    # taxa = taxa.merge(raw_taxa, how='inner', left_index=True, right_index=True)
+    # db.update_taxa_json(taxa, fields)
+    #
+    # to_taxon_id = taxa.set_index('SPEC').taxon_id.to_dict()
+    # return to_taxon_id
 
 
 def insert_places():
@@ -146,10 +181,9 @@ def insert_events(to_place_id):
     csv_file = RAW_DIR / f'{EFFORT}.csv'
     raw_events = pd.read_csv(csv_file, dtype='unicode')
 
-    # Raw events are STA, DATE, STATION groups with min & max times
+    # Raw events are STA, DATE, STATION, NET groups with min & max times
     convert_to_time(raw_events, 'START')
     convert_to_time(raw_events, 'END')
-    raw_events['LENGTH_MAX'] = raw_events['LENGTH']
     raw_events = raw_events.groupby(['STA', 'STATION', 'DATE', 'NET'])
     raw_events = raw_events.agg({'START': min, 'END': max, 'LENGTH': max})
     raw_events.reset_index(inplace=True)
@@ -195,6 +229,7 @@ def insert_counts(to_event_id, to_taxon_id):
     cxn = db.connect()
     csv_file = RAW_DIR / f'{BAND}.csv'
     raw_counts = pd.read_csv(csv_file, dtype='unicode')
+
     counts = pd.DataFrame()
     counts['count_id'] = db.get_ids(raw_counts, 'counts')
     raw_counts['key'] = tuple(zip(

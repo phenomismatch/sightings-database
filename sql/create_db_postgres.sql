@@ -31,6 +31,7 @@ CREATE TABLE taxa (
   genus       VARCHAR(80),
   common_name VARCHAR(120),
   category    VARCHAR(80),
+  spec        VARCHAR(4),
   target      BOOLEAN,
   revised_id  INTEGER,
   taxon_json  JSON

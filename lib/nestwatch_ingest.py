@@ -2,7 +2,7 @@
 Ingest nest watch data.
 
 This is data contains observations of the nest status over time. This is
-sampled data so the dates of events are appoximate. All data is in one file.
+sampled data so the dates of events are approximate. All data is in one file.
 """
 
 from pathlib import Path
@@ -31,7 +31,7 @@ NUMBERS = """CLUTCH_SIZE_HOST_ATLEAST EGGS_HOST_UNH_ATLEAST
 def ingest():
     """Ingest the data."""
 
-    db.delete_dataset(DATASET_ID)
+    db.delete_dataset_records(DATASET_ID)
 
     to_taxon_id = get_taxa()
     raw_data = get_raw_data(to_taxon_id)
@@ -47,8 +47,14 @@ def ingest():
 
 
 def get_taxa():
-    """Get taxa."""
+    """
+    Get all taxa with a species_code.
+
+    All of the Nestwatch taxa are already in the taxa table and they use the
+    eBird_species_code_2018 as the taxon_id.
+    """
     log(f'Selecting {DATASET_ID} taxa')
+
     sql = """
         SELECT taxon_id,
          JSON_EXTRACT(taxon_json, '$.eBird_species_code_2018') AS species_code
@@ -63,6 +69,7 @@ def get_taxa():
 def get_raw_data(to_taxon_id):
     """Read raw data."""
     log(f'Getting {DATASET_ID} raw data')
+
     raw_data = pd.read_csv(DATA_CSV, dtype='unicode').fillna('')
 
     raw_data['dataset_id'] = DATASET_ID
