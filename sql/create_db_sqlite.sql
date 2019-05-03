@@ -10,7 +10,7 @@ CREATE TABLE datasets (
 
 DROP TABLE IF EXISTS taxa;
 CREATE TABLE taxa (
-  taxon_id    INTEGER NOT NULL PRIMARY KEY,
+  taxon_id    INTEGER PRIMARY KEY,
   sci_name    VARCHAR(80) NOT NULL UNIQUE,
   "group"     VARCHAR(40),
   "class"     VARCHAR(20),
@@ -37,7 +37,7 @@ CREATE INDEX taxa_revised_id ON taxa (revised_id);
 
 DROP TABLE IF EXISTS places;
 CREATE TABLE places (
-  place_id   INTEGER NOT NULL PRIMARY KEY,
+  place_id   INTEGER PRIMARY KEY,
   dataset_id VARCHAR(12) NOT NULL,
   lng        NUMERIC NOT NULL,
   lat        NUMERIC NOT NULL,
@@ -54,7 +54,7 @@ CREATE INDEX places_geohash    ON places (geohash);
 
 DROP TABLE IF EXISTS events;
 CREATE TABLE events (
-  event_id     INTEGER NOT NULL PRIMARY KEY,
+  event_id     INTEGER PRIMARY KEY,
   place_id     INTEGER NOT NULL,
   dataset_id   VARCHAR(12) NOT NULL,
   year         INTEGER NOT NULL,
@@ -71,7 +71,7 @@ CREATE INDEX events_day          ON events (day);
 
 DROP TABLE IF EXISTS counts;
 CREATE TABLE counts (
-  count_id   INTEGER NOT NULL PRIMARY KEY,
+  count_id   INTEGER PRIMARY KEY,
   event_id   INTEGER NOT NULL,
   dataset_id VARCHAR(12) NOT NULL,
   taxon_id   INTEGER NOT NULL,

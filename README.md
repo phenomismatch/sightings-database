@@ -16,14 +16,9 @@ Currently, all data is stored in a single SQLite3 or PostgreSQL (PostGIS) databa
 1. NestWatch dataset.
 
 #### Samples in R
-See this R [script](R/example_sql.R) for how to access the spatialite database in R.
+See this R [script](R/example_sql.R) for how to access the sqlite database in R.
 
 #### Samples in Python
-Most of the scripts in the src directory access the database. I have moved common code into this [library](src/lib/sqlite.py). A some sample_queries that use this library are in this Python [script](src/example_sql.py).
-
-#### When building SQLite3
-```
-CFLAGS="-O2 -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_GEOPOLY -DSQLITE_ENABLE_JSON1 -DSQLITE_ENABLE_RTREE -DHAVE_READLINE" ./configure --enable-readline=yes
-```
+Most of the scripts in the lib directory access the database. I have moved common code into this [library](src/lib/db.py). A some sample_queries that use this library are in this Python [script](src/example_sql.py).
 
 ![Output image](docs/schema/schema_1.png "Database Schema")
