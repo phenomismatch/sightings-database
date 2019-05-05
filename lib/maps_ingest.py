@@ -44,7 +44,6 @@ def ingest():
     insert_taxa()
     insert_places()
     insert_events()
-    insert_dummy_events()
     insert_counts()
 
 
@@ -138,76 +137,50 @@ def insert_events():
     """
     Insert events.
 
-    This is a direct conversion of the MAPS events data (maps_effort) into
-    the database's events table. We filter on events having a place_id via
-    the inner join.
+    There are band records with
     """
     log(f'Inserting {DATASET_ID} events')
+
+    cxn = db.connect()
 
     df = pd.read_csv(RAW_DIR / f'{EFFORT}.csv', dtype='unicode')
-    df['event_id'] = db.get_ids(df, 'events')
-    df['event_json'] = json_object(df, 'STA NET DATE STATION LENGTH'.split())
-    df.to_sql('maps_effort', db.connect(), if_exists='replace', index=False)
-
-    # Group the events by STA, NET, and DATE. Anything else we need will be
-    # maxed.
-    sql1 = "UPDATE maps_effort SET net = '?' WHERE net is NULL;"
-    sql2 = """
-        INSERT INTO events (
-            event_id, place_id, dataset_id, year, day, started, ended,
-            event_json)
-        SELECT
-        	MAX(event_id)                         AS event_id,
-            MAX(place_id)                         AS place_id,
-            ?                                     AS dataset_id,
-            CAST(STRFTIME('%Y', date) AS INTEGER) AS year,
-            CAST(STRFTIME('%j', date) AS INTEGER) AS day,
-            MIN(PRINTF('%s:%s', SUBSTR(start, 1, 2),
-                   SUBSTR(start || '00', 3, 2)))  AS started,
-            MAX(PRINTF('%s:%s', SUBSTR(end, 1, 2),
-                   SUBSTR(end || '00', 3, 2)))    AS ended,
-            MAX(event_json)                       AS event_json
-        FROM maps_effort
-		JOIN maps_stations USING (sta)
-        GROUP BY maps_effort.sta, maps_effort.net, date;
-        """
-    with db.connect() as cxn:
-        cxn.execute(sql1)
-        cxn.commit()
-        cxn.execute(sql2, (DATASET_ID, ))
-        cxn.commit()
-
-
-def insert_dummy_events():
-    """
-    Add dummy event records for maps_bands records w/o an effort record.
-
-    It turns out that there are many (>300K) maps_bands records that do not
-    have a corresponding maps_effort record when keyed by (sta, date, net).
-    So we will add dummy maps_effort records so that we can still capture
-    the count data.
-    """
-    log(f'Inserting {DATASET_ID} events')
+    df.to_sql('maps_effort', cxn, if_exists='replace', index=False)
 
     sql = """
-        SELECT b.STA,
-               b.NET,
-               b.DATE,
-               MAX(b.station)             AS STATION,
-               MIN(COALESCE(time, '000')) AS START,
-               MAX(COALESCE(time, '000')) AS END
-          FROM maps_bands  AS b
-     LEFT JOIN maps_effort AS e
-               ON b.sta  = e.sta
-              AND b.net  = e.net
-              AND b.date = e.date
-        WHERE e.sta IS NULL
-     GROUP BY b.sta, b.net, b.date;
+        UPDATE maps_effort SET net = '?' WHERE net is NULL;
+        UPDATE maps_bands  SET net = '?' WHERE net is NULL;
         """
-    df = pd.read_sql(sql, db.connect())
+    cxn.executescript(sql)
+    cxn.commit()
+
+    # Group the events by STA, NET, and DATE. Anything else is maxed.
+    # Maxing the fields does not change their values in this case.
+    sql = """
+        SELECT
+            MAX(place_id)                           AS place_id,
+            CAST(STRFTIME('%Y', b.date) AS INTEGER) AS year,
+            CAST(STRFTIME('%j', b.date) AS INTEGER) AS day,
+            MIN(PRINTF('%s:%s', SUBSTR(COALESCE(e.start, '000'), 1, 2),
+                SUBSTR(COALESCE(e.start, '000') || '00', 3, 2)))  AS started,
+            MAX(PRINTF('%s:%s', SUBSTR(COALESCE(e.end, '000'), 1, 2),
+                SUBSTR(COALESCE(e.end, '000')   || '00', 3, 2)))  AS ended,
+			MAX(b.sta)                              AS STA,
+			MAX(b.net)							    AS NET,
+			MAX(b.date)							    AS DATE,
+			MAX(b.station)                          AS STATION,
+			MAX(e.length)                           AS LENGTH
+        FROM maps_bands  AS b
+   LEFT JOIN maps_effort AS e
+			 ON b.sta  = e.sta AND b.net  = e.net AND b.date = e.date
+		JOIN maps_stations AS s ON b.sta = s.sta
+    GROUP BY b.sta, b.net, b.date;
+        """
+    df = pd.read_sql(sql, cxn)
     df['event_id'] = db.get_ids(df, 'events')
-    df['event_json'] = json_object(df, 'sta net date station'.split())
-    df.to_sql('maps_effort2', db.connect(), if_exists='replace', index=False)
+    df['dataset_id'] = DATASET_ID
+    df['event_json'] = json_object(df, 'STA NET DATE STATION LENGTH'.split())
+    df.loc[:, db.EVENT_FIELDS].to_sql(
+        'events', cxn, if_exists='append', index=False)
 
 
 def insert_counts():
@@ -228,8 +201,7 @@ def insert_counts():
         WC JC OV1 V1 VM V94 V95 V96 V97 OVYR VYR N B A""".split())
     df.to_sql('maps_bands', db.connect(), if_exists='replace', index=False)
 
-    sql1 = "UPDATE maps_bands SET net = '?' WHERE net is NULL;"
-    sql2 = """
+    sql = """
         INSERT INTO counts
             (count_id, event_id, dataset_id, taxon_id, count, count_json)
         SELECT count_id,
@@ -246,9 +218,7 @@ def insert_counts():
           JOIN taxa USING (spec);
         """
     with db.connect() as cxn:
-        cxn.execute(sql1)
-        cxn.commit()
-        cxn.execute(sql2, (DATASET_ID, ))
+        cxn.execute(sql, (DATASET_ID, ))
         cxn.commit()
 
 
