@@ -102,7 +102,7 @@ def fix_single_quotes(table, src, dst):
     become ''. The field exterior quotes should be left alone.
 
     One wrinkle is that there are multi-line fields which means that we can't
-    just treat all quotes at the start (or end) of a line as a exterior quotes.
+    just treat all quotes at the start (or end) of a line as exterior quotes.
     We count the fields in the line to determine if we're at the start or end
     of a row.
     """
