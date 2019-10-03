@@ -8,14 +8,13 @@ from pathlib import Path
 import pandas as pd
 
 
-IN_DIR = Path('data') / 'raw' / 'nabpp_in'
-OUT_DIR = Path('data') / 'raw' / 'nabpp_out'
+SRC_DIR = Path('data') / 'raw' / 'nabpp_in'
+DST_DIR = Path('data') / 'raw' / 'nabpp_out'
 
 
 SQ = "'"    # Single Quote
 DQ = '"'    # Double Quote
 ESQ = "''"  # Escaped Single Quote
-EDQ = '""'  # Escaped Double Quote
 SPLITTER = "','"    # Split single quoted fields
 
 
@@ -53,8 +52,9 @@ def fix_files():
     for table in CSVS:
         print('Fixing', table['file'])
 
-        src = IN_DIR / table['file']
-        dst = OUT_DIR / table['file']
+        src = SRC_DIR / table['file']
+        dst = DST_DIR / (table['file'][:-3] + 'csv')
+        table['file'] = dst
 
         if table['quotechar'] == SQ:
             fix_single_quotes(table, src, dst)
@@ -72,9 +72,8 @@ def check_files():
 
 def check_with_pandas(table):
     """Pandas finds more errors."""
-    path = OUT_DIR / table['file']
     pd.read_csv(
-        path,
+        table['file'],
         quotechar=table['quotechar'],
         dtype=object,       # Silences but doesn't fix warnings
         encoding='latin-1')
@@ -82,8 +81,7 @@ def check_with_pandas(table):
 
 def check_with_csv(table):
     """CSV gives more information about where errors are in the file."""
-    path = OUT_DIR / table['file']
-    with open(path, encoding='latin-1') as in_file:
+    with open(table['file'], encoding='latin-1') as in_file:
         reader = csv.DictReader(in_file, quotechar=table['quotechar'])
         for row in reader:
             if len(row) != table['cols']:
