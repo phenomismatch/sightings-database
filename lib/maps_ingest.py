@@ -22,7 +22,7 @@ from lib.util import log, json_object
 DATASET_ID = 'maps'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
 LIST = 'LIST18'
-BAND = '1106B18'
+BAND = '0929B19'
 EFFORT = '1106E18'
 STATIONS = 'STATIONS'
 
@@ -114,13 +114,13 @@ def insert_places():
                CAST(declng AS REAL) AS lng,
                CAST(declat AS REAL) AS lat,
                CAST(CASE precision
-		            WHEN '01S' THEN 30.92
-		            WHEN '05S' THEN 30.92 * 5
-            		WHEN '10S' THEN 30.92 * 10
-            		WHEN '01M' THEN 111.32 * 1000
-            		WHEN '10M' THEN 111.32 * 1000 * 10
-            		WHEN 'BLK' THEN 111.32 * 1000 * 10
-		            ELSE null
+                    WHEN '01S' THEN 30.92
+                    WHEN '05S' THEN 30.92 * 5
+                    WHEN '10S' THEN 30.92 * 10
+                    WHEN '01M' THEN 111.32 * 1000
+                    WHEN '10M' THEN 111.32 * 1000 * 10
+                    WHEN 'BLK' THEN 111.32 * 1000 * 10
+                    ELSE null
                     END AS REAL) AS radius,
                place_json
           FROM maps_stations
@@ -164,15 +164,17 @@ def insert_events():
                 SUBSTR(COALESCE(e.start, '000') || '00', 3, 2)))  AS started,
             MAX(PRINTF('%s:%s', SUBSTR(COALESCE(e.end, '000'), 1, 2),
                 SUBSTR(COALESCE(e.end, '000')   || '00', 3, 2)))  AS ended,
-			MAX(b.sta)                              AS STA,
-			MAX(b.net)							    AS NET,
-			MAX(b.date)							    AS DATE,
-			MAX(b.station)                          AS STATION,
-			MAX(e.length)                           AS LENGTH
+            MAX(b.sta)                              AS STA,
+            MAX(COALESCE(b.net, '?'))               AS NET,
+            MAX(b.date)                             AS DATE,
+            MAX(b.station)                          AS STATION,
+            MAX(e.length)                           AS LENGTH
         FROM maps_bands  AS b
    LEFT JOIN maps_effort AS e
-			 ON b.sta  = e.sta AND b.net  = e.net AND b.date = e.date
-		JOIN maps_stations AS s ON b.sta = s.sta
+          ON b.sta  = e.sta AND b.net  = e.net AND b.date = e.date
+        JOIN maps_stations AS s ON b.sta = s.sta
+       WHERE declng BETWEEN -180.0 AND 180.0
+         AND declat BETWEEN  -90.0 AND  90.0
     GROUP BY b.sta, b.net, b.date;
         """
     df = pd.read_sql(sql, cxn)
@@ -213,8 +215,8 @@ def insert_counts():
           FROM maps_bands
           JOIN events
                 ON sta  = JSON_EXTRACT(event_json, '$.STA')
-    		   AND net  = JSON_EXTRACT(event_json, '$.NET')
-     		   AND date = JSON_EXTRACT(event_json, '$.DATE')
+               AND net  = JSON_EXTRACT(event_json, '$.NET')
+               AND date = JSON_EXTRACT(event_json, '$.DATE')
           JOIN taxa USING (spec);
         """
     with db.connect() as cxn:

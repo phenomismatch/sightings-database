@@ -40,6 +40,8 @@ data/raw/caterpillar/*
 data/raw/nestwatch/*
 !data/raw/nestwatch/.gitkeep
 
+data/raw/nabpp*/*
+
 data/interim/*
 !data/interim/.gitkeep
 
