@@ -2,13 +2,13 @@
 Ingest Monitoring Avian Productivity and Survivorship (MAPS) data.
 
 This is a bird banding survey, so there is going to be a count of one for each
-observation. The data has is broken into 4 files:
+observation. The data is broken into 4 files:
 1) A list of species.
 2) A list of banding stations, which correspond to the places table.
 3) An effort table containing information about the banding conditions. This
     corresponds with the events table.
 4) The band table which contains information about the bird's condition. This
-    corresponds with the counts table. A count of one is assumed.
+    corresponds to the counts table. A count of one is assumed.
 """
 
 import os
@@ -22,8 +22,8 @@ from lib.util import log, json_object
 DATASET_ID = 'maps'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
 LIST = 'LIST18'
-BAND = '0929B19'
-EFFORT = '1106E18'
+BAND = '1016B19'
+EFFORT = '1016E19'
 STATIONS = 'STATIONS'
 
 
@@ -38,7 +38,7 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'MAPS: Monitoring Avian Productivity and Survivorship',
-        'version': '2017.0',
+        'version': '2019.0',
         'url': 'https://www.birdpop.org/pages/maps.php'})
 
     insert_taxa()
