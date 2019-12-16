@@ -67,6 +67,7 @@ junk*
 phenomismatch/
 
 # Editors
+.idea/
 .ropeproject/
 *~
 

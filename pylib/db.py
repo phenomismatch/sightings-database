@@ -7,7 +7,7 @@ import sqlite3
 import subprocess
 from pathlib import Path
 import pandas as pd
-from lib.util import log, update_json
+from .util import log, update_json
 
 
 PROCESSED = Path('data') / 'processed'

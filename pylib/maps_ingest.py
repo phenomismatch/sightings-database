@@ -15,8 +15,8 @@ import os
 from pathlib import Path
 import pandas as pd
 from simpledbf import Dbf5
-import lib.db as db
-from lib.util import log, json_object
+from . import db
+from .util import log, json_object
 
 
 DATASET_ID = 'maps'

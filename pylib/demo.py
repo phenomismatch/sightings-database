@@ -2,7 +2,7 @@
 
 from datetime import datetime
 import pandas as pd
-import lib.db as db
+from . import db
 
 
 def get_species(species):

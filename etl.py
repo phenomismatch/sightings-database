@@ -4,19 +4,19 @@
 # pylint: disable=unused-argument
 
 import argparse
-import lib.db as db
-from lib.util import log
-import lib.clements_ingest
-import lib.bbs_ingest
-import lib.maps_ingest
-import lib.ebird_ingest
-import lib.pollard_ingest
-import lib.naba_ingest
-import lib.nestwatch_ingest
-import lib.caterpillar_ingest
+import pylib.db as db
+from pylib.util import log
+import pylib.clements_ingest
+import pylib.bbs_ingest
+import pylib.maps_ingest
+import pylib.ebird_ingest
+import pylib.pollard_ingest
+import pylib.naba_ingest
+import pylib.nestwatch_ingest
+import pylib.caterpillar_ingest
 
 
-SEPARATOR = '*****************************************'
+SEPARATOR = '*' * 80
 
 DATASETS = [  # Order matters
     ('clements', lib.clements_ingest),

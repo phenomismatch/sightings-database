@@ -2,7 +2,7 @@
 
 from pathlib import Path
 import pandas as pd
-import lib.db as db
+from . import db
 
 
 OUTPUT_CSV = Path('output') / 'missing_taxa.csv'

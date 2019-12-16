@@ -2,9 +2,9 @@
 
 from pathlib import Path
 import pandas as pd
-import lib.db as db
-import lib.util as util
-from lib.util import log
+from . import db
+from . import util
+from .util import log
 
 
 DATASET_ID = 'naba'

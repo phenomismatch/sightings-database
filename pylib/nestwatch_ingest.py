@@ -8,9 +8,9 @@ sampled data so the dates of events are approximate. All data is in one file.
 from pathlib import Path
 from datetime import datetime
 import pandas as pd
-import lib.db as db
-import lib.util as util
-from lib.util import log
+from . import db
+from . import util
+from .util import log
 
 
 DATASET_ID = 'nestwatch'
