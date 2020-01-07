@@ -41,6 +41,10 @@ def ingest():
         'version': '2019.0',
         'url': 'https://www.birdpop.org/pages/maps.php'})
 
+    insert_stations()
+    insert_effort()
+    insert_bands()
+
     insert_taxa()
     insert_places()
     insert_events()
@@ -87,6 +91,48 @@ def insert_taxa():
         cxn.commit()
 
 
+def insert_stations():
+    """Build a table to hold the raw MAPS stations data."""
+    log(f'Inserting {DATASET_ID} stations')
+
+    df = pd.read_csv(RAW_DIR / f'{STATIONS}.csv', dtype='unicode')
+    df['place_id'] = db.get_ids(df, 'places')
+    df['place_json'] = json_object(df, """STATION LOC STA STA2 NAME LHOLD
+        HOLDCERT O NEARTOWN COUNTY STATE US REGION BLOCK LATITUDE LONGITUDE
+        PRECISION SOURCE DATUM DECLAT DECLNG NAD83 ELEV STRATUM BCR HABITAT
+        REG PASSED""".split())
+    df.to_sql('maps_stations', db.connect(), if_exists='replace', index=False)
+
+
+def insert_effort():
+    """Build a table to hold the raw MAPS effort data."""
+    log(f'Inserting {DATASET_ID} effort')
+    cxn = db.connect()
+
+    df = pd.read_csv(RAW_DIR / f'{EFFORT}.csv', dtype='unicode')
+    df.to_sql('maps_effort', cxn, if_exists='replace', index=False)
+
+    cxn.executescript("UPDATE maps_effort SET net = '?' WHERE net is NULL;")
+    cxn.commit()
+
+
+def insert_bands():
+    """Build a table to hold the raw MAPS bands data."""
+    log(f'Inserting {DATASET_ID} bands')
+    cxn = db.connect()
+
+    df = pd.read_csv(RAW_DIR / f'{BAND}.csv', dtype='unicode')
+    df['count_id'] = db.get_ids(df, 'counts')
+    df['count_json'] = json_object(df, """LOC BI BS PG C OBAND BAND SSN NUMB
+        OSP SPEC OSP6 SPEC6 OA OHA AGE HA HA OWRP OWRP WRP OS OHS SEX HS SK CP
+        BP F BM FM FW JP WNG WEIGHT STATUS DATE TIME STA STATION NET ANET DISP
+        NOTE PPC SSC PPF SSF TT RR HD UPP UNP BPL NF FP SW COLOR SC CC BC MC
+        WC JC OV1 V1 VM V94 V95 V96 V97 OVYR VYR N B A""".split())
+    df.to_sql('maps_bands', cxn, if_exists='replace', index=False)
+
+    cxn.executescript("UPDATE maps_bands  SET net = '?' WHERE net is NULL;")
+
+
 def insert_places():
     """
     Insert MAPS place data.
@@ -97,14 +143,6 @@ def insert_places():
     precision to radius.
     """
     log(f'Inserting {DATASET_ID} places')
-
-    df = pd.read_csv(RAW_DIR / f'{STATIONS}.csv', dtype='unicode')
-    df['place_id'] = db.get_ids(df, 'places')
-    df['place_json'] = json_object(df, """STATION LOC STA STA2 NAME LHOLD
-        HOLDCERT O NEARTOWN COUNTY STATE US REGION BLOCK LATITUDE LONGITUDE
-        PRECISION SOURCE DATUM DECLAT DECLNG NAD83 ELEV STRATUM BCR HABITAT
-        REG PASSED""".split())
-    df.to_sql('maps_stations', db.connect(), if_exists='replace', index=False)
 
     sql = """
         INSERT INTO places
@@ -143,18 +181,7 @@ def insert_events():
 
     cxn = db.connect()
 
-    df = pd.read_csv(RAW_DIR / f'{EFFORT}.csv', dtype='unicode')
-    df.to_sql('maps_effort', cxn, if_exists='replace', index=False)
-
-    sql = """
-        UPDATE maps_effort SET net = '?' WHERE net is NULL;
-        UPDATE maps_bands  SET net = '?' WHERE net is NULL;
-        """
-    cxn.executescript(sql)
-    cxn.commit()
-
-    # Group the events by STA, NET, and DATE. Anything else is maxed.
-    # Maxing the fields does not change their values in this case.
+    # Group the events by STA, NET, and DATE
     sql = """
         SELECT
             MAX(place_id)                           AS place_id,
@@ -173,8 +200,7 @@ def insert_events():
    LEFT JOIN maps_effort AS e
           ON b.sta  = e.sta AND b.net  = e.net AND b.date = e.date
         JOIN maps_stations AS s ON b.sta = s.sta
-       WHERE declng BETWEEN -180.0 AND 180.0
-         AND declat BETWEEN  -90.0 AND  90.0
+        JOIN places USING (place_id)
     GROUP BY b.sta, b.net, b.date;
         """
     df = pd.read_sql(sql, cxn)
@@ -193,15 +219,6 @@ def insert_counts():
     have to try to link to the events records directly.
     """
     log(f'Inserting {DATASET_ID} counts')
-
-    df = pd.read_csv(RAW_DIR / f'{BAND}.csv', dtype='unicode')
-    df['count_id'] = db.get_ids(df, 'counts')
-    df['count_json'] = json_object(df, """LOC BI BS PG C OBAND BAND SSN NUMB
-        OSP SPEC OSP6 SPEC6 OA OHA AGE HA HA OWRP OWRP WRP OS OHS SEX HS SK CP
-        BP F BM FM FW JP WNG WEIGHT STATUS DATE TIME STA STATION NET ANET DISP
-        NOTE PPC SSC PPF SSF TT RR HD UPP UNP BPL NF FP SW COLOR SC CC BC MC
-        WC JC OV1 V1 VM V94 V95 V96 V97 OVYR VYR N B A""".split())
-    df.to_sql('maps_bands', db.connect(), if_exists='replace', index=False)
 
     sql = """
         INSERT INTO counts

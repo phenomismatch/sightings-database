@@ -19,14 +19,14 @@ import pylib.caterpillar_ingest
 SEPARATOR = '*' * 80
 
 DATASETS = [  # Order matters
-    ('clements', lib.clements_ingest),
-    ('bbs', lib.bbs_ingest),
-    ('maps', lib.maps_ingest),
-    ('nestwatch', lib.nestwatch_ingest),
-    ('pollard', lib.pollard_ingest),
-    ('naba', lib.naba_ingest),
+    ('clements', pylib.clements_ingest),
+    ('bbs', pylib.bbs_ingest),
+    ('maps', pylib.maps_ingest),
+    ('nestwatch', pylib.nestwatch_ingest),
+    ('pollard', pylib.pollard_ingest),
+    ('naba', pylib.naba_ingest),
     # ('caterpillar', lib.caterpillar_ingest),
-    ('ebird', lib.ebird_ingest)]
+    ('ebird', pylib.ebird_ingest)]
 DATASET_NAMES = [x[0] for x in DATASETS]
 INGEST_OPTIONS = DATASET_NAMES + ['all']
 EXPORTS = ['datasets', 'taxa'] + [x for x in DATASET_NAMES if x != 'clements']

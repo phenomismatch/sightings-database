@@ -101,8 +101,7 @@ def insert_places(raw_data, to_place_id):
     places['dataset_id'] = DATASET_ID
 
     is_na = places.radius.isna()
-    places.radius = pd.to_numeric(
-        places.radius, errors='coerce').fillna(0.0)
+    places.radius = pd.to_numeric(places.radius, errors='coerce').fillna(0.0)
     places.radius *= 1000.0
     places.loc[is_na, 'radius'] = None
 
