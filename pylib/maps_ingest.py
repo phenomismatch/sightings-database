@@ -48,7 +48,6 @@ def ingest():
     insert_status()
     insert_effort()
     insert_bands()
-    update_bands()
 
     insert_taxa()
     insert_places()
@@ -139,39 +138,38 @@ def insert_bands():
 
     df = pd.read_csv(RAW_DIR / f'{BAND}.csv', dtype='unicode')
     df['count_id'] = db.get_ids(df, 'counts')
+
+    df.to_sql('maps_bands', cxn, if_exists='replace', index=False)
+    cxn.executescript("UPDATE maps_bands SET net = '?' WHERE net is NULL;")
+
+    sql = """
+        ALTER TABLE maps_bands ADD COLUMN YS TEXT;
+        ALTER TABLE maps_bands ADD COLUMN year TEXT;
+
+        UPDATE maps_bands SET year = SUBSTR(date, 1, 4);
+
+        CREATE INDEX maps_bands_idx ON maps_bands (year, sta, spec);
+        CREATE INDEX maps_status_idx ON maps_status (yr, sta, spec);
+
+        UPDATE maps_bands AS b
+           SET ys = (SELECT s.ys
+                       FROM maps_status AS s
+                      WHERE b.year = s.yr
+                        AND b.sta  = s.sta
+                        AND b.spec = s.spec);
+        """
+    with db.connect() as cxn:
+        cxn.executescript(sql)
+        cxn.commit()
+
+    df = pd.read_sql('SELECT * FROM maps_bands;', cxn)
+
     df['count_json'] = json_object(df, """LOC BI BS PG C OBAND BAND SSN NUMB
         OSP SPEC OSP6 SPEC6 OA OHA AGE HA HA OWRP OWRP WRP OS OHS SEX HS SK CP
         BP F BM FM FW JP WNG WEIGHT STATUS DATE TIME STA STATION NET ANET DISP
         NOTE PPC SSC PPF SSF TT RR HD UPP UNP BPL NF FP SW COLOR SC CC BC MC
-        WC JC OV1 V1 VM V94 V95 V96 V97 OVYR VYR N B A""".split())
+        WC JC OV1 V1 VM V94 V95 V96 V97 OVYR VYR N B A YS""".split())
     df.to_sql('maps_bands', cxn, if_exists='replace', index=False)
-
-    cxn.executescript("UPDATE maps_bands SET net = '?' WHERE net is NULL;")
-
-
-def update_bands():
-    """Add breeding status data to the count_json field."""
-    log(f'Updating {DATASET_ID} bands')
-
-    sql1 = """ALTER TABLE maps_bands ADD COLUMN ys VARCHAR(1);"""
-    sql2 = """
-        UPDATE maps_bands
-           SET ys = (SELECT s.ys
-                       FROM maps_bands  AS b
-                       JOIN maps_status AS s
-                         ON SUBSTR(b.date, 1, 4) = s.yr
-                        AND b.sta  = s.sta
-                        AND b.spec = s.spec);
-        """
-    sql3 = """
-        UPDATE maps_bands
-           SET count_json = JSON_INSERT(count_json, '$.YS', ys);
-        """
-    with db.connect() as cxn:
-        cxn.execute(sql1)
-        cxn.execute(sql2)
-        cxn.execute(sql3)
-        cxn.commit()
 
 
 def insert_places():
