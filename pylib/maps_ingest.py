@@ -2,13 +2,14 @@
 Ingest Monitoring Avian Productivity and Survivorship (MAPS) data.
 
 This is a bird banding survey, so there is going to be a count of one for each
-observation. The data is broken into 4 files:
+observation. The data is broken into 5 files:
 1) A list of species.
 2) A list of banding stations, which correspond to the places table.
 3) An effort table containing information about the banding conditions. This
     corresponds with the events table.
 4) The band table which contains information about the bird's condition. This
     corresponds to the counts table. A count of one is assumed.
+5) The brreding status for a species of birds at a station during a year.
 """
 
 import os
