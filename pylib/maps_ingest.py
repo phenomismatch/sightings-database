@@ -24,6 +24,7 @@ RAW_DIR = Path('data') / 'raw' / DATASET_ID
 LIST = 'LIST18'
 BAND = '1016B19'
 EFFORT = '1016E19'
+STATUS = '1016M19'
 STATIONS = 'STATIONS'
 
 
@@ -31,6 +32,7 @@ def ingest():
     """Ingest the data."""
     convert_dbf_to_csv(LIST)
     convert_dbf_to_csv(BAND)
+    convert_dbf_to_csv(STATUS)
     convert_dbf_to_csv(EFFORT)
 
     db.delete_dataset_records(DATASET_ID)
@@ -42,8 +44,10 @@ def ingest():
         'url': 'https://www.birdpop.org/pages/maps.php'})
 
     insert_stations()
+    insert_status()
     insert_effort()
     insert_bands()
+    update_bands()
 
     insert_taxa()
     insert_places()
@@ -116,6 +120,17 @@ def insert_effort():
     cxn.commit()
 
 
+def insert_status():
+    """Build a table to hold the raw MAPS effort data."""
+    log(f'Inserting {DATASET_ID} status')
+    cxn = db.connect()
+
+    df = pd.read_csv(RAW_DIR / f'{STATUS}.csv', dtype='unicode')
+    df.to_sql('maps_status', cxn, if_exists='replace', index=False)
+
+    cxn.commit()
+
+
 def insert_bands():
     """Build a table to hold the raw MAPS bands data."""
     log(f'Inserting {DATASET_ID} bands')
@@ -130,7 +145,32 @@ def insert_bands():
         WC JC OV1 V1 VM V94 V95 V96 V97 OVYR VYR N B A""".split())
     df.to_sql('maps_bands', cxn, if_exists='replace', index=False)
 
-    cxn.executescript("UPDATE maps_bands  SET net = '?' WHERE net is NULL;")
+    cxn.executescript("UPDATE maps_bands SET net = '?' WHERE net is NULL;")
+
+
+def update_bands():
+    """Add breeding status data to the count_json field."""
+    log(f'Updating {DATASET_ID} bands')
+
+    sql1 = """ALTER TABLE maps_bands ADD COLUMN ys VARCHAR(1);"""
+    sql2 = """
+        UPDATE maps_bands
+           SET ys = (SELECT s.ys
+                       FROM maps_bands  AS b
+                       JOIN maps_status AS s
+                         ON SUBSTR(b.date, 1, 4) = s.yr
+                        AND b.sta  = s.sta
+                        AND b.spec = s.spec);
+        """
+    sql3 = """
+        UPDATE maps_bands
+           SET count_json = JSON_INSERT(count_json, '$.YS', ys);
+        """
+    with db.connect() as cxn:
+        cxn.execute(sql1)
+        cxn.execute(sql2)
+        cxn.execute(sql3)
+        cxn.commit()
 
 
 def insert_places():
@@ -172,11 +212,7 @@ def insert_places():
 
 
 def insert_events():
-    """
-    Insert events.
-
-    There are band records with
-    """
+    """Insert events."""
     log(f'Inserting {DATASET_ID} events')
 
     cxn = db.connect()
@@ -198,7 +234,7 @@ def insert_events():
             MAX(e.length)                           AS LENGTH
         FROM maps_bands  AS b
    LEFT JOIN maps_effort AS e
-          ON b.sta  = e.sta AND b.net  = e.net AND b.date = e.date
+          ON b.sta = e.sta AND b.net = e.net AND b.date = e.date
         JOIN maps_stations AS s ON b.sta = s.sta
         JOIN places USING (place_id)
     GROUP BY b.sta, b.net, b.date;
