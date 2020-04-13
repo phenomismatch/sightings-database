@@ -39,17 +39,14 @@ SELECT lng, lat, year, day, count, sci_name,
 
 
 WITH checklists AS (
-SELECT event_json ->> 'GROUP_IDENTIFIER' AS group_identifier
+SELECT event_json ->> 'SAMPLING_EVENT_IDENTIFIER' AS sample_id
   FROM places
   JOIN events USING (place_id)
  WHERE places.dataset_id = 'ebird'
-   AND year > 0
-   AND day  BETWEEN  120 AND  150
+   AND year >= 2010
+   AND day  BETWEEN  30 AND  150
    AND lng  BETWEEN  -80.430375 AND  -80.124475
    AND lat  BETWEEN   25.956546 AND   25.974140
-   AND event_json -> 'GROUP_IDENTIFIER' IS NOT NULL)
-SELECT group_identifier,
-       COUNT(*) AS n
-  FROM checklists
-GROUP BY group_identifier
-LIMIT 10;
+   AND event_json -> 'SAMPLING_EVENT_IDENTIFIER' IS NOT NULL)
+SELECT COUNT(*) AS n
+  FROM checklists;
