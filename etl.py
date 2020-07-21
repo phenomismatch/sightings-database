@@ -36,7 +36,6 @@ EXPORT_OPTIONS = EXPORTS + ['all']
 def parse_args():
     """Get user input."""
     parser = argparse.ArgumentParser(
-        allow_abbrev=True,
         description='Extract, transform, & load data for the '
                     'sightings database.')
     subparsers = parser.add_subparsers()
@@ -80,12 +79,12 @@ def parse_args():
     return parser.parse_args()
 
 
-def backup(args):
+def backup(_):
     """Backup the SQLite3 database."""
     db.backup_database()
 
 
-def create(args):
+def create(_):
     """Create the SQLite3 database."""
     db.create()
 
@@ -113,12 +112,12 @@ def export(args):
     log(SEPARATOR)
 
 
-def postgres(args):
+def postgres(_):
     """Create the PostgreSQL database."""
     db.create_postgres()
 
 
-def import_(args):
+def import_(_):
     """Import the CSV files into the PostgreSQL database."""
     db.import_postgres()
 

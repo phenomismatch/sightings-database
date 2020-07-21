@@ -1,29 +1,58 @@
-"""Ingest eBird data."""
+"""Ingest eBird data for Florida."""
 
 from pathlib import Path
 
 import pandas as pd
 
-from . import db, util
-from .util import log
+from pylib import db
+from pylib import util
+from pylib.util import log
 
-DATASET_ID = 'ebird'
-RAW_DIR = Path('data') / 'raw' / DATASET_ID
-RAW_CSV = 'ebd_relMay-2020.txt.gz'
+DATASET_ID = 'ebird_fl'
+RAW_DIR = Path('data') / 'raw' / 'ebird'
+RAW_CSV = 'ebd_relDec-2018.txt.gz'
+
+BAD_FILE = Path('data') / 'interim' / 'ebird_fl_rel_dec_2018_old.csv'
+OUT_FILE = Path('data') / 'interim' / 'ebird_fl_rel_dec_2018.csv'
 
 
 def ingest():
     """Ingest eBird data."""
-    db.delete_dataset_records(DATASET_ID)
+    if not OUT_FILE.exists():
+        get_florida_data()
 
-    to_taxon_id = get_taxa()
+    # db.delete_dataset_records(DATASET_ID)
+    #
+    # to_taxon_id = get_taxa()
+    #
+    # db.insert_dataset({
+    #     'dataset_id': DATASET_ID,
+    #     'title': f'{RAW_CSV} Florida',
+    #     'version': 'relDec-2018',
+    #     'url': 'https://ebird.org/home'})
+    #
+    # chunk = 1_000_000
+    # reader = pd.read_csv(
+    #     RAW_DIR / RAW_CSV,
+    #     delimiter='\t',
+    #     quoting=3,
+    #     chunksize=chunk,
+    #     compression='infer',
+    #     dtype='unicode')
+    #
+    # to_place_id = {}
+    # to_event_id = {}
+    #
+    # for i, raw_data in enumerate(reader, 1):
+    #     log(f'Processing {DATASET_ID} chunk {i * chunk:,}')
+    #
+    #     to_place_id = insert_places(raw_data, to_place_id)
+    #     to_event_id = insert_events(raw_data, to_place_id, to_event_id)
+    #     insert_counts(raw_data, to_event_id, to_taxon_id)
 
-    db.insert_dataset({
-        'dataset_id': DATASET_ID,
-        'title': RAW_CSV,
-        'version': 'relMay-2020',
-        'url': 'https://ebird.org/home'})
 
+def get_florida_data():
+    """Ingest eBird data."""
     chunk = 1_000_000
     reader = pd.read_csv(
         RAW_DIR / RAW_CSV,
@@ -33,9 +62,7 @@ def ingest():
         compression='infer',
         dtype='unicode')
 
-    to_place_id = {}
-    to_event_id = {}
-
+    first_chunk = True
     for i, raw_data in enumerate(reader, 1):
         log(f'Processing {DATASET_ID} chunk {i * chunk:,}')
 
@@ -44,17 +71,19 @@ def ingest():
         if raw_data.shape[0] == 0:
             continue
 
-        to_place_id = insert_places(raw_data, to_place_id)
-        to_event_id = insert_events(raw_data, to_place_id, to_event_id)
-        insert_counts(raw_data, to_event_id, to_taxon_id)
+        if first_chunk:
+            raw_data.to_csv(OUT_FILE, index=False)
+        else:
+            raw_data.to_csv(OUT_FILE, index=False, mode='a', header=False)
+
+        first_chunk = False
 
 
 def get_taxa():
     """Build a dictionary of scientific names and taxon_ids."""
     sql = """SELECT taxon_id, sci_name
                FROM taxa
-              WHERE target = 't'
-                AND "class"='aves'"""
+              WHERE "class"='aves'"""
     taxa = pd.read_sql(sql, db.connect())
     return taxa.set_index('sci_name').taxon_id.to_dict()
 
@@ -62,28 +91,32 @@ def get_taxa():
 def filter_data(raw_data):
     """Limit the size & scope of the data."""
     raw_data = raw_data.rename(columns={
-        'LONGITUDE': 'lng',
-        'LATITUDE': 'lat',
-        'EFFORT DISTANCE KM': 'radius',
-        'TIME OBSERVATIONS STARTED': 'started',
-        ' LOCALITY TYPE': 'LOCALITY TYPE',
-        'OBSERVATION COUNT': 'count'})
+        # 'LONGITUDE': 'lng',
+        # 'LATITUDE': 'lat',
+        # 'EFFORT DISTANCE KM': 'radius',
+        # 'TIME OBSERVATIONS STARTED': 'started',
+        # 'OBSERVATION COUNT': 'count',
+        ' LOCALITY TYPE': 'LOCALITY TYPE'})
     util.normalize_columns_names(raw_data)
 
-    raw_data['date'] = pd.to_datetime(
+    raw_data['OBSERVATION_DATE'] = pd.to_datetime(
         raw_data['OBSERVATION_DATE'], errors='coerce')
 
-    raw_data.loc[raw_data['count'] == 'X', 'count'] = '-1'
-    raw_data['count'] = pd.to_numeric(raw_data['count'], errors='coerce')
+    # raw_data.loc[raw_data['count'] == 'X', 'count'] = '-1'
+    # raw_data['count'] = pd.to_numeric(raw_data['count'], errors='coerce')
 
-    has_date = raw_data['date'].notna()
+    has_date = raw_data['OBSERVATION_DATE'].notna()
     is_approved = raw_data['APPROVED'] == '1'
     is_complete = raw_data['ALL_SPECIES_REPORTED'] == '1'
 
+    raw_data = raw_data.loc[(raw_data.STATE == '')]
+
     raw_data = raw_data[has_date & is_approved & is_complete]
+    raw_data = raw_data.drop(['Unnamed_46'], axis='columns')
 
     return util.filter_lng_lat(
-        raw_data, 'lng', 'lat', lng=(-95.0, -50.0), lat=(20.0, 90.0))
+        raw_data, 'LONGITUDE', 'LATITUDE',
+        lng=(-88.0, -79.0), lat=(23.0, 32.0))
 
 
 def insert_places(raw_data, to_place_id):
@@ -166,7 +199,7 @@ def insert_counts(counts, to_event_id, to_taxon_id):
     log(f'Inserting {DATASET_ID} counts')
 
     in_species = counts['SCIENTIFIC_NAME'].isin(to_taxon_id)
-    counts = counts[in_species].copy()
+    counts = counts[in_species]
     if counts.shape[0] == 0:
         return
 
