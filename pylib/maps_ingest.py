@@ -9,7 +9,7 @@ observation. The data is broken into 5 files:
     corresponds with the events table.
 4) The band table which contains information about the bird's condition. This
     corresponds to the counts table. A count of one is assumed.
-5) The brreding status for a species of birds at a station during a year.
+5) The breeding status for a species of birds at a station during a year.
 """
 
 import os

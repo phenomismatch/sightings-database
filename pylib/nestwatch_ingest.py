@@ -15,7 +15,7 @@ from .util import log
 
 DATASET_ID = 'nestwatch'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
-DATA_CSV = RAW_DIR / 'nw_export_20190129.csv'
+DATA_CSV = RAW_DIR / 'Nestwatch_2020_1014.csv'
 
 DATES = 'lay_date hatch_date fledge_date'.split()
 EVENT_FIELDS = """LOC_ID CAVITY_ENTRANCE_DIAM_CM FIRST_LAY_DT HATCH_DT
@@ -39,7 +39,7 @@ def ingest():
     db.insert_dataset({
         'dataset_id': DATASET_ID,
         'title': 'Nestwatch',
-        'version': '2019-01-29',
+        'version': '2020-10-14',
         'url': ''})
 
     insert_places(raw_data)
@@ -77,12 +77,17 @@ def get_raw_data(to_taxon_id):
     raw_data['lng'] = pd.to_numeric(raw_data['LONGITUDE'], errors='coerce')
     raw_data['lat'] = pd.to_numeric(raw_data['LATITUDE'], errors='coerce')
 
+    raw_data['lay_date'] = raw_data['FIRST_LAY_DT'].str.split(':', 2).str[0]
     raw_data['lay_date'] = pd.to_datetime(
-        raw_data['FIRST_LAY_DT'], format='%d-%b-%y', errors='coerce')
+        raw_data['lay_date'], format='%d%b%Y', errors='coerce')
+
+    raw_data['hatch_date'] = raw_data['HATCH_DT'].str.split(':', 2).str[0]
     raw_data['hatch_date'] = pd.to_datetime(
-        raw_data['HATCH_DT'], format='%d-%b-%y', errors='coerce')
+        raw_data['hatch_date'], format='%d%b%Y', errors='coerce')
+
+    raw_data['fledge_date'] = raw_data['FLEDGE_DT'].str.split(':', 2).str[0]
     raw_data['fledge_date'] = pd.to_datetime(
-        raw_data['FLEDGE_DT'], format='%d-%b-%y', errors='coerce')
+        raw_data['fledge_date'], format='%d%b%Y', errors='coerce')
 
     has_taxon_id = raw_data['taxon_id'].notna()
     has_lng = raw_data['lng'].notna()

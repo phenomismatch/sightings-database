@@ -63,10 +63,10 @@ CREATE TABLE events (
   ended        TEXT,
   event_json   TEXT
 );
-CREATE INDEX events_place_id     ON events (place_id);
-CREATE INDEX events_dataset_id   ON events (dataset_id);
-CREATE INDEX events_year         ON events (year);
-CREATE INDEX events_day          ON events (day);
+CREATE INDEX events_place_id   ON events (place_id);
+CREATE INDEX events_dataset_id ON events (dataset_id);
+CREATE INDEX events_year       ON events (year);
+CREATE INDEX events_day        ON events (day);
 
 
 DROP TABLE IF EXISTS counts;

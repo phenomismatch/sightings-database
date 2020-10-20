@@ -10,48 +10,8 @@ __pycache__
 .pylintrc
 
 # Data
-
 output/*
-data/temp/*
-
-!data/raw/.gitkeep
-
-data/raw/bbs/*
-!data/raw/bbs/.gitkeep
-
-data/raw/maps/*
-!data/raw/maps/maps_codes.py
-!data/raw/maps/.gitkeep
-
-data/raw/ebird/*
-!data/raw/ebird/target_birds.csv
-!data/raw/ebird/ebird_codes.csv
-!data/raw/ebird/.gitkeep
-
-data/raw/pollard/*
-!data/raw/pollard/.gitkeep
-
-data/raw/naba/*
-!data/raw/naba/.gitkeep
-
-data/raw/caterpillar/*
-!data/raw/caterpillar/.gitkeep
-
-data/raw/nestwatch/*
-!data/raw/nestwatch/.gitkeep
-
-data/raw/nabpp*/*
-
-data/interim/*
-!data/interim/.gitkeep
-
-data/processed/*
-!data/processed/.gitkeep
-
-data/external/maps/*
-!data/external/maps/.gitkeep
-
-# Docs
+data/
 
 # Temp files
 temp/
