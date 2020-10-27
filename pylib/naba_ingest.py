@@ -87,7 +87,7 @@ def insert_taxa(raw_data):
     taxa['taxon_json'] = util.json_object(taxa, fields)
 
     taxa = db.drop_duplicate_taxa(taxa)
-    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa['taxon_id'] = db.create_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
     taxa.loc[:, db.TAXON_FIELDS].to_sql(
         'taxa', cxn, if_exists='append', index=False)
@@ -112,7 +112,7 @@ def insert_places(raw_data):
 
     places = pd.DataFrame()
 
-    raw_places['place_id'] = db.get_ids(raw_places, 'places')
+    raw_places['place_id'] = db.create_ids(raw_places, 'places')
     places['place_id'] = raw_places['place_id']
 
     places['lng'] = pd.to_numeric(raw_places['LONGITUDE'], errors='coerce')
@@ -140,7 +140,7 @@ def insert_events(raw_data, to_place_id):
 
     events = pd.DataFrame()
 
-    raw_events['event_id'] = db.get_ids(raw_events, 'events')
+    raw_events['event_id'] = db.create_ids(raw_events, 'events')
     events['event_id'] = raw_events.event_id
 
     raw_events['place_key'] = tuple(zip(
@@ -171,7 +171,7 @@ def insert_counts(raw_data, to_event_id, to_taxon_id):
     raw_data['key'] = tuple(zip(raw_data.iYear, raw_data.Month, raw_data.Day))
 
     counts = pd.DataFrame()
-    counts['count_id'] = db.get_ids(raw_data, 'counts')
+    counts['count_id'] = db.create_ids(raw_data, 'counts')
     counts['event_id'] = raw_data.key.map(to_event_id)
     counts['taxon_id'] = raw_data.sci_name.map(to_taxon_id)
     counts['count'] = raw_data.SumOfBFLY_COUNT.fillna(0)

@@ -69,7 +69,7 @@ def insert_taxa(raw_data):
     taxa['target'] = None
 
     taxa = db.drop_duplicate_taxa(taxa)
-    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa['taxon_id'] = db.create_ids(taxa, 'taxa')
     taxa['taxon_id'] = taxa['taxon_id'].astype(int)
     taxa['taxon_json'] = '{}'
 
@@ -94,7 +94,7 @@ def insert_places(raw_data):
         raw_places, place_df, how='left', on=['Site', 'Route'])
 
     places = pd.DataFrame()
-    raw_places['place_id'] = db.get_ids(raw_places, 'places')
+    raw_places['place_id'] = db.create_ids(raw_places, 'places')
     places['place_id'] = raw_places['place_id']
     places['dataset_id'] = DATASET_ID
     places['lng'] = pd.to_numeric(raw_places['long'], errors='coerce')
@@ -117,7 +117,7 @@ def insert_events(raw_data, to_place_id):
 
     events = pd.DataFrame()
 
-    raw_data['event_id'] = db.get_ids(raw_data, 'events')
+    raw_data['event_id'] = db.create_ids(raw_data, 'events')
     events['event_id'] = raw_data['event_id']
     raw_data['place_key'] = tuple(zip(raw_data.Site, raw_data.Route))
     raw_data['place_id'] = raw_data['place_key'].map(to_place_id)
@@ -146,7 +146,7 @@ def insert_counts(raw_data, to_taxon_id):
     log(f'Inserting {DATASET_ID} counts')
 
     counts = pd.DataFrame()
-    counts['count_id'] = db.get_ids(raw_data, 'counts')
+    counts['count_id'] = db.create_ids(raw_data, 'counts')
     counts['event_id'] = raw_data['event_id'].astype(int)
     counts['taxon_id'] = raw_data['sci_name'].map(to_taxon_id)
     counts['count'] = raw_data['Total'].fillna(0)

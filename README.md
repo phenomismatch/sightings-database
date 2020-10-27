@@ -14,6 +14,7 @@ All data is stored in either a SQLite3 or PostgreSQL (PostGIS) database. We have
 1. NABA butterfly dataset.
 1. Caterpillar Counts dataset.
 1. NestWatch dataset.
+1. USGS Bird Banding Laboratory dataset.
 
 There are 5 primary tables in the database:
 1. The Taxa table that hold data specific to each taxon.
@@ -26,17 +27,17 @@ Some record counts for the datasets:
 
 Dataset   | Place Records | Event Records | Count Records | Notes
 --------- | ------------- | ------------- | ------------- | -----
-BBS       |        5,690  |       122,925 |     6,448,898 |
-MAPS      |        1,224  |       619,335 |     2,030,287 |
+BBS       |        5,690  |       122,925 |     > 6M      |
+MAPS      |        1,224  |       619,335 |     > 2M      |
 NestWatch |       65,063  |      503,510  |       647,212 |
 Pollard   |          760  |        86,996 |        86,958 |
 NABA      |        1,132  |         2,135 |       305,810 |
-eBird     |    1,986,208  |    16,820,802 |   100,123,659 | Culled from 565,608,238 records
+eBird     |    1,986,208  |    16,820,802 |     > 120M    | Culled from > 650M records
 
 #### Samples in R
-See this R [script](R/example_sql.R) for how to access the sqlite database in R.
+See this R [script](R/example_dbi.R) for how to access the sqlite database in R.
 
 #### Samples in Python
-Most of the scripts in the lib directory access the database. I have moved common code into this [library](src/lib/db.py). A some sample_queries that use this library are in this Python [script](src/example_sql.py).
+Most of the scripts in the lib directory access the database. I have moved common code into this [library](pylib/db.py). A some sample_queries that use this library are in this Python [script](sql/examples.sql).
 
 ![Output image](docs/schema/schema_1.png "Database Schema")

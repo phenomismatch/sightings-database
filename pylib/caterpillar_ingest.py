@@ -55,7 +55,7 @@ def insert_taxa():
     taxa['common_name'] = ''
 
     taxa = db.drop_duplicate_taxa(taxa)
-    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa['taxon_id'] = db.create_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
 
     taxa.to_sql('taxa', cxn, if_exists='append', index=False)
@@ -72,7 +72,7 @@ def insert_places():
 
     places = pd.DataFrame()
 
-    raw_places['place_id'] = db.get_ids(raw_places, 'places')
+    raw_places['place_id'] = db.create_ids(raw_places, 'places')
     places['place_id'] = raw_places['place_id']
 
     places['dataset_id'] = DATASET_ID
@@ -102,7 +102,7 @@ def insert_events(to_place_id):
 
     events = pd.DataFrame()
 
-    raw_events['event_id'] = db.get_ids(raw_events, 'events')
+    raw_events['event_id'] = db.create_ids(raw_events, 'events')
     events['event_id'] = raw_events['event_id']
 
     events['place_id'] = raw_events.SiteFK.map(to_place_id)
@@ -135,7 +135,7 @@ def insert_counts(to_event_id, to_taxon_id):
     raw_counts = pd.read_csv(SIGHTINGS_CSV, encoding='ISO-8859-1')
 
     counts = pd.DataFrame()
-    counts['count_id'] = db.get_ids(raw_counts, 'counts')
+    counts['count_id'] = db.create_ids(raw_counts, 'counts')
 
     counts['event_id'] = raw_counts.SurveyFK.map(to_event_id)
     counts['taxon_id'] = raw_counts.Group.map(to_taxon_id)

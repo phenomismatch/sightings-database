@@ -132,47 +132,47 @@ def insert_events_and_counts(raw_data):
     raw_data['started'] = None
     raw_data['ended'] = None
 
-    dfm = add_event_records(raw_data, 'FIRST_LAY_DT', 'lay_date')
-    add_count_records(dfm, 'CLUTCH_SIZE_HOST_ATLEAST')
+    df = add_event_records(raw_data, 'FIRST_LAY_DT', 'lay_date')
+    add_count_records(df, 'CLUTCH_SIZE_HOST_ATLEAST')
 
-    dfm = add_event_records(raw_data, 'HATCH_DT', 'hatch_date')
-    add_count_records(dfm, 'EGGS_HOST_UNH_ATLEAST')
-    add_count_records(dfm, 'YOUNG_HOST_TOTAL_ATLEAST')
+    df = add_event_records(raw_data, 'HATCH_DT', 'hatch_date')
+    add_count_records(df, 'EGGS_HOST_UNH_ATLEAST')
+    add_count_records(df, 'YOUNG_HOST_TOTAL_ATLEAST')
 
-    dfm = add_event_records(raw_data, 'FLEDGE_DT', 'fledge_date')
-    add_count_records(dfm, 'YOUNG_HOST_FLEDGED_ATLEAST')
-    add_count_records(dfm, 'YOUNG_HOST_DEAD_ATLEAST')
+    df = add_event_records(raw_data, 'FLEDGE_DT', 'fledge_date')
+    add_count_records(df, 'YOUNG_HOST_FLEDGED_ATLEAST')
+    add_count_records(df, 'YOUNG_HOST_DEAD_ATLEAST')
 
 
-def add_event_records(dfm, event_type, event_date):
+def add_event_records(df, event_type, event_date):
     """Add event records for the event type."""
     log(f'Adding {DATASET_ID} event records for {event_type}')
     this_year = datetime.now().year
-    dfm = dfm.loc[dfm[event_date].notnull(), :].copy()
-    dfm['event_id'] = db.get_ids(dfm, 'events')
-    dfm['dataset_id'] = DATASET_ID
-    dfm['year'] = dfm[event_date].dt.strftime('%Y').astype(int)
-    dfm['year'] = dfm['year'].apply(lambda x: x - 100 if x > this_year else x)
-    dfm['day'] = dfm[event_date].dt.strftime('%j').astype(int)
-    dfm['event_type'] = event_type
-    dfm['event_json'] = util.json_object(dfm, EVENT_FIELDS)
-    dfm.loc[:, db.EVENT_FIELDS].to_sql(
+    df = df.loc[df[event_date].notnull(), :].copy()
+    df['event_id'] = db.create_ids(df, 'events')
+    df['dataset_id'] = DATASET_ID
+    df['year'] = df[event_date].dt.strftime('%Y').astype(int)
+    df['year'] = df['year'].apply(lambda x: x - 100 if x > this_year else x)
+    df['day'] = df[event_date].dt.strftime('%j').astype(int)
+    df['event_type'] = event_type
+    df['event_json'] = util.json_object(df, EVENT_FIELDS)
+    df.loc[:, db.EVENT_FIELDS].to_sql(
         'events', db.connect(), if_exists='append', index=False)
-    return dfm
+    return df
 
 
-def add_count_records(dfm, count_type):
+def add_count_records(df, count_type):
     """Add count records for the count type."""
     log(f'Adding {DATASET_ID} count records for {count_type}')
-    has_count = pd.to_numeric(dfm[count_type], errors='coerce').notna()
-    dfm = dfm.loc[has_count, :].copy()
-    dfm[count_type] = dfm[count_type].astype(int)
-    dfm['count_id'] = db.get_ids(dfm, 'counts')
-    dfm['dataset_id'] = DATASET_ID
-    dfm['count'] = dfm[count_type]
-    dfm['count_type'] = count_type
-    dfm['count_json'] = util.json_object(dfm, COUNT_FIELDS)
-    dfm.loc[dfm['count'].notna(), db.COUNT_FIELDS].to_sql(
+    has_count = pd.to_numeric(df[count_type], errors='coerce').notna()
+    df = df.loc[has_count, :].copy()
+    df[count_type] = df[count_type].astype(int)
+    df['count_id'] = db.create_ids(df, 'counts')
+    df['dataset_id'] = DATASET_ID
+    df['count'] = df[count_type]
+    df['count_type'] = count_type
+    df['count_json'] = util.json_object(df, COUNT_FIELDS)
+    df.loc[df['count'].notna(), db.COUNT_FIELDS].to_sql(
         'counts', db.connect(), if_exists='append', index=False)
 
 

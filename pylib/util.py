@@ -13,18 +13,18 @@ def log(msg):
     print(msg)
 
 
-def normalize_columns_names(dfm):
+def normalize_columns_names(df):
     """Remove problem characters from dataframe columns."""
-    dfm.rename(columns=lambda x: re.sub(r'\W', '_', x), inplace=True)
-    dfm.rename(columns=lambda x: re.sub(r'__', '_', x), inplace=True)
-    dfm.rename(columns=lambda x: re.sub(r'^_|_$', '', x), inplace=True)
+    df.rename(columns=lambda x: re.sub(r'\W', '_', x), inplace=True)
+    df.rename(columns=lambda x: re.sub(r'__', '_', x), inplace=True)
+    df.rename(columns=lambda x: re.sub(r'^_|_$', '', x), inplace=True)
 
 
-def json_object(dfm, fields):
+def json_object(df, fields):
     """Build an array of json objects from the dataframe fields."""
-    dfm = dfm.fillna('')
+    df = df.fillna('')
     json_array = []
-    for row in dfm.itertuples():
+    for row in df.itertuples():
         obj = {}
         for field in fields:
             value = getattr(row, field)
@@ -44,13 +44,13 @@ def update_json(row, fields):
 
 
 def filter_lng_lat(
-        dfm, lng_col, lat_col, lng=(-180.0, 180.0), lat=(-90.0, 90.0)):
+        df, lng_col, lat_col, lng=(-180.0, 180.0), lat=(-90.0, 90.0)):
     """Remove bad latitudes and longitudes."""
-    dfm[lng_col] = pd.to_numeric(
-        dfm[lng_col], errors='coerce').fillna(9999.9).astype(float)
-    dfm[lat_col] = pd.to_numeric(
-        dfm[lat_col], errors='coerce').fillna(9999.9).astype(float)
-    good_lng = dfm[lng_col].between(lng[0], lng[1])
-    good_lat = dfm[lat_col].between(lat[0], lat[1])
+    df[lng_col] = pd.to_numeric(
+        df[lng_col], errors='coerce').fillna(9999.9).astype(float)
+    df[lat_col] = pd.to_numeric(
+        df[lat_col], errors='coerce').fillna(9999.9).astype(float)
+    good_lng = df[lng_col].between(lng[0], lng[1])
+    good_lat = df[lat_col].between(lat[0], lat[1])
 
-    return dfm[good_lng & good_lat]
+    return df[good_lng & good_lat]

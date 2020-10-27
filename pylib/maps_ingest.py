@@ -62,8 +62,8 @@ def convert_dbf_to_csv(file_name):
     if not os.path.exists(csv_file):
         log(f'Converting {dbf_file} files to {csv_file}')
         dbf = Dbf5(dbf_file)
-        dfm = dbf.to_dataframe()
-        dfm.to_csv(csv_file, index=False)
+        df = dbf.to_dataframe()
+        df.to_csv(csv_file, index=False)
 
 
 def insert_taxa():
@@ -100,7 +100,7 @@ def insert_stations():
     log(f'Inserting {DATASET_ID} stations')
 
     df = pd.read_csv(RAW_DIR / f'{STATIONS}.csv', dtype='unicode')
-    df['place_id'] = db.get_ids(df, 'places')
+    df['place_id'] = db.create_ids(df, 'places')
     df['place_json'] = json_object(df, """STATION LOC STA STA2 NAME LHOLD
         HOLDCERT O NEARTOWN COUNTY STATE US REGION BLOCK LATITUDE LONGITUDE
         PRECISION SOURCE DATUM DECLAT DECLNG NAD83 ELEV STRATUM BCR HABITAT
@@ -137,7 +137,7 @@ def insert_bands():
     cxn = db.connect()
 
     df = pd.read_csv(RAW_DIR / f'{BAND}.csv', dtype='unicode')
-    df['count_id'] = db.get_ids(df, 'counts')
+    df['count_id'] = db.create_ids(df, 'counts')
 
     df.to_sql('maps_bands', cxn, if_exists='replace', index=False)
     cxn.executescript("UPDATE maps_bands SET net = '?' WHERE net is NULL;")
@@ -239,7 +239,7 @@ def insert_events():
     GROUP BY b.sta, b.net, b.date;
         """
     df = pd.read_sql(sql, cxn)
-    df['event_id'] = db.get_ids(df, 'events')
+    df['event_id'] = db.create_ids(df, 'events')
     df['dataset_id'] = DATASET_ID
     df['event_json'] = json_object(df, 'STA NET DATE STATION LENGTH'.split())
     df.loc[:, db.EVENT_FIELDS].to_sql(

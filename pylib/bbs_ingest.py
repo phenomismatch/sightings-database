@@ -2,11 +2,11 @@
 
 import re
 from pathlib import Path
-import pandas as pd
-from . import db
-from . import util
-from .util import log
 
+import pandas as pd
+
+from . import db, util
+from .util import log
 
 DATASET_ID = 'bbs'
 RAW_DIR = Path('data') / 'raw' / DATASET_ID
@@ -45,7 +45,7 @@ def insert_taxa():
 
     taxa = raw_taxa.copy()
     taxa = db.drop_duplicate_taxa(taxa)
-    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa['taxon_id'] = db.create_ids(taxa, 'taxa')
     taxa.taxon_id = taxa.taxon_id.astype(int)
     taxa['class'] = 'aves'
     taxa['group'] = None
@@ -59,7 +59,7 @@ def insert_taxa():
     raw_taxa = raw_taxa.set_index('sci_name')
     sql = """SELECT * FROM taxa"""
     taxa = pd.read_sql(sql, db.connect()).set_index('sci_name')
-    taxa = taxa.merge(raw_taxa, how='inner', left_index=True, right_index=True)
+    taxa = taxa.merge(raw_taxa, left_index=True, right_index=True)
     db.update_taxa_json(taxa, fields)
 
     to_taxon_id = taxa.set_index('aou').taxon_id.to_dict()
@@ -74,7 +74,7 @@ def insert_places():
     raw_places = pd.read_sql(sql, db.connect(BBS_DB))
 
     places = pd.DataFrame()
-    raw_places['place_id'] = db.get_ids(raw_places, 'places')
+    raw_places['place_id'] = db.create_ids(raw_places, 'places')
     places['place_id'] = raw_places['place_id']
     places['dataset_id'] = DATASET_ID
     places['lng'] = raw_places['longitude']
@@ -100,14 +100,14 @@ def insert_events(to_place_id):
 
     events = pd.DataFrame()
 
-    raw_events['event_id'] = db.get_ids(raw_events, 'events')
+    raw_events['event_id'] = db.create_ids(raw_events, 'events')
     events['event_id'] = raw_events['event_id']
     events['dataset_id'] = DATASET_ID
     raw_events['place_key'] = tuple(zip(raw_events.statenum, raw_events.route))
     events['place_id'] = raw_events.place_key.map(to_place_id)
     events['year'] = raw_events['year']
-    events['day'] = pd.to_datetime(
-        raw_events.loc[:, ['year', 'month', 'day']]).dt.strftime('%j')
+    events['day'] = pd.to_datetime(raw_events.loc[:, ['year', 'month', 'day']])
+    events['day'] = events['day'].dt.strftime('%j')
     events['started'] = raw_events['starttime']
     convert_to_time(events, 'started')
     events['ended'] = raw_events['endtime']
@@ -124,14 +124,14 @@ def insert_events(to_place_id):
         ['statenum', 'route', 'rpid', 'year']).event_id.to_dict()
 
 
-def convert_to_time(dfm, column):
+def convert_to_time(df, column):
     """Convert the time field from int hMM format to HH:MM format."""
-    is_na = pd.to_numeric(dfm[column], errors='coerce').isna()
-    dfm[column] = dfm[column].fillna(0).astype(int).astype(str)
-    dfm[column] = dfm[column].str.pad(4, fillchar='0')
-    dfm[column] = pd.to_datetime(
-        dfm[column], format='%H%M', errors='coerce').dt.strftime('%H:%M')
-    dfm.loc[is_na, column] = ''
+    is_na = pd.to_numeric(df[column], errors='coerce').isna()
+    df[column] = df[column].fillna(0).astype(int).astype(str)
+    df[column] = df[column].str.pad(4, fillchar='0')
+    df[column] = pd.to_datetime(df[column], format='%H%M', errors='coerce')
+    df[column] = df[column].dt.strftime('%H:%M')
+    df.loc[is_na, column] = ''
 
 
 def insert_counts(to_event_id, to_taxon_id):
@@ -143,7 +143,7 @@ def insert_counts(to_event_id, to_taxon_id):
 
     raw_counts['taxon_id'] = raw_counts.aou.map(to_taxon_id)
     counts = pd.DataFrame()
-    counts['count_id'] = db.get_ids(raw_counts, 'counts')
+    counts['count_id'] = db.create_ids(raw_counts, 'counts')
     counts['dataset_id'] = DATASET_ID
     raw_counts['event_key'] = tuple(zip(
         raw_counts.statenum,

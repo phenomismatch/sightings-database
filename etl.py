@@ -7,6 +7,7 @@ import argparse
 import pylib.db as db
 from pylib.util import log
 import pylib.clements_ingest
+import pylib.bbl_ingest
 import pylib.bbs_ingest
 import pylib.maps_ingest
 import pylib.ebird_ingest
@@ -26,6 +27,7 @@ DATASETS = [  # Order matters
     ('pollard', pylib.pollard_ingest),
     ('naba', pylib.naba_ingest),
     # ('caterpillar', lib.caterpillar_ingest),
+    ('bbl', pylib.bbl_ingest),
     ('ebird', pylib.ebird_ingest)]
 DATASET_NAMES = [x[0] for x in DATASETS]
 INGEST_OPTIONS = DATASET_NAMES + ['all']

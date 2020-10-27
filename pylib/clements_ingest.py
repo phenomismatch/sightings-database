@@ -47,7 +47,7 @@ def ingest():
     fields = 'eBird_species_code_2018 sort_v2018 range extinct'.split()
     taxa['taxon_json'] = util.json_object(taxa, fields)
 
-    taxa['taxon_id'] = db.get_ids(taxa, 'taxa')
+    taxa['taxon_id'] = db.create_ids(taxa, 'taxa')
     taxa.loc[:, db.TAXON_FIELDS].to_sql(
         'taxa', db.connect(), if_exists='append', index=False)
 

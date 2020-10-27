@@ -28,7 +28,6 @@ def ingest():
         delimiter='\t',
         quoting=3,
         chunksize=chunk,
-        compression='infer',
         dtype='unicode')
 
     first_chunk = True

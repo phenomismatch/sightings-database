@@ -57,8 +57,15 @@ def backup_database():
     subprocess.check_call(cmd, shell=True)
 
 
+def drop_table(table):
+    """Drop the given table."""
+    cxn = connect()
+    sql = f"""DROP TABLE IF EXISTS {table};"""
+    cxn.executescript(sql)
+
+
 def insert_dataset(dataset):
-    """Insert the DB verion."""
+    """Insert the DB version."""
     cxn = connect()
     sql = """INSERT INTO datasets (dataset_id, version, title, url)
                   VALUES (:dataset_id, :version, :title, :url)"""
@@ -78,10 +85,10 @@ def delete_dataset_records(dataset_id):
     cxn.commit()
 
 
-def get_ids(dfm, table):
+def create_ids(df, table):
     """Get IDs to add to the dataframe."""
     start = next_id(table)
-    return range(start, start + dfm.shape[0])
+    return range(start, start + df.shape[0])
 
 
 def next_id(table):

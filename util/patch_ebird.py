@@ -71,7 +71,7 @@ def insert_counts(counts, to_event_id, to_taxon_id):
     if counts.shape[0] == 0:
         return
 
-    counts['count_id'] = db.get_ids(counts, 'counts')
+    counts['count_id'] = db.create_ids(counts, 'counts')
     counts['event_id'] = counts.SAMPLING_EVENT_IDENTIFIER.map(to_event_id)
     counts['taxon_id'] = counts.SCIENTIFIC_NAME.map(to_taxon_id)
     counts['dataset_id'] = DATASET_ID

@@ -44,7 +44,7 @@ CSVS = [
     {'file': 'NABPP_transcription', 'quotechar': SQ, 'cols': 26},
     {'file': 'NABPP_validatable', 'quotechar': SQ, 'cols': 3},
     {'file': 'NABPP_validated_obs_vw', 'quotechar': DQ, 'cols': 3},
-    ]
+]
 
 
 def reformat_csvs():

@@ -97,7 +97,7 @@ def insert_places(raw_data, to_place_id):
     old_places = places.place_key.isin(to_place_id)
     places = places[~old_places]
 
-    places['place_id'] = db.get_ids(places, 'places')
+    places['place_id'] = db.create_ids(places, 'places')
     places['dataset_id'] = DATASET_ID
 
     is_na = places.radius.isna()
@@ -127,7 +127,7 @@ def insert_events(raw_data, to_place_id, to_event_id):
     old_events = events.SAMPLING_EVENT_IDENTIFIER.isin(to_event_id)
     events = events[~old_events]
 
-    events['event_id'] = db.get_ids(events, 'events')
+    events['event_id'] = db.create_ids(events, 'events')
     events['place_key'] = tuple(zip(events.lng, events.lat))
     events['place_id'] = events.place_key.map(to_place_id)
     events['year'] = events.date.dt.strftime('%Y')
@@ -154,11 +154,11 @@ def insert_events(raw_data, to_place_id, to_event_id):
     return {**to_event_id, **new_event_ids}
 
 
-def convert_to_time(dfm, column):
+def convert_to_time(df, column):
     """Convert the time field from datetime format to HH:MM format."""
-    is_na = dfm[column].isna()
-    dfm[column] = dfm[column].dt.strftime('%H:%M')
-    dfm.loc[is_na, column] = None
+    is_na = df[column].isna()
+    df[column] = df[column].dt.strftime('%H:%M')
+    df.loc[is_na, column] = None
 
 
 def insert_counts(counts, to_event_id, to_taxon_id):
@@ -170,7 +170,7 @@ def insert_counts(counts, to_event_id, to_taxon_id):
     if counts.shape[0] == 0:
         return
 
-    counts['count_id'] = db.get_ids(counts, 'counts')
+    counts['count_id'] = db.create_ids(counts, 'counts')
     counts['event_id'] = counts.SAMPLING_EVENT_IDENTIFIER.map(to_event_id)
     counts['taxon_id'] = counts.SCIENTIFIC_NAME.map(to_taxon_id)
     counts['dataset_id'] = DATASET_ID
