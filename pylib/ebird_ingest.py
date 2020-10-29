@@ -30,7 +30,6 @@ def ingest():
         delimiter='\t',
         quoting=3,
         chunksize=chunk,
-        compression='infer',
         dtype='unicode')
 
     to_place_id = {}
@@ -56,7 +55,7 @@ def get_taxa():
               WHERE target = 't'
                 AND "class"='aves'"""
     taxa = pd.read_sql(sql, db.connect())
-    return taxa.set_index('sci_name').taxon_id.to_dict()
+    return taxa.set_index('sci_name')['taxon_id'].to_dict()
 
 
 def filter_data(raw_data):
