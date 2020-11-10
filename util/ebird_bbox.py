@@ -1,9 +1,9 @@
-"""Ingest eBird data for Florida."""
+#!/usr/bin/env python3
 
-import sys
+"""Ingest eBird data for a given bounding box."""
 
-sys.path.append('..')
-
+import argparse
+import textwrap
 from pathlib import Path
 
 import pandas as pd
@@ -11,16 +11,11 @@ import pandas as pd
 from pylib import util
 from pylib.util import log
 
-RAW_DIR = Path('..') / 'data' / 'raw' / 'ebird'
+RAW_DIR = Path( 'data') / 'raw' / 'ebird'
 RAW_CSV = 'ebd_relMay-2020.txt.gz'
 
-OUT_NAME = 'ebird_in_kenya_ebd_relMay-2020a.csv'
-OUT_FILE = Path('..') / 'data' / 'interim' / OUT_NAME
-LNG = (36.167185, 37.438853)
-LAT = (-0.319235, 0.913940)
 
-
-def ingest():
+def main(args):
     """Ingest eBird data."""
     chunk = 1_000_000
     reader = pd.read_csv(
@@ -33,20 +28,19 @@ def ingest():
     first_chunk = True
     for i, raw_data in enumerate(reader, 1):
         log(f'Batch {i} x 1,000,000')
-        raw_data = filter_data(raw_data)
+        raw_data = filter_data(args, raw_data)
 
         if raw_data.shape[0] == 0:
             continue
 
         if first_chunk:
-            raw_data.to_csv(OUT_FILE, index=False)
+            raw_data.to_csv(args.csv_file, index=False)
+            first_chunk = False
         else:
-            raw_data.to_csv(OUT_FILE, index=False, mode='a', header=False)
-
-        first_chunk = False
+            raw_data.to_csv(args.csv_file, index=False, mode='a', header=False)
 
 
-def filter_data(raw_data):
+def filter_data(args, raw_data):
     """Limit the size & scope of the data."""
     util.normalize_columns_names(raw_data)
 
@@ -60,8 +54,36 @@ def filter_data(raw_data):
     raw_data = raw_data.loc[has_date & is_approved & is_complete, :].copy()
 
     return util.filter_lng_lat(
-        raw_data, 'LONGITUDE', 'LATITUDE', lng=LNG, lat=LAT)
+        raw_data, 'LONGITUDE', 'LATITUDE', lng=args.longitude, lat=args.latitude)
+
+
+def parse_args():
+    """Process command-line arguments."""
+    description = """Parse data from flora website."""
+    arg_parser = argparse.ArgumentParser(
+        description=textwrap.dedent(description),
+        fromfile_prefix_chars='@')
+
+    arg_parser.add_argument(
+        '--csv-file', '-C', required=True,
+        help="""Output the results to this CSV file.""")
+
+    arg_parser.add_argument(
+        '--longitude', '--lng', '--long', required=True, nargs=2, type=float,
+        help="""Longitudes of the bounding box.""")
+
+    arg_parser.add_argument(
+        '--latitude', '--lat', required=True, nargs=2, type=float,
+        help="""Latitudes of the bounding box.""")
+
+    args = arg_parser.parse_args()
+
+    args.longitude = sorted(args.longitude)
+    args.latitude = sorted(args.latitude)
+
+    return args
 
 
 if __name__ == '__main__':
-    ingest()
+    ARGS = parse_args()
+    main(ARGS)
