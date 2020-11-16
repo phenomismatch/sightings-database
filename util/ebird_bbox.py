@@ -40,12 +40,7 @@ def main(args):
             raw_data.to_csv(args.csv_file, index=False, mode='a', header=False)
 
 
-def filter_data(
-        args,
-        raw_data,
-        observation_date=True,
-        approved=True,
-        all_species_reported=True):
+def filter_data(args, raw_data):
     """Limit the size & scope of the data."""
     util.normalize_columns_names(raw_data)
 
@@ -57,11 +52,11 @@ def filter_data(
     is_complete = raw_data['ALL_SPECIES_REPORTED'] == '1'
 
     keep = raw_data['GLOBAL_UNIQUE_IDENTIFIER'].notna()
-    if observation_date:
+    if not args.skip_observation_date:
         keep &= has_date
-    if approved:
+    if not args.skip_approved:
         keep &= is_approved
-    if all_species_reported:
+    if not args.skip_complete:
         keep &= is_complete
 
     raw_data = raw_data.loc[keep, :].copy()
@@ -88,6 +83,18 @@ def parse_args():
     arg_parser.add_argument(
         '--latitude', '--lat', required=True, nargs=2, type=float,
         help="""Latitudes of the bounding box.""")
+
+    arg_parser.add_argument(
+        '--skip-observation-date', action='store_true',
+        help="""Don't require records to have a valid date.""")
+
+    arg_parser.add_argument(
+        '--skip-approved', action='store_true',
+        help="""Don't require records to be approved""")
+
+    arg_parser.add_argument(
+        '--skip-complete', action='store_true',
+        help="""Don't require records to be complete""")
 
     args = arg_parser.parse_args()
 
