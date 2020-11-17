@@ -52,11 +52,11 @@ def filter_data(args, raw_data):
     is_complete = raw_data['ALL_SPECIES_REPORTED'] == '1'
 
     keep = raw_data['GLOBAL_UNIQUE_IDENTIFIER'].notna()
-    if not args.skip_observation_date:
+    if not args.no_observation_date:
         keep &= has_date
-    if not args.skip_approved:
+    if not args.unapproved:
         keep &= is_approved
-    if not args.skip_complete:
+    if not args.incomplete:
         keep &= is_complete
 
     raw_data = raw_data.loc[keep, :].copy()
@@ -85,15 +85,15 @@ def parse_args():
         help="""Latitudes of the bounding box.""")
 
     arg_parser.add_argument(
-        '--skip-observation-date', action='store_true',
+        '--no-observation-date', action='store_true',
         help="""Don't require records to have a valid date.""")
 
     arg_parser.add_argument(
-        '--skip-approved', action='store_true',
+        '--unapproved', action='store_true',
         help="""Don't require records to be approved""")
 
     arg_parser.add_argument(
-        '--skip-complete', action='store_true',
+        '--incomplete', action='store_true',
         help="""Don't require records to be complete""")
 
     args = arg_parser.parse_args()
